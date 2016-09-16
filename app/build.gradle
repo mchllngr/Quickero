@@ -65,6 +65,7 @@ dependencies {
 
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
+    compile "com.android.support:preference-v7:$rootProject.ext.supportLibraryVersion"
 
     compile "com.hannesdorfmann.mosby:mvp:$rootProject.ext.mosbyVersion"
 

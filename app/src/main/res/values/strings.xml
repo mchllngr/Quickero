@@ -3,6 +3,9 @@
 
     <string name="app_name" translatable="false">QuickOpen</string>
 
+    <string name="menu_settings">Settings</string>
+    <string name="settings_title">Settings</string>
+
     <string name="notification_service_error">Error while creating notification.</string>
 
     <!-- Keys -->

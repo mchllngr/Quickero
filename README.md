@@ -6,6 +6,7 @@ An android app to quickly open your most used apps through a notification.
 - add settings page
 - change notificationIcon
 - make NotificationService start at boot
+- add "Donate a beer" ?
 
 # License
 

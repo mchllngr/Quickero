@@ -83,7 +83,7 @@ public class NotificationService extends Service {
         if (packagePriorityPref == null)
             packagePriorityPref = rxSharedPreferences.getInteger(
                     getString(R.string.pref_notification_priority),
-                    Notification.PRIORITY_DEFAULT);
+                    Notification.PRIORITY_MAX);
 
         if (packageNamesPref == null) {
             GsonPreferenceAdapter<List> adapter =
