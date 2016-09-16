@@ -3,7 +3,8 @@
     package="de.mchllngr.quickopen">
 
     <application
-        android:name="de.mchllngr.quickopen.App"
+        android:name=".App"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
@@ -17,6 +18,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".service.NotificationService" />
+
+        <service android:name=".service.StartApplicationService" />
+
+        <receiver
+            android:name=".receiver.NotificationServiceRestarter"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="de.mchllngr.quickopen.service.RestartService" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

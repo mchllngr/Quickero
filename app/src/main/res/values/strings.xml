@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">QuickOpen</string>
+    <string name="app_name" translatable="false">QuickOpen</string>
+
+    <string name="notification_service_error">Error while creating notification.</string>
+
+    <!-- Keys -->
+    <string name="key_package_name" translatable="false">package_name</string>
+    <string name="pref_package_names" translatable="false">package_names</string>
+    <string name="pref_notification_visibility" translatable="false">notification_visibility</string>
+    <string name="pref_notification_priority" translatable="false">notification_priority</string>
 
 </resources>

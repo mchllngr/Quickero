@@ -76,6 +76,10 @@ dependencies {
 
     compile "com.jakewharton.timber:timber:$rootProject.ext.timberVersion"
 
+    compile "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
+
+    compile "com.f2prateek.rx.preferences:rx-preferences:$rootProject.ext.rxPreferencesVersion"
+
     debugCompile "com.facebook.stetho:stetho:$rootProject.ext.stethoVersion"
 
     debugCompile "de.hannesstruss.windfish:windfish-library:$rootProject.ext.windfishVersion"

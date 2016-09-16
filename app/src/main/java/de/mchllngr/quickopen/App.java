@@ -26,9 +26,6 @@ public class App extends BaseApp {
      */
     private ApplicationComponent applicationComponent;
 
-    /**
-     * Instances the {@link android.app.Application}.
-     */
     @Override
     public void onCreate() {
         super.onCreate();
