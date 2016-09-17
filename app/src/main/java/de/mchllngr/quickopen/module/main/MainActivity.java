@@ -69,8 +69,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             }
         });
 
-        testSetPackageVisibilityPrefs();
-        testSetPackagePriorityPrefs();
         testSetPackageNamePrefs();
 
         startNotificationService();
@@ -104,32 +102,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      */
     private void startNotificationService() {
         startService(new Intent(this, NotificationService.class));
-    }
-
-    /**
-     * TODO remove
-     */
-    private void testSetPackageVisibilityPrefs() {
-        RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(
-                PreferenceManager.getDefaultSharedPreferences(this));
-
-        Preference<Integer> packageVisibilityPref = rxSharedPreferences.getInteger(
-                getString(R.string.pref_notification_visibility));
-
-        packageVisibilityPref.set(NotificationCompat.VISIBILITY_PUBLIC);
-    }
-
-    /**
-     * TODO remove
-     */
-    private void testSetPackagePriorityPrefs() {
-        RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(
-                PreferenceManager.getDefaultSharedPreferences(this));
-
-        Preference<Integer> packagePriorityPref = rxSharedPreferences.getInteger(
-                getString(R.string.pref_notification_priority));
-
-        packagePriorityPref.set(Notification.PRIORITY_MAX);
     }
 
     /**

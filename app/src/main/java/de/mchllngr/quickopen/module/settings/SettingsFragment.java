@@ -24,9 +24,5 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.prefs);
-
-        // TODO s. https://plus.google.com/+AndroidDevelopers/posts/9kZ3SsXdT2T
-        // TODO s. https://www.youtube.com/watch?v=ezE_SZRStmQ
-        // TODO -> delete when not needed anymore
     }
 }

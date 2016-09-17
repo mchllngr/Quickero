@@ -23,7 +23,7 @@ import timber.log.Timber;
  *
  * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
-// TODO inject with dagger
+// TODO inject with dagger ?
 public class CustomNotificationHelper {
 
     /**
@@ -120,10 +120,11 @@ public class CustomNotificationHelper {
      *
      * @param notificationVisibility {@code notificationVisibility}
      */
-    public void setNotificationVisibility(int notificationVisibility) {
+    public void setNotificationVisibility(int notificationVisibility, boolean reloadNotification) {
         this.notificationVisibility = notificationVisibility;
 
-        reloadNotification();
+        if (reloadNotification)
+            reloadNotification();
     }
 
     /**
@@ -131,10 +132,11 @@ public class CustomNotificationHelper {
      *
      * @param notificationPriority {@code notificationPriority}
      */
-    public void setNotificationPriority(int notificationPriority) {
+    public void setNotificationPriority(int notificationPriority, boolean reloadNotification) {
         this.notificationPriority = notificationPriority;
 
-        reloadNotification();
+        if (reloadNotification)
+            reloadNotification();
     }
 
     /**

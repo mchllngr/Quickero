@@ -3,10 +3,12 @@ An android app to quickly open your most used apps through a notification.
 
 # TODO
 - add UI
-- add settings page
 - change notificationIcon
 - make NotificationService start at boot
+- add better texts and explanations to settings-page
+- add settings-icon instead of hidden-menu-entry
 - add "Donate a beer" ?
+- hide option "VISIBILITY_PRIVATE" because there will never be "sensitive data" to hide on lockscreen ?
 
 # License
 

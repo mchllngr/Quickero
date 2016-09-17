@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="pref_activated"
-        android:title="Show notification" />
+    <PreferenceCategory android:title="@string/pref_group_general_title">
+
+        <CheckBoxPreference
+            android:defaultValue="@string/pref_notification_enabled_default_value"
+            android:key="@string/pref_notification_enabled"
+            android:title="@string/pref_notification_enabled_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_group_notification_title">
+
+        <ListPreference
+            android:defaultValue="@string/pref_notification_visibility_value_public"
+            android:entries="@array/pref_notification_visibility_options"
+            android:entryValues="@array/pref_notification_visibility_values"
+            android:key="@string/pref_notification_visibility"
+            android:title="@string/pref_notification_visibility_title" />
+
+        <ListPreference
+            android:defaultValue="@string/pref_notification_priority_value_max"
+            android:entries="@array/pref_notification_priority_options"
+            android:entryValues="@array/pref_notification_priority_values"
+            android:key="@string/pref_notification_priority"
+            android:title="@string/pref_notification_priority_title" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
