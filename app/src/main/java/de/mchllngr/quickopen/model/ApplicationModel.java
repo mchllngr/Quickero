@@ -1,6 +1,7 @@
 package de.mchllngr.quickopen.model;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -17,6 +18,7 @@ public class ApplicationModel {
 
     public String packageName;
     public Bitmap icon;
+    public String name;
 
     /**
      * Private constructor. ApplicationModel should be instantiated through
@@ -24,10 +26,12 @@ public class ApplicationModel {
      *
      * @param packageName package-name
      * @param icon        application icon
+     * @param name        application name
      */
-    private ApplicationModel(String packageName, Bitmap icon) {
+    private ApplicationModel(String packageName, Bitmap icon, String name) {
         this.packageName = packageName;
         this.icon = icon;
+        this.name = name;
     }
 
     /**
@@ -43,10 +47,12 @@ public class ApplicationModel {
                                                                      String packageName) {
         try {
             // will throw NameNotFoundException if no application with packageName is found
-            context.getPackageManager().getApplicationInfo(packageName, 0);
+            ApplicationInfo info = context.getPackageManager().getApplicationInfo(packageName, 0);
+            String name = (String) context.getPackageManager().getApplicationLabel(info);
 
             return new ApplicationModel(packageName,
-                    getApplicationIconForPackageName(context, packageName));
+                    getApplicationIconForPackageName(context, packageName),
+                    name);
         } catch (PackageManager.NameNotFoundException e) {
             return null;
         }
