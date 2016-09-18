@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimaryLight">#8aa730</color>
-    <color name="colorPrimary">#718927</color>
-    <color name="colorPrimaryDark">#54661d</color>
+    <color name="colorPrimaryLight">#388E3C</color> <!-- Green 700 -->
+    <color name="colorPrimary">#2E7D32</color> <!-- Green 800 -->
+    <color name="colorPrimaryDark">#1B5E20</color> <!-- Green 900 -->
     <color name="colorAccent">@color/colorPrimary</color>
 
 </resources>

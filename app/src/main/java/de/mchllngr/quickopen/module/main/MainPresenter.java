@@ -1,6 +1,31 @@
 package de.mchllngr.quickopen.module.main;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.graphics.Color;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
+import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
+import com.f2prateek.rx.preferences.Preference;
+import com.f2prateek.rx.preferences.RxSharedPreferences;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.base.BasePresenter;
+import de.mchllngr.quickopen.model.ApplicationModel;
+import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.functions.Func2;
+import rx.schedulers.Schedulers;
 
 /**
  * {@link com.hannesdorfmann.mosby.mvp.MvpPresenter} for the {@link MainActivity}
@@ -10,14 +35,222 @@ import de.mchllngr.quickopen.base.BasePresenter;
 @SuppressWarnings("ConstantConditions")
 public class MainPresenter extends BasePresenter<MainView> {
 
+    private final Context context;
+    /**
+     * {@link Preference}-reference for easier usage of the saved value for packageNames in the
+     * {@link RxSharedPreferences}.
+     */
+    private Preference<List> packageNamesPref;
+    /**
+     * Contains the last shown {@link ApplicationModel}s to get the selected item.
+     */
+    private List<ApplicationModel> lastShownApplicationModels;
+
+    MainPresenter(Context context) {
+        this.context = context;
+    }
+
     @Override
     public void attachView(MainView view) {
         super.attachView(view);
         getApplicationComponent().inject(this);
+
+        RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(
+                PreferenceManager.getDefaultSharedPreferences(context)
+        );
+
+        GsonPreferenceAdapter<List> adapter = new GsonPreferenceAdapter<>(new Gson(), List.class);
+        packageNamesPref = rxSharedPreferences.getObject(
+                context.getString(R.string.pref_package_names),
+                null,
+                adapter
+        );
     }
 
-    @Override
-    public void detachView(boolean retainInstance) {
-        super.detachView(retainInstance);
+    /**
+     * Loads the list of installed applications, prepares them and calls the {@link MainView}
+     * to show them.
+     */
+    void openApplicationList() {
+        if (!isViewAttached()) return;
+
+        getView().showProgressDialog();
+        final List<ApplicationModel> savedApplicationModels = ApplicationModel
+                .prepareApplicationModelsList(
+                        context,
+                        packageNamesPref.get()
+                );
+
+        if (savedApplicationModels.size() >= context.getResources()
+                .getInteger(R.integer.max_apps_in_notification)) {
+            getView().hideAddItemsButton();
+            getView().hideProgressDialog();
+            getView().showMaxItemsError();
+            return;
+        }
+
+        Observable.from(context.getPackageManager().getInstalledApplications(0))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter(new Func1<ApplicationInfo, Boolean>() {
+                    @Override
+                    public Boolean call(ApplicationInfo applicationInfo) {
+                        if (isSystemPackage(applicationInfo) &&
+                                !TextUtils.isEmpty(applicationInfo.packageName))
+                            return false;
+
+                        boolean isAlreadyInList = false;
+                        for (ApplicationModel savedApplicationModel : savedApplicationModels)
+                            if (applicationInfo.packageName
+                                    .equals(savedApplicationModel.packageName)) {
+                                isAlreadyInList = true;
+                                break;
+                            }
+
+                        return !isAlreadyInList;
+                    }
+                })
+                .map(new Func1<ApplicationInfo, ApplicationModel>() {
+                    @Override
+                    public ApplicationModel call(ApplicationInfo applicationInfo) {
+                        return ApplicationModel.getApplicationModelForPackageName(
+                                context,
+                                applicationInfo.packageName
+                        );
+                    }
+                })
+                .filter(new Func1<ApplicationModel, Boolean>() {
+                    @Override
+                    public Boolean call(ApplicationModel applicationModel) {
+                        return applicationModel != null &&
+                                !TextUtils.isEmpty(applicationModel.packageName) &&
+                                !TextUtils.isEmpty(applicationModel.name) &&
+                                applicationModel.iconDrawable != null &&
+                                applicationModel.iconBitmap != null;
+                    }
+                })
+                .toSortedList(new Func2<ApplicationModel, ApplicationModel, Integer>() {
+                    @Override
+                    public Integer call(ApplicationModel applicationModel, ApplicationModel applicationModel2) {
+                        return applicationModel.name.compareTo(applicationModel2.name);
+                    }
+                })
+                .subscribe(new Observer<List<ApplicationModel>>() {
+                    @Override
+                    public void onCompleted() {
+                        getView().hideProgressDialog();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().hideProgressDialog();
+                        getView().onOpenApplicationListError();
+                    }
+
+                    @Override
+                    public void onNext(List<ApplicationModel> applicationModels) {
+                        if (!isViewAttached()) return;
+
+                        lastShownApplicationModels = applicationModels;
+
+                        final MaterialSimpleListAdapter adapter = new MaterialSimpleListAdapter(
+                                getView().getApplicationChooserCallback()
+                        );
+
+                        for (ApplicationModel applicationModel : applicationModels) {
+                            adapter.add(new MaterialSimpleListItem.Builder(context)
+                                    .content(applicationModel.name)
+                                    .icon(applicationModel.iconDrawable)
+                                    .backgroundColor(Color.WHITE)
+                                    .build());
+                        }
+
+                        getView().showApplicationListDialog(adapter);
+                    }
+                });
+    }
+
+    /**
+     * Checks if an application is a system application.
+     */
+    private boolean isSystemPackage(ApplicationInfo applicationInfo) {
+        return ((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+    }
+
+    /**
+     * Gets called when an item from the application-list is selected.
+     */
+    void onApplicationSelected(int position) {
+        if (lastShownApplicationModels != null && !lastShownApplicationModels.isEmpty())
+            addItem(lastShownApplicationModels.get(position));
+    }
+
+    /**
+     * Loads the list saved in {@link RxSharedPreferences} and calls the {@link MainView} to
+     * show them.
+     */
+    void loadItems() {
+        if (!isViewAttached()) return;
+
+        List<ApplicationModel> applicationModels = ApplicationModel.prepareApplicationModelsList(
+                context,
+                packageNamesPref.get()
+        );
+
+        if (applicationModels.size() >= context.getResources()
+                .getInteger(R.integer.max_apps_in_notification))
+            getView().hideAddItemsButton();
+
+        getView().updateItems(applicationModels);
+    }
+
+    /**
+     * Adds an item to the list in {@link android.content.SharedPreferences} and calls the
+     * {@link MainView} to also add it to the shown list.
+     */
+    void addItem(ApplicationModel applicationModel) {
+        List applicationModels = packageNamesPref.get();
+
+        if (applicationModels == null)
+            applicationModels = new ArrayList();
+
+        int maxApplications = context.getResources().getInteger(R.integer.max_apps_in_notification);
+        int itemsLeftToAdd = maxApplications - applicationModels.size();
+
+        if (isViewAttached()) {
+            if (itemsLeftToAdd == 1)
+                getView().hideAddItemsButton();
+            else if (itemsLeftToAdd <= 0) {
+                getView().hideAddItemsButton();
+                getView().showMaxItemsError();
+                return;
+            }
+        }
+
+        applicationModels.add(applicationModel.packageName);
+        packageNamesPref.set(applicationModels);
+
+        if (isViewAttached())
+            getView().addItem(applicationModel);
+    }
+
+    /**
+     * Removes the item at {@code position} from the list in
+     * {@link android.content.SharedPreferences} and calls the {@link MainView} to also remove
+     * it from the shown list.
+     */
+    void removeItem(int position) {
+        List applicationModels = packageNamesPref.get();
+
+        if (applicationModels != null && applicationModels.size() > 1) {
+            applicationModels.remove(position);
+            packageNamesPref.set(applicationModels);
+        } else
+            packageNamesPref.delete();
+
+        if (isViewAttached()) {
+            getView().showAddItemsButton();
+            getView().removeItem(position);
+        }
     }
 }

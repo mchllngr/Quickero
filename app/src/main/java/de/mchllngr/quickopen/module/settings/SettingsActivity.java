@@ -45,9 +45,11 @@ public class SettingsActivity extends BaseActivity<BaseView, BasePresenter<BaseV
         setSupportActionBar(toolbar);
         setShowHomeButton(true);
 
-        FragmentStarter.startFragment(getSupportFragmentManager(),
+        FragmentStarter.startFragment(
+                getSupportFragmentManager(),
                 SettingsFragment.newInstance(),
-                R.id.fragment_container);
+                R.id.fragment_container
+        );
     }
 
     @NonNull

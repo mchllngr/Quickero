@@ -8,8 +8,12 @@ An android app to quickly open your most used apps through a notification.
 - add better texts and explanations to settings-page
 - add settings-icon instead of hidden-menu-entry
 - add empty-view for recyclerview
-- add recyclerview-item divider
-- check for uninstalled applications every start ?
+- change recyclerview-item-layout and/or add divider
+- change fab-icon
+- add "about me"
+- check sorting of installed applications
+- fix slow or not appearing progress dialog 
+- check for uninstalled applications every start ? (or BroadcastReceiver?)
 - add "Donate a beer" ?
 - hide option "VISIBILITY_PRIVATE" because there will never be "sensitive data" to hide on lockscreen ?
 

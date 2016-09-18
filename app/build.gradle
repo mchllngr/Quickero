@@ -80,7 +80,13 @@ dependencies {
 
     compile "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
 
+    compile "io.reactivex:rxandroid:$rootProject.ext.rxAndroidVersion"
+    compile "io.reactivex:rxjava:$rootProject.ext.rxJavaVersion"
+
     compile "com.f2prateek.rx.preferences:rx-preferences:$rootProject.ext.rxPreferencesVersion"
+
+    compile "com.afollestad.material-dialogs:core:$rootProject.ext.materialDialogsVersion"
+    compile "com.afollestad.material-dialogs:commons:$rootProject.ext.materialDialogsVersion"
 
     debugCompile "com.facebook.stetho:stetho:$rootProject.ext.stethoVersion"
 

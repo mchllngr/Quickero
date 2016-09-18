@@ -5,16 +5,22 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
+import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +35,8 @@ import de.mchllngr.quickopen.service.NotificationService;
  *
  * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
-public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView {
+public class MainActivity extends BaseActivity<MainView, MainPresenter>
+        implements MainView, MaterialSimpleListAdapter.Callback {
 
     /**
      * {@link Toolbar} for this {@link android.app.Activity}.
@@ -51,11 +58,19 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      * {@link MainAdapter} for updating shown items in {@code recyclerView}.
      */
     private MainAdapter adapter;
+    /**
+     * {@link MaterialDialog} for showing the installed application-list.
+     */
+    private MaterialDialog applicationDialog;
+    /**
+     * {@link MaterialDialog} for showing the loading-process of the installed applications.
+     */
+    private MaterialDialog progressDialog;
 
     @NonNull
     @Override
     public MainPresenter createPresenter() {
-        return new MainPresenter();
+        return new MainPresenter(this);
     }
 
     @Override
@@ -67,16 +82,16 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
         initRecyclerView();
 
-        // TODO show with plus-icon to add entries
+        startNotificationService();
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                getPresenter().openApplicationList();
             }
         });
 
-        startNotificationService();
+        getPresenter().loadItems();
     }
 
     /**
@@ -86,33 +101,25 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // TODO remove temp
-        ArrayList<ApplicationModel> temp = new ArrayList<>();
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.imgur.mobile"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.novagecko.memedroid"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.google.android.talk"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.facebook.orca"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.whatsapp"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.google.android.apps.maps"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.mobitobi.android.gentlealarm"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.imgur.mobile"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.novagecko.memedroid"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.google.android.talk"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.facebook.orca"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.whatsapp"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.google.android.apps.maps"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.mobitobi.android.gentlealarm"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.imgur.mobile"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.novagecko.memedroid"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.google.android.talk"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.facebook.orca"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.whatsapp"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.google.android.apps.maps"));
-        temp.add(ApplicationModel.getApplicationModelForPackageName(this, "com.mobitobi.android.gentlealarm"));
-        adapter = new MainAdapter(temp);
-
-//        adapter = new MainAdapter(new ArrayList<ApplicationModel>());
+        adapter = new MainAdapter(new ArrayList<ApplicationModel>());
         recyclerView.setAdapter(adapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.START | ItemTouchHelper.END) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView,
+                                  RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                getPresenter().removeItem(viewHolder.getAdapterPosition());
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -145,23 +152,80 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         startService(new Intent(this, NotificationService.class));
     }
 
-//    private void testSetPackageNamePrefs() {
-//        RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(
-//                PreferenceManager.getDefaultSharedPreferences(this));
-//
-//        GsonPreferenceAdapter<List> adapter = new GsonPreferenceAdapter<>(new Gson(), List.class);
-//        Preference<List> packageNamesPref = rxSharedPreferences.getObject(
-//                getString(R.string.pref_package_names), null, adapter);
-//
-//        List<String> packageNamesData = new ArrayList<>();
-//        packageNamesData.add("com.imgur.mobile");
-//        packageNamesData.add("com.novagecko.memedroid");
-//        packageNamesData.add("com.google.android.talk");
-//        packageNamesData.add("com.facebook.orca");
-//        packageNamesData.add("com.whatsapp");
-//        packageNamesData.add("com.google.android.apps.maps");
-//        packageNamesData.add("com.mobitobi.android.gentlealarm");
-//
-//        packageNamesPref.set(packageNamesData);
-//    }
+    @Override
+    public void onMaterialListItemSelected(int index, MaterialSimpleListItem item) {
+        getPresenter().onApplicationSelected(index);
+
+        if (applicationDialog != null)
+            applicationDialog.dismiss();
+    }
+
+    @Override
+    public void showApplicationListDialog(MaterialSimpleListAdapter adapter) {
+        applicationDialog = new MaterialDialog.Builder(this)
+                .title("DialogTitle") // TODO change
+                .adapter(adapter, null)
+                .show();
+    }
+
+    @Override
+    public MaterialSimpleListAdapter.Callback getApplicationChooserCallback() {
+        return this;
+    }
+
+    @Override
+    public void showProgressDialog() {
+        hideProgressDialog();
+
+        progressDialog = new MaterialDialog.Builder(this)
+                .content("ProgressContent") // TODO change
+                .progress(true, 0)
+                .show();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
+    @Override
+    public void onOpenApplicationListError() {
+        Log.d("DEBUG_TAG", "MainActivity#onOpenApplicationListError()"); // FIXME delete
+        // TODO show error msg
+    }
+
+    @Override
+    public void updateItems(List<ApplicationModel> items) {
+        if (adapter != null)
+            adapter.updateItems(items);
+    }
+
+    @Override
+    public void addItem(ApplicationModel applicationModel) {
+        if (adapter != null)
+            adapter.add(adapter.getItemCount(), applicationModel);
+    }
+
+    @Override
+    public void removeItem(int position) {
+        if (adapter != null)
+            adapter.remove(adapter.get(position));
+    }
+
+    @Override
+    public void showMaxItemsError() {
+        Log.d("DEBUG_TAG", "MainActivity#showMaxItemsError()"); // FIXME delete
+        // TODO show error msg
+    }
+
+    @Override
+    public void showAddItemsButton() {
+        fab.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideAddItemsButton() {
+        fab.setVisibility(View.GONE);
+    }
 }

@@ -14,7 +14,6 @@ import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.mchllngr.quickopen.R;
@@ -77,35 +76,36 @@ public class NotificationService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        if (customNotificationHelper == null)
-            customNotificationHelper = new CustomNotificationHelper(
-                    this, getResources().getInteger(R.integer.notification_id),
-                    R.mipmap.ic_launcher);
+        customNotificationHelper = new CustomNotificationHelper(
+                this, getResources().getInteger(R.integer.notification_id),
+                R.mipmap.ic_launcher
+        );
 
         RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(
-                PreferenceManager.getDefaultSharedPreferences(this));
+                PreferenceManager.getDefaultSharedPreferences(this)
+        );
 
-        if (notificationEnabledPref == null)
-            notificationEnabledPref = rxSharedPreferences.getBoolean(
-                    getString(R.string.pref_notification_enabled),
-                    Boolean.parseBoolean(getString(R.string.pref_notification_enabled_default_value)));
+        notificationEnabledPref = rxSharedPreferences.getBoolean(
+                getString(R.string.pref_notification_enabled),
+                Boolean.parseBoolean(getString(R.string.pref_notification_enabled_default_value))
+        );
 
-        if (notificationVisibilityPref == null)
-            notificationVisibilityPref = rxSharedPreferences.getString(
-                    getString(R.string.pref_notification_visibility),
-                    getString(R.string.pref_notification_visibility_option_private));
+        notificationVisibilityPref = rxSharedPreferences.getString(
+                getString(R.string.pref_notification_visibility),
+                getString(R.string.pref_notification_visibility_option_private)
+        );
 
-        if (notificationPriorityPref == null)
-            notificationPriorityPref = rxSharedPreferences.getString(
-                    getString(R.string.pref_notification_priority),
-                    getString(R.string.pref_notification_priority_option_default));
+        notificationPriorityPref = rxSharedPreferences.getString(
+                getString(R.string.pref_notification_priority),
+                getString(R.string.pref_notification_priority_option_default)
+        );
 
-        if (packageNamesPref == null) {
-            GsonPreferenceAdapter<List> adapter =
-                    new GsonPreferenceAdapter<>(new Gson(), List.class);
-            packageNamesPref = rxSharedPreferences.getObject(
-                    getString(R.string.pref_package_names), null, adapter);
-        }
+        GsonPreferenceAdapter<List> adapter = new GsonPreferenceAdapter<>(new Gson(), List.class);
+        packageNamesPref = rxSharedPreferences.getObject(
+                getString(R.string.pref_package_names),
+                null,
+                adapter
+        );
     }
 
     @Override
@@ -134,8 +134,11 @@ public class NotificationService extends Service {
                 NotificationService.this.notificationEnabled = notificationEnabled;
 
                 if (notificationEnabled) {
-                    ApplicationModel[] applicationModels
-                            = prepareApplicationModels(packageNamesPref.get());
+                    ApplicationModel[] applicationModels = ApplicationModel
+                            .prepareApplicationModelsArray(
+                                    NotificationService.this,
+                                    packageNamesPref.get()
+                            );
                     showNotification(applicationModels);
                 } else
                     hideNotification();
@@ -157,7 +160,9 @@ public class NotificationService extends Service {
                     notificationVisibilityValue = NotificationCompat.VISIBILITY_SECRET;
 
                 customNotificationHelper.setNotificationVisibility(
-                        notificationVisibilityValue, notificationEnabled);
+                        notificationVisibilityValue,
+                        notificationEnabled
+                );
             }
         });
 
@@ -182,7 +187,9 @@ public class NotificationService extends Service {
                     notificationPriorityValue = Notification.PRIORITY_MIN;
 
                 customNotificationHelper.setNotificationPriority(
-                        notificationPriorityValue, notificationEnabled);
+                        notificationPriorityValue,
+                        notificationEnabled
+                );
             }
         });
 
@@ -190,40 +197,18 @@ public class NotificationService extends Service {
         packageNamesPref.asObservable().subscribe(new Action1<List>() {
             @Override
             public void call(List list) {
-                ApplicationModel[] applicationModels = prepareApplicationModels(list);
+                ApplicationModel[] applicationModels = ApplicationModel
+                        .prepareApplicationModelsArray(
+                                NotificationService.this,
+                                list
+                        );
 
-                if (applicationModels == null || applicationModels.length == 0) return;
-
-                showNotification(applicationModels);
+                if (applicationModels.length == 0)
+                    hideNotification();
+                else
+                    showNotification(applicationModels);
             }
         });
-    }
-
-    /**
-     * Prepares a given {@link List} of packageNames for use with
-     * {@link CustomNotificationHelper#showCustomNotification(ApplicationModel...)}.
-     * <p>
-     * If the given {@link List} is null or empty it returns an empty array.
-     *
-     * @param list {@link List} of packageNames
-     * @return array of {@link ApplicationModel}s
-     */
-    private ApplicationModel[] prepareApplicationModels(List list) {
-        if (list == null || list.isEmpty()) return new ApplicationModel[0];
-
-        List<ApplicationModel> applicationModels = new ArrayList<>();
-
-        for (Object o : list)
-            if (o instanceof String) {
-                ApplicationModel applicationModel = ApplicationModel.
-                        getApplicationModelForPackageName(
-                                NotificationService.this, (String) o);
-
-                if (applicationModel != null)
-                    applicationModels.add(applicationModel);
-            }
-
-        return applicationModels.toArray(new ApplicationModel[applicationModels.size()]);
     }
 
     @Override

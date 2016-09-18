@@ -16,9 +16,6 @@ public class NotificationServiceRestarter extends BroadcastReceiver {
 
     /**
      * Restarts the {@link NotificationService} if called.
-     *
-     * @param context {@link Context}
-     * @param intent  {@link Intent}
      */
     @Override
     public void onReceive(Context context, Intent intent) {

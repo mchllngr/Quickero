@@ -27,10 +27,6 @@ import timber.log.Timber;
 public class CustomNotificationHelper {
 
     /**
-     * Max count of applications shown in the notification.
-     */
-    private static final int MAX_APPS_IN_NOTIFICATION = 15;
-    /**
      * Array of every layout used.
      */
     private final int[] LAYOUT_IDS_CUSTOM_CONTENT = {
@@ -145,16 +141,21 @@ public class CustomNotificationHelper {
      *
      * @param applicationModels array of {@link ApplicationModel}s to show in notification
      */
+    // TODO make return boolean and return false if notification is not shown for better
+    //      error handling
     public void showCustomNotification(ApplicationModel... applicationModels) {
         if (applicationModels == null) {
             Timber.e("ERROR: Received no App-Icons to show !");
             return;
         }
 
+        int maxAppsInNotification = context.getResources()
+                .getInteger(R.integer.max_apps_in_notification);
+
         if (applicationModels.length <= 0 ||
-                applicationModels.length > MAX_APPS_IN_NOTIFICATION) {
+                applicationModels.length > maxAppsInNotification) {
             Timber.e("ERROR: AppIcons-count needs to be between 1 and " +
-                    MAX_APPS_IN_NOTIFICATION + " (received: " + applicationModels.length + ")");
+                    maxAppsInNotification + " (received: " + applicationModels.length + ")");
             return;
         }
 
@@ -164,17 +165,24 @@ public class CustomNotificationHelper {
         lastApplicationModels = applicationModels;
 
         // get custom notification view for length
-        RemoteViews customContentView = new RemoteViews(context.getPackageName(),
-                LAYOUT_IDS_CUSTOM_CONTENT[applicationModels.length - 1]);
+        RemoteViews customContentView = new RemoteViews(
+                context.getPackageName(),
+                LAYOUT_IDS_CUSTOM_CONTENT[applicationModels.length - 1]
+        );
 
         for (int i = 0; i < applicationModels.length; i++) {
-            // set icon
-            customContentView.setImageViewBitmap(ICON_IDS_CUSTOM_CONTENT[i],
-                    applicationModels[i].icon);
+            // set iconBitmap
+            customContentView.setImageViewBitmap(
+                    ICON_IDS_CUSTOM_CONTENT[i],
+                    applicationModels[i].iconBitmap
+            );
 
             // set PendingIntent
             Intent resultIntent = new Intent(context, StartApplicationService.class);
-            resultIntent.putExtra(context.getString(R.string.key_package_name), applicationModels[i].packageName);
+            resultIntent.putExtra(
+                    context.getString(R.string.key_package_name),
+                    applicationModels[i].packageName
+            );
             // needed to make the PendingIntent 'unique' so multiple PendingIntents can
             // be active at the same time
             resultIntent.setAction(Long.toString(System.currentTimeMillis()));
@@ -197,11 +205,11 @@ public class CustomNotificationHelper {
      * @return array of {@link ApplicationModel}s without empty items
      */
     private ApplicationModel[] removeEmptyItemsFromArray(ApplicationModel[] applicationModels) {
-        // remove items with empty packageName or icon from array
+        // remove items with empty packageName or iconBitmap from array
         List<ApplicationModel> tempApplicationModels = new ArrayList<>();
         for (ApplicationModel applicationModel : applicationModels)
             if (!TextUtils.isEmpty(applicationModel.packageName) &&
-                    applicationModel.icon != null)
+                    applicationModel.iconBitmap != null)
                 tempApplicationModels.add(applicationModel);
 
         return tempApplicationModels.toArray(new ApplicationModel[tempApplicationModels.size()]);
@@ -246,8 +254,7 @@ public class CustomNotificationHelper {
      * Reloads the notification with {@code lastApplicationModels}.
      */
     private void reloadNotification() {
-        if (lastApplicationModels == null) return;
-
-        showCustomNotification(lastApplicationModels);
+        if (lastApplicationModels != null)
+            showCustomNotification(lastApplicationModels);
     }
 }

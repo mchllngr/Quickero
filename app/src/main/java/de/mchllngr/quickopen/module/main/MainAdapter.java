@@ -1,6 +1,7 @@
 package de.mchllngr.quickopen.module.main;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,13 +45,21 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         ApplicationModel applicationModel = items.get(position);
 
-        holder.icon.setImageBitmap(applicationModel.icon);
+        holder.icon.setImageDrawable(applicationModel.iconDrawable);
         holder.name.setText(applicationModel.name);
     }
 
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    /**
+     * Updates the {@code items}.
+     */
+    void updateItems(List<ApplicationModel> items) {
+        this.items = items;
+        notifyDataSetChanged();
     }
 
     /**
