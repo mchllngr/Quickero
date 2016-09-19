@@ -3,6 +3,7 @@ package de.mchllngr.quickopen.service;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -76,9 +77,12 @@ public class NotificationService extends Service {
     public void onCreate() {
         super.onCreate();
 
+        int notificationIcon = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ?
+                R.drawable.ic_speaker_notes_white_24px : R.drawable.ic_notification;
+
         customNotificationHelper = new CustomNotificationHelper(
                 this, getResources().getInteger(R.integer.notification_id),
-                R.drawable.ic_speaker_notes_white_24px
+                notificationIcon
         );
 
         RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(

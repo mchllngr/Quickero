@@ -10,6 +10,8 @@ An android app to quickly open your most used apps through a notification.
 - check sorting of installed applications
 - fix slow or not appearing progress dialog 
 - check performance on move item
+- check customNotification-design on all api-levels (especially api 19)
+- check activity leak on api 19 ? (open and close settings)
 - add red background on swipe ?
 - add feedback ?
 - add tutorial ?
