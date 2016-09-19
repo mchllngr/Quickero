@@ -1,24 +1,30 @@
 # QuickOpen
 An android app to quickly open your most used apps through a notification.
 
+# KNOWN BUGS
+- navigation-bar gets colored white when going to settings (api 24)
+- some items in the installed-applications-list are wrongly sorted at the end
+- slow or not appearing progress dialog while loading installed-applications-list
+- performance-issues while moving items
+
 # TODO
 - make NotificationService start at boot
 - add better texts and explanations to settings-page
 - add empty-view for recyclerview
 - change recyclerview-item-layout and/or add divider
 - add "about me"
-- check sorting of installed applications
-- fix slow or not appearing progress dialog 
-- check performance on move item
 - check customNotification-design on all api-levels (especially api 19)
 - check activity leak on api 19 ? (open and close settings)
-- add red background on swipe ?
-- add feedback ?
-- add tutorial ?
-- disable MainActivity when notification_enabled = false ?
-- check for uninstalled applications every start ? (or BroadcastReceiver?)
-- add "Donate a beer" ?
-- hide option "VISIBILITY_PRIVATE" because there will never be "sensitive data" to hide on lockscreen ?
+- hide option "VISIBILITY_PRIVATE" because there will never be "sensitive data" to hide on lockscreen
+
+# TODO LATER
+- add tutorial
+- add screenshots + real descriptions to google-play-page
+- add red background on remove-swipe
+- add feedback
+- disable MainActivity when notification_enabled = false
+- check for uninstalled applications every start (BroadcastReceiver)
+- add "Donate a beer"
 
 # License
 
