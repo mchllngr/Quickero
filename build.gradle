@@ -30,8 +30,8 @@ ext {
     targetSdkVersion = 24
 
     // Version
-    majorVersion = 1
-    minorVersion = 0
+    majorVersion = 0
+    minorVersion = 1
     bugfixVersion = 0
     versionCode = majorVersion * 1000000 + minorVersion * 1000 + bugfixVersion
     versionName = "$majorVersion.$minorVersion.$bugfixVersion"

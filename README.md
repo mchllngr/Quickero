@@ -2,17 +2,15 @@
 An android app to quickly open your most used apps through a notification.
 
 # TODO
-- change notificationIcon
 - make NotificationService start at boot
 - add better texts and explanations to settings-page
-- add settings-icon instead of hidden-menu-entry
 - add empty-view for recyclerview
 - change recyclerview-item-layout and/or add divider
-- change fab-icon
 - add "about me"
 - check sorting of installed applications
 - fix slow or not appearing progress dialog 
 - check performance on move item
+- add red background on swipe ?
 - add feedback ?
 - add tutorial ?
 - disable MainActivity when notification_enabled = false ?

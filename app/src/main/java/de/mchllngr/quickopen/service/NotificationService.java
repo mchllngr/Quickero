@@ -78,7 +78,7 @@ public class NotificationService extends Service {
 
         customNotificationHelper = new CustomNotificationHelper(
                 this, getResources().getInteger(R.integer.notification_id),
-                R.mipmap.ic_launcher
+                R.drawable.ic_speaker_notes_white_24px
         );
 
         RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(
