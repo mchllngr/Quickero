@@ -3,13 +3,13 @@
 
     <string name="app_name" translatable="false">QuickOpen</string>
 
-    <!-- Application List Dialog -->
-    <string name="application_list_dialog_title">Select an Application&#8230;</string>
+    <!-- Application list dialog -->
+    <string name="application_list_dialog_title">Select an application&#8230;</string>
 
-    <!-- Progress Dialog -->
+    <!-- Progress dialog -->
     <string name="progress_dialog_please_wait">Please wait&#8230;</string>
 
-    <!-- Snackbar Undo Remove -->
+    <!-- Snackbar undo remove -->
     <string name="snackbar_undo_remove">Item removed.</string>
     <string name="snackbar_undo_remove_action">UNDO</string>
 
@@ -32,25 +32,10 @@
     <!-- Pref package names -->
     <string name="pref_package_names" translatable="false">package_names</string>
 
-    <!-- Pref visibility -->
-    <string name="pref_notification_visibility" translatable="false">notification_visibility</string>
-    <string name="pref_notification_visibility_title">Notification visibility</string>
-    <string name="pref_notification_visibility_value_public" translatable="false">public</string>
-    <string name="pref_notification_visibility_value_private" translatable="false">private</string>
-    <string name="pref_notification_visibility_value_secret" translatable="false">secret</string>
-    <string-array name="pref_notification_visibility_values">
-        <item>@string/pref_notification_visibility_value_public</item>
-        <item>@string/pref_notification_visibility_value_private</item>
-        <item>@string/pref_notification_visibility_value_secret</item>
-    </string-array>
-    <string name="pref_notification_visibility_option_public">Public</string>
-    <string name="pref_notification_visibility_option_private">Private</string>
-    <string name="pref_notification_visibility_option_secret">Secret</string>
-    <string-array name="pref_notification_visibility_options">
-        <item>@string/pref_notification_visibility_option_public</item>
-        <item>@string/pref_notification_visibility_option_private</item>
-        <item>@string/pref_notification_visibility_option_secret</item>
-    </string-array>
+    <!-- Pref show on lockScreen -->
+    <string name="pref_notification_show_on_lock_screen" translatable="false">notification_show_on_lock_screen</string>
+    <string name="pref_notification_show_on_lock_screen_title">Show notification on LockScreen</string>
+    <string name="pref_notification_show_on_lock_screen_default_value" translatable="false">true</string>
 
     <!-- Pref priority -->
     <string name="pref_notification_priority" translatable="false">notification_priority</string>
