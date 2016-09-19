@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name" translatable="false">QuickOpen</string>
+
+    <!-- Application List Dialog -->
+    <string name="application_list_dialog_title">Select an Application&#8230;</string>
+
+    <!-- Progress Dialog -->
+    <string name="progress_dialog_please_wait">Please wait&#8230;</string>
+
+    <!-- Snackbar Undo Remove -->
+    <string name="snackbar_undo_remove">Item removed.</string>
+    <string name="snackbar_undo_remove_action">UNDO</string>
+
+    <!-- Settings -->
+    <string name="menu_settings">Settings</string>
+    <string name="settings_title">Settings</string>
+
+    <!-- Notification service -->
+    <string name="notification_service_error">Error while creating notification.</string>
+
+    <!-- Pref groups -->
+    <string name="pref_group_general_title">General settings</string>
+    <string name="pref_group_notification_title">Notification settings</string>
+
+    <!-- Pref notification enabled -->
+    <string name="pref_notification_enabled" translatable="false">notification_enabled</string>
+    <string name="pref_notification_enabled_title">Show notification</string>
+    <string name="pref_notification_enabled_default_value" translatable="false">true</string>
+
+    <!-- Pref package names -->
+    <string name="pref_package_names" translatable="false">package_names</string>
+
+    <!-- Pref visibility -->
+    <string name="pref_notification_visibility" translatable="false">notification_visibility</string>
+    <string name="pref_notification_visibility_title">Notification visibility</string>
+    <string name="pref_notification_visibility_value_public" translatable="false">public</string>
+    <string name="pref_notification_visibility_value_private" translatable="false">private</string>
+    <string name="pref_notification_visibility_value_secret" translatable="false">secret</string>
+    <string-array name="pref_notification_visibility_values">
+        <item>@string/pref_notification_visibility_value_public</item>
+        <item>@string/pref_notification_visibility_value_private</item>
+        <item>@string/pref_notification_visibility_value_secret</item>
+    </string-array>
+    <string name="pref_notification_visibility_option_public">Public</string>
+    <string name="pref_notification_visibility_option_private">Private</string>
+    <string name="pref_notification_visibility_option_secret">Secret</string>
+    <string-array name="pref_notification_visibility_options">
+        <item>@string/pref_notification_visibility_option_public</item>
+        <item>@string/pref_notification_visibility_option_private</item>
+        <item>@string/pref_notification_visibility_option_secret</item>
+    </string-array>
+
+    <!-- Pref priority -->
+    <string name="pref_notification_priority" translatable="false">notification_priority</string>
+    <string name="pref_notification_priority_title">Notification priority</string>
+    <string name="pref_notification_priority_value_max" translatable="false">max</string>
+    <string name="pref_notification_priority_value_high" translatable="false">high</string>
+    <string name="pref_notification_priority_value_default" translatable="false">default</string>
+    <string name="pref_notification_priority_value_low" translatable="false">low</string>
+    <string name="pref_notification_priority_value_min" translatable="false">min</string>
+    <string-array name="pref_notification_priority_values">
+        <item>@string/pref_notification_priority_value_max</item>
+        <item>@string/pref_notification_priority_value_high</item>
+        <item>@string/pref_notification_priority_value_default</item>
+        <item>@string/pref_notification_priority_value_low</item>
+        <item>@string/pref_notification_priority_value_min</item>
+    </string-array>
+    <string name="pref_notification_priority_option_max">Max</string>
+    <string name="pref_notification_priority_option_high">High</string>
+    <string name="pref_notification_priority_option_default">Default</string>
+    <string name="pref_notification_priority_option_low">Low</string>
+    <string name="pref_notification_priority_option_min">Min</string>
+    <string-array name="pref_notification_priority_options">
+        <item>@string/pref_notification_priority_option_max</item>
+        <item>@string/pref_notification_priority_option_high</item>
+        <item>@string/pref_notification_priority_option_default</item>
+        <item>@string/pref_notification_priority_option_low</item>
+        <item>@string/pref_notification_priority_option_min</item>
+    </string-array>
+
+    <!-- Keys -->
+    <string name="key_package_name" translatable="false">package_name</string>
+
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="max_apps_in_notification">15</integer>
+    <integer name="notification_id">1751</integer>
+
+</resources>
