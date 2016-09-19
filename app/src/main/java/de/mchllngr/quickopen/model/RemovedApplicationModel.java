@@ -1,0 +1,28 @@
+package de.mchllngr.quickopen.model;
+
+import android.util.Log;
+
+/**
+ * Class for holding the needed data about an removed item for the remove to be undone.
+ *
+ * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
+ */
+public class RemovedApplicationModel {
+
+    /**
+     * Last position of removed item.
+     */
+    public int position;
+    /**
+     * The removed item.
+     */
+    public ApplicationModel applicationModel;
+
+    /**
+     * Constructor for creating the {@link RemovedApplicationModel}.
+     */
+    public RemovedApplicationModel(int position, ApplicationModel applicationModel) {
+        this.position = position;
+        this.applicationModel = applicationModel;
+    }
+}

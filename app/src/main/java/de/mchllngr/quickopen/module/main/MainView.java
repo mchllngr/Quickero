@@ -47,14 +47,19 @@ interface MainView extends BaseView {
     void updateItems(List<ApplicationModel> items);
 
     /**
-     * Adds an item to the shown list.
+     * Adds an item at {@code positon} to the shown list.
      */
-    void addItem(ApplicationModel applicationModel);
+    void addItem(int position, ApplicationModel applicationModel);
 
     /**
      * Removes the item at {@code position} from the shown list.
      */
     void removeItem(int position);
+
+    /**
+     * Moves an item in the shown list from {@code fromPosition} to {@code toPosition}.
+     */
+    void moveItem(int fromPosition, int toPosition);
 
     /**
      * Shows an error message when trying to add an item, but maxCount is already reached.
@@ -70,4 +75,14 @@ interface MainView extends BaseView {
      * Hides the button to add items.
      */
     void hideAddItemsButton();
+
+    /**
+     * Shows the button to undo the last remove;
+     */
+    void showUndoButton();
+
+    /**
+     * Hides the button to undo the last remove;
+     */
+    void hideUndoButton();
 }

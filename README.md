@@ -13,6 +13,8 @@ An android app to quickly open your most used apps through a notification.
 - add "about me"
 - check sorting of installed applications
 - fix slow or not appearing progress dialog 
+- check performance on move item
+- disable MainActivity when notification_enabled = false ?
 - check for uninstalled applications every start ? (or BroadcastReceiver?)
 - add "Donate a beer" ?
 - hide option "VISIBILITY_PRIVATE" because there will never be "sensitive data" to hide on lockscreen ?

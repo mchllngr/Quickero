@@ -5,7 +5,6 @@ import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
@@ -14,11 +13,13 @@ import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.base.BasePresenter;
 import de.mchllngr.quickopen.model.ApplicationModel;
+import de.mchllngr.quickopen.model.RemovedApplicationModel;
 import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
 import rx.Observable;
 import rx.Observer;
@@ -45,6 +46,10 @@ public class MainPresenter extends BasePresenter<MainView> {
      * Contains the last shown {@link ApplicationModel}s to get the selected item.
      */
     private List<ApplicationModel> lastShownApplicationModels;
+    /**
+     * Contains the last removed item for undoing.
+     */
+    private RemovedApplicationModel lastRemovedItem;
 
     MainPresenter(Context context) {
         this.context = context;
@@ -205,10 +210,18 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     /**
-     * Adds an item to the list in {@link android.content.SharedPreferences} and calls the
-     * {@link MainView} to also add it to the shown list.
+     * Adds an item at the end of the list in {@link android.content.SharedPreferences} and calls
+     * the {@link MainView} to also add it to the shown list.
      */
     void addItem(ApplicationModel applicationModel) {
+        addItem(Integer.MAX_VALUE, applicationModel);
+    }
+
+    /**
+     * Adds an item at {@code position} to the list in {@link android.content.SharedPreferences}
+     * and calls the {@link MainView} to also add it to the shown list.
+     */
+    void addItem(int position, ApplicationModel applicationModel) {
         List applicationModels = packageNamesPref.get();
 
         if (applicationModels == null)
@@ -227,11 +240,15 @@ public class MainPresenter extends BasePresenter<MainView> {
             }
         }
 
-        applicationModels.add(applicationModel.packageName);
+        if (position >= applicationModels.size())
+            applicationModels.add(applicationModel.packageName);
+        else
+            applicationModels.add(position, applicationModel.packageName);
+
         packageNamesPref.set(applicationModels);
 
         if (isViewAttached())
-            getView().addItem(applicationModel);
+            getView().addItem(position, applicationModel);
     }
 
     /**
@@ -242,6 +259,15 @@ public class MainPresenter extends BasePresenter<MainView> {
     void removeItem(int position) {
         List applicationModels = packageNamesPref.get();
 
+        lastRemovedItem = new RemovedApplicationModel(
+                position,
+                ApplicationModel.getApplicationModelForPackageName(
+                        context,
+                        (String) applicationModels.get(position)
+                )
+        );
+
+
         if (applicationModels != null && applicationModels.size() > 1) {
             applicationModels.remove(position);
             packageNamesPref.set(applicationModels);
@@ -251,6 +277,42 @@ public class MainPresenter extends BasePresenter<MainView> {
         if (isViewAttached()) {
             getView().showAddItemsButton();
             getView().removeItem(position);
+            getView().showUndoButton();
         }
+    }
+
+    /**
+     * Moves an item at {@code fromPosition} to {@code toPosition} from the list in
+     * {@link android.content.SharedPreferences} and calls the {@link MainView} to also move
+     * it in the shown list.
+     */
+    void moveItem(int fromPosition, int toPosition) {
+        List applicationModels = packageNamesPref.get();
+
+        if (applicationModels == null || applicationModels.isEmpty()) return;
+
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(applicationModels, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(applicationModels, i, i - 1);
+            }
+        }
+
+        packageNamesPref.set(applicationModels);
+
+        if (isViewAttached())
+            getView().moveItem(fromPosition, toPosition);
+    }
+
+    void undoRemove() {
+        if (lastRemovedItem == null) return;
+
+        addItem(lastRemovedItem.position, lastRemovedItem.applicationModel);
+
+        if (isViewAttached())
+            getView().hideUndoButton();
     }
 }

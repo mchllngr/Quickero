@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -83,6 +84,23 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
         items.remove(position);
         notifyItemRemoved(position);
+    }
+
+    /**
+     * Moves an item from {@code fromPosition} to {@code toPosition}.
+     */
+    void move(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(items, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(items, i, i - 1);
+            }
+        }
+
+        notifyItemMoved(fromPosition, toPosition);
     }
 
     /**
