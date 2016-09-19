@@ -141,8 +141,7 @@ public class CustomNotificationHelper {
      *
      * @param applicationModels array of {@link ApplicationModel}s to show in notification
      */
-    // TODO make return boolean and return false if notification is not shown for better
-    //      error handling
+    // TODO make return boolean and return false if notification is not shown for better error handling
     public void showCustomNotification(ApplicationModel... applicationModels) {
         if (applicationModels == null) {
             Timber.e("ERROR: Received no App-Icons to show !");

@@ -2,7 +2,6 @@
 An android app to quickly open your most used apps through a notification.
 
 # TODO
-- add UI
 - change notificationIcon
 - make NotificationService start at boot
 - add better texts and explanations to settings-page
@@ -14,6 +13,8 @@ An android app to quickly open your most used apps through a notification.
 - check sorting of installed applications
 - fix slow or not appearing progress dialog 
 - check performance on move item
+- add feedback ?
+- add tutorial ?
 - disable MainActivity when notification_enabled = false ?
 - check for uninstalled applications every start ? (or BroadcastReceiver?)
 - add "Donate a beer" ?

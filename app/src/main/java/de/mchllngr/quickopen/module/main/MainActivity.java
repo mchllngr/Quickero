@@ -188,7 +188,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
     @Override
     public void showApplicationListDialog(MaterialSimpleListAdapter adapter) {
         applicationDialog = new MaterialDialog.Builder(this)
-                .title("DialogTitle") // TODO change
+                .title(R.string.application_list_dialog_title)
                 .adapter(adapter, null)
                 .show();
     }
@@ -203,7 +203,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
         hideProgressDialog();
 
         progressDialog = new MaterialDialog.Builder(this)
-                .content("ProgressContent") // TODO change
+                .content(R.string.progress_dialog_please_wait)
                 .progress(true, 0)
                 .show();
     }
@@ -264,10 +264,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
     public void showUndoButton() {
         hideUndoButton();
 
-        // TODO change texts
         snackbar = Snackbar
-                .make(coordinatorLayout, "Item removed", Snackbar.LENGTH_LONG)
-                .setAction("UNDO", new View.OnClickListener() {
+                .make(coordinatorLayout, R.string.snackbar_undo_remove, Snackbar.LENGTH_LONG)
+                .setAction(R.string.snackbar_undo_remove_action, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         getPresenter().undoRemove();

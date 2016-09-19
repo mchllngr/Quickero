@@ -267,7 +267,6 @@ public class MainPresenter extends BasePresenter<MainView> {
                 )
         );
 
-
         if (applicationModels != null && applicationModels.size() > 1) {
             applicationModels.remove(position);
             packageNamesPref.set(applicationModels);

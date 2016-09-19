@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Application List Dialog -->
+    <string name="application_list_dialog_title">Wähle eine Applikation&#8230;</string>
+
+    <!-- Progress Dialog -->
+    <string name="progress_dialog_please_wait">Please wait&#8230;</string>
+
+    <!-- Snackbar Undo Remove -->
+    <string name="snackbar_undo_remove">Item gelöscht.</string>
+    <string name="snackbar_undo_remove_action">RÜCKGÄNGIG</string>
+
     <!-- Settings -->
     <string name="menu_settings">Einstellungen</string>
     <string name="settings_title">Einstellungen</string>
