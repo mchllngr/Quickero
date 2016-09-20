@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,11 +21,21 @@
     <TextView
         android:id="@+id/name"
         style="@style/TextAppearance.AppCompat.Medium"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
         tools:text="Android-Application Android-Application Android-Application Android-Application" />
+
+    <ImageButton
+        android:id="@+id/handle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/recycler_view_item_drag_handle_margin_start"
+        android:layout_marginStart="@dimen/recycler_view_item_drag_handle_margin_start"
+        android:background="@drawable/background_transparent"
+        app:srcCompat="@drawable/ic_reorder_black_24px" />
 
 </LinearLayout>

@@ -1,8 +1,10 @@
 package de.mchllngr.quickopen.module.main;
 
+import android.content.Context;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -22,16 +24,29 @@ import de.mchllngr.quickopen.model.ApplicationModel;
  * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
+
+    /**
+     * Current {@link Context}.
+     */
+    private final Context context;
     /**
      * {@link List} of shown items.
      */
     private List<ApplicationModel> items;
+    /**
+     * Listener for notifying a drag-start.
+     */
+    private StartDragListener startDragListener;
 
     /**
      * Constructor for initialising the {@link MainAdapter}.
      */
-    MainAdapter(List<ApplicationModel> items) {
+    MainAdapter(Context context,
+                List<ApplicationModel> items,
+                StartDragListener startDragListener) {
+        this.context = context;
         this.items = items;
+        this.startDragListener = startDragListener;
     }
 
     @Override
@@ -43,11 +58,27 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         ApplicationModel applicationModel = items.get(position);
 
         holder.icon.setImageDrawable(applicationModel.iconDrawable);
         holder.name.setText(applicationModel.name);
+
+        if (context.getResources().getBoolean(R.bool.isNight))
+            holder.handle.setImageResource(R.drawable.ic_reorder_white_24px);
+        else
+            holder.handle.setImageResource(R.drawable.ic_reorder_black_24px);
+
+        holder.handle.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN)
+                    if (startDragListener != null)
+                        startDragListener.onStartDrag(holder);
+
+                return false;
+            }
+        });
     }
 
     @Override
@@ -120,10 +151,22 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         ImageView icon;
         @BindView(R.id.name)
         TextView name;
+        @BindView(R.id.handle)
+        ImageView handle;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
+    }
+
+    /**
+     * Interface for notifying a drag-start.
+     */
+    interface StartDragListener {
+        /**
+         * Gets called when a drag starts.
+         */
+        void onStartDrag(ViewHolder viewHolder);
     }
 }
