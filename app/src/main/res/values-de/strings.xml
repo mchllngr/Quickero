@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Application List Dialog -->
+    <!-- Application list dialog -->
     <string name="application_list_dialog_title">Wähle eine Applikation&#8230;</string>
 
-    <!-- Progress Dialog -->
+    <!-- Progress dialog -->
     <string name="progress_dialog_please_wait">Please wait&#8230;</string>
 
-    <!-- Snackbar Undo Remove -->
+    <!-- Snackbar undo remove -->
     <string name="snackbar_undo_remove">Item gelöscht.</string>
     <string name="snackbar_undo_remove_action">RÜCKGÄNGIG</string>
 
@@ -25,11 +25,8 @@
     <!-- Pref notification enabled -->
     <string name="pref_notification_enabled_title">Notification anzeigen</string>
 
-    <!-- Pref visibility -->
-    <string name="pref_notification_visibility_title">Sichbarkeit der Notification</string>
-    <string name="pref_notification_visibility_option_public">Öffentlich</string>
-    <string name="pref_notification_visibility_option_private">Privat</string>
-    <string name="pref_notification_visibility_option_secret">Geheim</string>
+    <!-- Pref show on lockScreen -->
+    <string name="pref_notification_show_on_lock_screen_title">Notification auf dem LockScreen anzeigen</string>
 
     <!-- Pref priority -->
     <string name="pref_notification_priority_title">Priorität der Notification</string>

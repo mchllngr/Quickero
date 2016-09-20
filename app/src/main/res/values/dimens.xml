@@ -9,6 +9,7 @@
     <!-- RecyclerView Item -->
     <dimen name="recycler_view_item_icon_size">48dp</dimen>
     <dimen name="recycler_view_item_icon_margin_end">16dp</dimen>
+    <dimen name="recycler_view_item_drag_handle_margin_start">16dp</dimen>
 
     <!-- Custom Notification -->
     <dimen name="notification_padding_vertical">8dp</dimen>

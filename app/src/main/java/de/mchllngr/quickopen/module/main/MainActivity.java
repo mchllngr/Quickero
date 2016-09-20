@@ -31,6 +31,7 @@ import de.mchllngr.quickopen.base.BaseActivity;
 import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.module.settings.SettingsActivity;
 import de.mchllngr.quickopen.service.NotificationService;
+import de.mchllngr.quickopen.util.view.SimpleDividerItemDecoration;
 
 /**
  * {@link android.app.Activity} for handling the selection of applications.
@@ -38,7 +39,7 @@ import de.mchllngr.quickopen.service.NotificationService;
  * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 public class MainActivity extends BaseActivity<MainView, MainPresenter>
-        implements MainView, MaterialSimpleListAdapter.Callback {
+        implements MainView, MaterialSimpleListAdapter.Callback, MainAdapter.StartDragListener {
 
     /**
      * {@link android.support.design.widget.CoordinatorLayout} from the layout for showing the
@@ -81,6 +82,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
      * {@link Snackbar} for showing the undo-remove-button.
      */
     private Snackbar snackbar;
+    private ItemTouchHelper itemTouchHelper;
 
     @NonNull
     @Override
@@ -114,12 +116,19 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new MainAdapter(new ArrayList<ApplicationModel>());
+        adapter = new MainAdapter(this, new ArrayList<ApplicationModel>(), this);
         recyclerView.setAdapter(adapter);
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
+
+        itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
                 ItemTouchHelper.UP | ItemTouchHelper.DOWN,
                 ItemTouchHelper.START | ItemTouchHelper.END) {
+            @Override
+            public boolean isLongPressDragEnabled() {
+                return false;
+            }
+
             @Override
             public boolean onMove(RecyclerView recyclerView,
                                   RecyclerView.ViewHolder viewHolder,
@@ -215,12 +224,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
     }
 
     @Override
-    public void onOpenApplicationListError() {
-        Log.d("DEBUG_TAG", "MainActivity#onOpenApplicationListError()"); // FIXME delete
-        // TODO show error msg
-    }
-
-    @Override
     public void updateItems(List<ApplicationModel> items) {
         if (adapter != null)
             adapter.updateItems(items);
@@ -242,12 +245,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
     public void moveItem(int fromPosition, int toPosition) {
         if (adapter != null)
             adapter.move(fromPosition, toPosition);
-    }
-
-    @Override
-    public void showMaxItemsError() {
-        Log.d("DEBUG_TAG", "MainActivity#showMaxItemsError()"); // FIXME delete
-        // TODO show error msg
     }
 
     @Override
@@ -281,5 +278,25 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
     public void hideUndoButton() {
         if (snackbar != null)
             snackbar.dismiss();
+    }
+
+    @Override
+    public void onOpenApplicationListError() {
+        Log.d("DEBUG_TAG", "MainActivity#onOpenApplicationListError()"); // FIXME delete
+        // TODO show error msg
+    }
+
+    @Override
+    public void showMaxItemsError() {
+        Log.d("DEBUG_TAG", "MainActivity#showMaxItemsError()"); // FIXME delete
+        // TODO show error msg
+    }
+
+    @Override
+    public void onStartDrag(MainAdapter.ViewHolder viewHolder) {
+        Log.d("DEBUG_TAG", "MainActivity#onStartDrag()"); // FIXME delete
+
+        if (itemTouchHelper != null)
+            itemTouchHelper.startDrag(viewHolder);
     }
 }

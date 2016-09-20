@@ -58,10 +58,10 @@ public class NotificationService extends Service {
      */
     private Preference<Boolean> notificationEnabledPref;
     /**
-     * {@link Preference}-reference for easier usage of the saved value for notificationVisibility
-     * in the {@link RxSharedPreferences}.
+     * {@link Preference}-reference for easier usage of the saved value for
+     * notificationShowOnLockScreen in the {@link RxSharedPreferences}.
      */
-    private Preference<String> notificationVisibilityPref;
+    private Preference<Boolean> notificationShowOnLockScreenPref;
     /**
      * {@link Preference}-reference for easier usage of the saved value for notificationPriority
      * in the {@link RxSharedPreferences}.
@@ -94,9 +94,11 @@ public class NotificationService extends Service {
                 Boolean.parseBoolean(getString(R.string.pref_notification_enabled_default_value))
         );
 
-        notificationVisibilityPref = rxSharedPreferences.getString(
-                getString(R.string.pref_notification_visibility),
-                getString(R.string.pref_notification_visibility_option_private)
+        notificationShowOnLockScreenPref = rxSharedPreferences.getBoolean(
+                getString(R.string.pref_notification_show_on_lock_screen),
+                Boolean.parseBoolean(
+                        getString(R.string.pref_notification_show_on_lock_screen_default_value)
+                )
         );
 
         notificationPriorityPref = rxSharedPreferences.getString(
@@ -126,7 +128,7 @@ public class NotificationService extends Service {
      */
     private void initService() {
         if (customNotificationHelper == null ||
-                notificationVisibilityPref == null ||
+                notificationShowOnLockScreenPref == null ||
                 notificationPriorityPref == null ||
                 packageNamesPref == null)
             onError();
@@ -149,22 +151,16 @@ public class NotificationService extends Service {
             }
         });
 
-        // subscribe to changes in notificationVisibilityPref
-        notificationVisibilityPref.asObservable().subscribe(new Action1<String>() {
+        // subscribe to changes in notificationShowOnLockScreenPref
+        notificationShowOnLockScreenPref.asObservable().subscribe(new Action1<Boolean>() {
             @Override
-            public void call(String notificationVisibility) {
-                if (TextUtils.isEmpty(notificationVisibility)) return;
-
-                int notificationVisibilityValue = NotificationCompat.VISIBILITY_PUBLIC;
-                if (notificationVisibility.equals(getString(
-                        R.string.pref_notification_visibility_value_private)))
-                    notificationVisibilityValue = NotificationCompat.VISIBILITY_PRIVATE;
-                else if (notificationVisibility.equals(getString(
-                        R.string.pref_notification_visibility_value_secret)))
-                    notificationVisibilityValue = NotificationCompat.VISIBILITY_SECRET;
+            public void call(Boolean notificationShowOnLockScreen) {
+                int notificationVisibility = NotificationCompat.VISIBILITY_PUBLIC;
+                if (!notificationShowOnLockScreen)
+                    notificationVisibility = NotificationCompat.VISIBILITY_SECRET;
 
                 customNotificationHelper.setNotificationVisibility(
-                        notificationVisibilityValue,
+                        notificationVisibility,
                         notificationEnabled
                 );
             }

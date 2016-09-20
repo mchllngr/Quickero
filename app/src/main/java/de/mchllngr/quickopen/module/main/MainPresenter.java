@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
@@ -13,6 +14,7 @@ import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +38,17 @@ import rx.schedulers.Schedulers;
 @SuppressWarnings("ConstantConditions")
 public class MainPresenter extends BasePresenter<MainView> {
 
+    /**
+     * Represents the max count of dummy items that can be added on the first start.
+     */
+    private static final int MAX_DUMMY_ITEMS = 5;
+
     private final Context context;
+    /**
+     * {@link Preference}-reference for easier usage of the saved value for firstStart in the
+     * {@link RxSharedPreferences}.
+     */
+    private Preference<Boolean> firstStartPref;
     /**
      * {@link Preference}-reference for easier usage of the saved value for packageNames in the
      * {@link RxSharedPreferences}.
@@ -64,12 +76,72 @@ public class MainPresenter extends BasePresenter<MainView> {
                 PreferenceManager.getDefaultSharedPreferences(context)
         );
 
+        firstStartPref = rxSharedPreferences.getBoolean(
+                context.getString(R.string.pref_first_start),
+                Boolean.parseBoolean(context.getString(R.string.first_start_default_value))
+        );
+
         GsonPreferenceAdapter<List> adapter = new GsonPreferenceAdapter<>(new Gson(), List.class);
         packageNamesPref = rxSharedPreferences.getObject(
                 context.getString(R.string.pref_package_names),
                 null,
                 adapter
         );
+
+        addDummyItemsIfFirstStart();
+    }
+
+    /**
+     * Adds up to {@code MAX_DUMMY_ITEMS} dummy items to the saved list if its the first start.
+     */
+    private void addDummyItemsIfFirstStart() {
+        if (firstStartPref.get()) {
+            List applicationModels = packageNamesPref.get();
+            if (applicationModels == null || applicationModels.isEmpty()) {
+                if (isViewAttached()) getView().showProgressDialog();
+
+                final List<String> dummyItemsPackageNames = Arrays.asList(
+                        context.getResources().getStringArray(R.array.dummy_items_package_names)
+                );
+
+                Observable.from(context.getPackageManager().getInstalledApplications(0))
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .toList()
+                        .subscribe(new Observer<List<ApplicationInfo>>() {
+                            @Override
+                            public void onCompleted() {
+                                loadItems();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                loadItems();
+                            }
+
+                            @Override
+                            public void onNext(List<ApplicationInfo> applicationInfos) {
+                                List<String> dummyitems = new ArrayList<>();
+
+                                for (int i = 0; i < dummyItemsPackageNames.size(); i++) {
+                                    for (ApplicationInfo applicationInfo : applicationInfos)
+                                        if (dummyItemsPackageNames.get(i)
+                                                .equals(applicationInfo.packageName)) {
+                                            dummyitems.add(applicationInfo.packageName);
+                                            break;
+                                        }
+
+                                    if (dummyitems.size() >= MAX_DUMMY_ITEMS)
+                                        break;
+                                }
+
+                                packageNamesPref.set(dummyitems);
+                            }
+                        });
+            }
+
+            firstStartPref.set(false);
+        }
     }
 
     /**
@@ -197,6 +269,8 @@ public class MainPresenter extends BasePresenter<MainView> {
     void loadItems() {
         if (!isViewAttached()) return;
 
+        getView().showProgressDialog();
+
         List<ApplicationModel> applicationModels = ApplicationModel.prepareApplicationModelsList(
                 context,
                 packageNamesPref.get()
@@ -207,6 +281,8 @@ public class MainPresenter extends BasePresenter<MainView> {
             getView().hideAddItemsButton();
 
         getView().updateItems(applicationModels);
+
+        getView().hideProgressDialog();
     }
 
     /**

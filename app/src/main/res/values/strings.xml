@@ -3,13 +3,13 @@
 
     <string name="app_name" translatable="false">QuickOpen</string>
 
-    <!-- Application List Dialog -->
-    <string name="application_list_dialog_title">Select an Application&#8230;</string>
+    <!-- Application list dialog -->
+    <string name="application_list_dialog_title">Select an application&#8230;</string>
 
-    <!-- Progress Dialog -->
+    <!-- Progress dialog -->
     <string name="progress_dialog_please_wait">Please wait&#8230;</string>
 
-    <!-- Snackbar Undo Remove -->
+    <!-- Snackbar undo remove -->
     <string name="snackbar_undo_remove">Item removed.</string>
     <string name="snackbar_undo_remove_action">UNDO</string>
 
@@ -24,36 +24,18 @@
     <string name="pref_group_general_title">General settings</string>
     <string name="pref_group_notification_title">Notification settings</string>
 
+    <!-- Pref first start -->
+    <string name="first_start_default_value" translatable="false">true</string>
+
     <!-- Pref notification enabled -->
-    <string name="pref_notification_enabled" translatable="false">notification_enabled</string>
     <string name="pref_notification_enabled_title">Show notification</string>
     <string name="pref_notification_enabled_default_value" translatable="false">true</string>
 
-    <!-- Pref package names -->
-    <string name="pref_package_names" translatable="false">package_names</string>
-
-    <!-- Pref visibility -->
-    <string name="pref_notification_visibility" translatable="false">notification_visibility</string>
-    <string name="pref_notification_visibility_title">Notification visibility</string>
-    <string name="pref_notification_visibility_value_public" translatable="false">public</string>
-    <string name="pref_notification_visibility_value_private" translatable="false">private</string>
-    <string name="pref_notification_visibility_value_secret" translatable="false">secret</string>
-    <string-array name="pref_notification_visibility_values">
-        <item>@string/pref_notification_visibility_value_public</item>
-        <item>@string/pref_notification_visibility_value_private</item>
-        <item>@string/pref_notification_visibility_value_secret</item>
-    </string-array>
-    <string name="pref_notification_visibility_option_public">Public</string>
-    <string name="pref_notification_visibility_option_private">Private</string>
-    <string name="pref_notification_visibility_option_secret">Secret</string>
-    <string-array name="pref_notification_visibility_options">
-        <item>@string/pref_notification_visibility_option_public</item>
-        <item>@string/pref_notification_visibility_option_private</item>
-        <item>@string/pref_notification_visibility_option_secret</item>
-    </string-array>
+    <!-- Pref show on lockScreen -->
+    <string name="pref_notification_show_on_lock_screen_title">Show notification on LockScreen</string>
+    <string name="pref_notification_show_on_lock_screen_default_value" translatable="false">true</string>
 
     <!-- Pref priority -->
-    <string name="pref_notification_priority" translatable="false">notification_priority</string>
     <string name="pref_notification_priority_title">Notification priority</string>
     <string name="pref_notification_priority_value_max" translatable="false">max</string>
     <string name="pref_notification_priority_value_high" translatable="false">high</string>
@@ -80,7 +62,35 @@
         <item>@string/pref_notification_priority_option_min</item>
     </string-array>
 
-    <!-- Keys -->
-    <string name="key_package_name" translatable="false">package_name</string>
+    <!-- Dummy items package names -->
+    <string-array name="dummy_items_package_names" translatable="false">
+        <item>com.whatsapp</item>
+        <item>com.facebook.orca</item>
+        <item>com.google.android.talk</item>
+        <item>com.twitter.android</item>
+        <item>org.thoughtcrime.securesms</item>
+        <item>com.facebook.katana</item>
+        <item>com.snapchat.android</item>
+        <item>com.instagram.android</item>
+        <item>com.google.android.youtube</item>
+        <item>ch.threema.app</item>
+        <item>com.google.android.apps.photos</item>
+        <item>com.netflix.mediaclient</item>
+        <item>com.spotify.music</item>
+        <item>com.amazon.mShop.android.shopping</item>
+        <item>com.skype.raider</item>
+        <item>com.ebay.mobile</item>
+        <item>com.shazam.android</item>
+        <item>org.telegram.messenger</item>
+        <item>com.google.android.play.games</item>
+        <item>com.google.android.apps.tachyon</item>
+        <item>com.tinder</item>
+        <item>com.paypal.android.p2pmobile</item>
+        <item>com.google.android.music</item>
+        <item>com.google.android.calendar</item>
+        <item>com.dropbox.android</item>
+        <item>com.amazon.kindle</item>
+        <item>com.google.android.apps.books</item>
+    </string-array>
 
 </resources>

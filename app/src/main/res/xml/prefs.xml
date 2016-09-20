@@ -12,12 +12,10 @@
 
     <PreferenceCategory android:title="@string/pref_group_notification_title">
 
-        <ListPreference
-            android:defaultValue="@string/pref_notification_visibility_value_public"
-            android:entries="@array/pref_notification_visibility_options"
-            android:entryValues="@array/pref_notification_visibility_values"
-            android:key="@string/pref_notification_visibility"
-            android:title="@string/pref_notification_visibility_title" />
+        <CheckBoxPreference
+            android:defaultValue="@string/pref_notification_show_on_lock_screen_default_value"
+            android:key="@string/pref_notification_show_on_lock_screen"
+            android:title="@string/pref_notification_show_on_lock_screen_title" />
 
         <ListPreference
             android:defaultValue="@string/pref_notification_priority_value_max"

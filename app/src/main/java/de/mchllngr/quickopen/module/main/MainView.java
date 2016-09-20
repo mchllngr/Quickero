@@ -37,11 +37,6 @@ interface MainView extends BaseView {
     void hideProgressDialog();
 
     /**
-     * Shows an error message.
-     */
-    void onOpenApplicationListError();
-
-    /**
      * Updates the shown items.
      */
     void updateItems(List<ApplicationModel> items);
@@ -62,11 +57,6 @@ interface MainView extends BaseView {
     void moveItem(int fromPosition, int toPosition);
 
     /**
-     * Shows an error message when trying to add an item, but maxCount is already reached.
-     */
-    void showMaxItemsError();
-
-    /**
      * Shows the button to add items.
      */
     void showAddItemsButton();
@@ -85,4 +75,14 @@ interface MainView extends BaseView {
      * Hides the button to undo the last remove;
      */
     void hideUndoButton();
+
+    /**
+     * Shows an error message.
+     */
+    void onOpenApplicationListError();
+
+    /**
+     * Shows an error message when trying to add an item, but maxCount is already reached.
+     */
+    void showMaxItemsError();
 }

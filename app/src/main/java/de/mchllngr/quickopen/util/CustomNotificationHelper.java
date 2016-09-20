@@ -143,20 +143,12 @@ public class CustomNotificationHelper {
      */
     // TODO make return boolean and return false if notification is not shown for better error handling
     public void showCustomNotification(ApplicationModel... applicationModels) {
-        if (applicationModels == null) {
-            Timber.e("ERROR: Received no App-Icons to show !");
-            return;
-        }
-
         int maxAppsInNotification = context.getResources()
-                .getInteger(R.integer.max_apps_in_notification);
-
-        if (applicationModels.length <= 0 ||
-                applicationModels.length > maxAppsInNotification) {
-            Timber.e("ERROR: AppIcons-count needs to be between 1 and " +
-                    maxAppsInNotification + " (received: " + applicationModels.length + ")");
+            .getInteger(R.integer.max_apps_in_notification);
+        if (applicationModels == null ||
+                applicationModels.length <= 0 ||
+                applicationModels.length > maxAppsInNotification)
             return;
-        }
 
         applicationModels = removeEmptyItemsFromArray(applicationModels);
 
