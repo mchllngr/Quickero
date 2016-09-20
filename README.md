@@ -3,6 +3,7 @@ An android app to quickly open your favorite apps through a notification.
 
 # KNOWN BUGS
 - navigation-bar gets colored white when going to settings (api 24)
+    - http://stackoverflow.com/questions/32428700/status-bar-turns-white-and-does-not-show-content-behind-it
 - some items in the installed-applications-list are wrongly sorted at the end
 - slow or not appearing progress dialog while loading installed-applications-list
 - performance-issues while moving items
@@ -10,7 +11,6 @@ An android app to quickly open your favorite apps through a notification.
 - settings-text eventually too long (-> multiline)
 
 # TODO
-- add common apps at first start (max 5)
 - make NotificationService start at boot
 - add better texts and explanations to settings-page
 - add empty-view for recyclerview
