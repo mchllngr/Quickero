@@ -1,6 +1,7 @@
 package de.mchllngr.quickopen.module.main;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -270,6 +271,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
                         snackbar.dismiss();
                     }
                 });
+        snackbar.getView().setBackgroundResource(R.color.snackbar_background_color);
 
         snackbar.show();
     }
