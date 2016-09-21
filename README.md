@@ -4,13 +4,13 @@ An android app to quickly open your favorite apps through a notification.
 # KNOWN BUGS
 - some items in the installed-applications-list are wrongly sorted at the end
 - slow or not appearing progress dialog while loading installed-applications-list
+    - threading-problem ?
 - performance-issues while moving items
 - moving items are shown below the divider-line
 - settings-text eventually too long (-> multiline)
 - some apps are system-apps on one device but not on another (dropbox, photos, gmail, maps, ...)
 
 # TODO
-- make NotificationService start at boot
 - add better texts and explanations to settings-page / style settings with images
 - add empty-view for recyclerview
 - check customNotification-design on all api-levels

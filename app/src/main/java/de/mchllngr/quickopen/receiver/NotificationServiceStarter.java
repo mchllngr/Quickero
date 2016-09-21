@@ -7,19 +7,18 @@ import android.content.Intent;
 import de.mchllngr.quickopen.service.NotificationService;
 
 /**
- * {@link BroadcastReceiver} for restarting the {@link NotificationService} when it sends the
- * that its about to be destroyed.
+ * {@link BroadcastReceiver} for (re)starting the {@link NotificationService}.
  *
  * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
-public class NotificationServiceRestarter extends BroadcastReceiver {
+public class NotificationServiceStarter extends BroadcastReceiver {
 
     /**
-     * Restarts the {@link NotificationService} if called.
+     * Start the {@link NotificationService} if called.
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        // restarts the service
+        // Starts the service
         context.startService(new Intent(context, NotificationService.class));
     }
 }

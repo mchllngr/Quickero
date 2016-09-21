@@ -26,7 +26,7 @@
     <string name="pref_notification_enabled_title">Notification anzeigen</string>
 
     <!-- Pref show on lockScreen -->
-    <string name="pref_notification_show_on_lock_screen_title">Notification auf dem LockScreen anzeigen</string>
+    <string name="pref_notification_show_on_lock_screen_title">Auf dem Lockcreen anzeigen</string>
 
     <!-- Pref priority -->
     <string name="pref_notification_priority_title">Priorität der Notification</string>
