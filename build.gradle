@@ -31,7 +31,7 @@ ext {
 
     // Version
     majorVersion = 0
-    minorVersion = 2
+    minorVersion = 3
     bugfixVersion = 0
     versionCode = majorVersion * 1000000 + minorVersion * 1000 + bugfixVersion
     versionName = "$majorVersion.$minorVersion.$bugfixVersion"
