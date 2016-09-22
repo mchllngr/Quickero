@@ -19,6 +19,7 @@ import java.util.List;
 
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.model.ApplicationModel;
+import de.mchllngr.quickopen.receiver.NotificationServiceStarter;
 import de.mchllngr.quickopen.util.CustomNotificationHelper;
 import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
 import rx.functions.Action1;
@@ -32,9 +33,9 @@ public class NotificationService extends Service {
 
     /**
      * Name of an intentFilter used to notify the
-     * {@link de.mchllngr.quickopen.receiver.NotificationServiceRestarter}.
+     * {@link NotificationServiceStarter}.
      *
-     * @see de.mchllngr.quickopen.receiver.NotificationServiceRestarter
+     * @see NotificationServiceStarter
      */
     private static final String INTENT_FILTER_NAME = "de.mchllngr.quickopen.service.RestartService";
 
@@ -44,7 +45,7 @@ public class NotificationService extends Service {
     private boolean notificationEnabled = true;
     /**
      * Determines if the current instance of the service should try to send a message to
-     * {@link de.mchllngr.quickopen.receiver.NotificationServiceRestarter} if its about to be
+     * {@link NotificationServiceStarter} if its about to be
      * destroyed for restarting the service.
      */
     private boolean shouldRestartAfterDestroy = true;

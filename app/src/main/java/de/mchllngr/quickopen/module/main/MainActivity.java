@@ -270,6 +270,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
                         snackbar.dismiss();
                     }
                 });
+        snackbar.getView().setBackgroundResource(R.color.snackbar_background_color);
 
         snackbar.show();
     }

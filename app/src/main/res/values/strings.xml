@@ -32,7 +32,7 @@
     <string name="pref_notification_enabled_default_value" translatable="false">true</string>
 
     <!-- Pref show on lockScreen -->
-    <string name="pref_notification_show_on_lock_screen_title">Show notification on LockScreen</string>
+    <string name="pref_notification_show_on_lock_screen_title">Show on Lockscreen</string>
     <string name="pref_notification_show_on_lock_screen_default_value" translatable="false">true</string>
 
     <!-- Pref priority -->

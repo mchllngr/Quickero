@@ -2,23 +2,21 @@
 An android app to quickly open your favorite apps through a notification.
 
 # KNOWN BUGS
-- navigation-bar gets colored white when going to settings (api 24)
-    - http://stackoverflow.com/questions/32428700/status-bar-turns-white-and-does-not-show-content-behind-it
 - some items in the installed-applications-list are wrongly sorted at the end
 - slow or not appearing progress dialog while loading installed-applications-list
+    - threading-problem ?
 - performance-issues while moving items
 - moving items are shown below the divider-line
 - settings-text eventually too long (-> multiline)
+- some apps are system-apps on one device but not on another (dropbox, photos, gmail, maps, ...)
 
 # TODO
-- make NotificationService start at boot
-- add better texts and explanations to settings-page
+- add better texts and explanations to settings-page / style settings with images
 - add empty-view for recyclerview
-- check customNotification-design on all api-levels (especially api 19)
+- check customNotification-design on all api-levels
 - check activity leak on api 19 ? (open and close settings)
 
 # TODO a little bit later
-- style settings with images
 - add "about me"
 - add tutorial
 - add screenshots + real descriptions to google-play-page
@@ -29,6 +27,10 @@ An android app to quickly open your favorite apps through a notification.
 - add "Donate a beer"
 - other app-name
 - add search-bar to application-list ?
+
+# FEATURES-IDEAS (for later)
+- profiles (e.g. work/home)
+    - automatic change between profiles decided by time/location(/connected wifi?)
 
 # License
 

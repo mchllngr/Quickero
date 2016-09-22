@@ -152,6 +152,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         if (!isViewAttached()) return;
 
         getView().showProgressDialog();
+
         final List<ApplicationModel> savedApplicationModels = ApplicationModel
                 .prepareApplicationModelsList(
                         context,
