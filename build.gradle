@@ -31,7 +31,7 @@ ext {
 
     // Version
     majorVersion = 0
-    minorVersion = 3
+    minorVersion = 4
     bugfixVersion = 0
     versionCode = majorVersion * 1000000 + minorVersion * 1000 + bugfixVersion
     versionName = "$majorVersion.$minorVersion.$bugfixVersion"
@@ -47,6 +47,8 @@ ext {
     rxJavaVersion = "1.2.0"
     rxPreferencesVersion = "1.0.2"
     materialDialogsVersion = "0.9.0.1"
+    simpleItemDecorationVersion = "1.0.0"
+    aboutPageVersion = "1.1.1"
     stethoVersion = "1.4.1"
     windfishVersion = "1.2"
     debugdrawerVersion = "0.7.0"

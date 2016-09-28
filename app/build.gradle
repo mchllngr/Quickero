@@ -90,6 +90,10 @@ dependencies {
     compile "com.afollestad.material-dialogs:core:$rootProject.ext.materialDialogsVersion"
     compile "com.afollestad.material-dialogs:commons:$rootProject.ext.materialDialogsVersion"
 
+    compile "com.bignerdranch.android:simple-item-decoration:$rootProject.ext.simpleItemDecorationVersion"
+
+    compile "com.github.medyo:android-about-page:$rootProject.ext.aboutPageVersion"
+
     debugCompile "com.facebook.stetho:stetho:$rootProject.ext.stethoVersion"
 
     debugCompile "de.hannesstruss.windfish:windfish-library:$rootProject.ext.windfishVersion"

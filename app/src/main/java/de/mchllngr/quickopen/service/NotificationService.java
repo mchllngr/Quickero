@@ -32,12 +32,24 @@ import rx.functions.Action1;
 public class NotificationService extends Service {
 
     /**
-     * Name of an intentFilter used to notify the
-     * {@link NotificationServiceStarter}.
+     * Name of an intentFilter used to notify the {@link NotificationServiceStarter}.
      *
      * @see NotificationServiceStarter
      */
     private static final String INTENT_FILTER_NAME = "de.mchllngr.quickopen.service.RestartService";
+    private static final int NOTIFICATION_ICON_ID_NOT_VECTOR = R.drawable.ic_notification;
+    private static final int NOTIFICATION_ICON_ID_VECTOR = R.drawable.ic_speaker_notes_white_24px;
+    private static final int NOTIFICATION_ICON_ID_NOT_VECTOR_TRANSPARENT =
+            R.drawable.ic_notification_blank;
+    private static final int NOTIFICATION_ICON_ID_VECTOR_TRANSPARENT =
+            R.drawable.ic_blank_24px;
+
+    /**
+     * Allows usage of VectorDrawables when current {@link android.os.Build.VERSION}
+     * is Android Lollipop or newer.
+     */
+    private final boolean useVectorDrawables =
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
 
     /**
      * Determines if the notification is enabled and should be shown.
@@ -53,6 +65,11 @@ public class NotificationService extends Service {
      * {@link CustomNotificationHelper}-reference for easier handling of the custom notification.
      */
     private CustomNotificationHelper customNotificationHelper;
+    /**
+     * {@link Preference}-reference for easier usage of the saved value for transparentIcon
+     * in the {@link RxSharedPreferences}.
+     */
+    private Preference<Boolean> transparentIconPref;
     /**
      * {@link Preference}-reference for easier usage of the saved value for notificationEnabled
      * in the {@link RxSharedPreferences}.
@@ -78,21 +95,28 @@ public class NotificationService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        int notificationIcon = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ?
-                R.drawable.ic_speaker_notes_white_24px : R.drawable.ic_notification;
-
-        customNotificationHelper = new CustomNotificationHelper(
-                this, getResources().getInteger(R.integer.notification_id),
-                notificationIcon
-        );
-
         RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(
                 PreferenceManager.getDefaultSharedPreferences(this)
+        );
+
+        int notificationIcon = useVectorDrawables
+                ? NOTIFICATION_ICON_ID_VECTOR
+                : NOTIFICATION_ICON_ID_NOT_VECTOR;
+
+        customNotificationHelper = new CustomNotificationHelper(
+                this,
+                getResources().getInteger(R.integer.notification_id),
+                notificationIcon
         );
 
         notificationEnabledPref = rxSharedPreferences.getBoolean(
                 getString(R.string.pref_notification_enabled),
                 Boolean.parseBoolean(getString(R.string.pref_notification_enabled_default_value))
+        );
+
+        transparentIconPref = rxSharedPreferences.getBoolean(
+                getString(R.string.pref_transparent_icon),
+                Boolean.parseBoolean(getString(R.string.pref_transparent_icon_default_value))
         );
 
         notificationShowOnLockScreenPref = rxSharedPreferences.getBoolean(
@@ -149,6 +173,28 @@ public class NotificationService extends Service {
                     showNotification(applicationModels);
                 } else
                     hideNotification();
+            }
+        });
+
+        // subscribe to changes in transparentIconPref
+        transparentIconPref.asObservable().subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean transparentIcon) {
+                int notificationIcon;
+                if (transparentIcon) {
+                    notificationIcon = useVectorDrawables
+                            ? NOTIFICATION_ICON_ID_VECTOR_TRANSPARENT
+                            : NOTIFICATION_ICON_ID_NOT_VECTOR_TRANSPARENT;
+                } else {
+                    notificationIcon = useVectorDrawables
+                            ? NOTIFICATION_ICON_ID_VECTOR
+                            : NOTIFICATION_ICON_ID_NOT_VECTOR;
+                }
+
+                customNotificationHelper.setNotificationIcon(
+                        notificationIcon,
+                        notificationEnabled
+                );
             }
         });
 

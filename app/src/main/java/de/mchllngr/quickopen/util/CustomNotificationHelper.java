@@ -112,9 +112,23 @@ public class CustomNotificationHelper {
     }
 
     /**
+     * Setter for {@code notificationIconId}.
+     *
+     * @param notificationIconId {@code notificationIconId}
+     * @param reloadNotification   true if notification should be reloaded after setting
+     */
+    public void setNotificationIcon(int notificationIconId, boolean reloadNotification) {
+        this.notificationIconId = notificationIconId;
+
+        if (reloadNotification)
+            reloadNotification();
+    }
+
+    /**
      * Setter for {@code notificationVisibility}.
      *
      * @param notificationVisibility {@code notificationVisibility}
+     * @param reloadNotification   true if notification should be reloaded after setting
      */
     public void setNotificationVisibility(int notificationVisibility, boolean reloadNotification) {
         this.notificationVisibility = notificationVisibility;
@@ -127,6 +141,7 @@ public class CustomNotificationHelper {
      * Setter for {@code notificationPriority}.
      *
      * @param notificationPriority {@code notificationPriority}
+     * @param reloadNotification   true if notification should be reloaded after setting
      */
     public void setNotificationPriority(int notificationPriority, boolean reloadNotification) {
         this.notificationPriority = notificationPriority;
