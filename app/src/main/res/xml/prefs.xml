@@ -13,6 +13,11 @@
     <PreferenceCategory android:title="@string/pref_group_notification_title">
 
         <CheckBoxPreference
+            android:defaultValue="@string/pref_transparent_icon_default_value"
+            android:key="@string/pref_transparent_icon"
+            android:title="@string/pref_transparent_icon_title" />
+
+        <CheckBoxPreference
             android:defaultValue="@string/pref_notification_show_on_lock_screen_default_value"
             android:key="@string/pref_notification_show_on_lock_screen"
             android:title="@string/pref_notification_show_on_lock_screen_title" />

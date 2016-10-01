@@ -37,6 +37,12 @@ public class SettingsActivity extends BaseActivity<BaseView, BasePresenter<BaseV
         context.startActivity(starter);
     }
 
+    @NonNull
+    @Override
+    public BasePresenter<BaseView> createPresenter() {
+        return new BasePresenter<>();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +56,6 @@ public class SettingsActivity extends BaseActivity<BaseView, BasePresenter<BaseV
                 SettingsFragment.newInstance(),
                 R.id.fragment_container
         );
-    }
-
-    @NonNull
-    @Override
-    public BasePresenter<BaseView> createPresenter() {
-        return new BasePresenter<>();
     }
 
     @Override

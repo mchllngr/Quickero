@@ -8,6 +8,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,7 @@ import android.view.View;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
+import com.dgreenhalgh.android.simpleitemdecoration.linear.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +31,9 @@ import butterknife.ButterKnife;
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.base.BaseActivity;
 import de.mchllngr.quickopen.model.ApplicationModel;
+import de.mchllngr.quickopen.module.about.AboutActivity;
 import de.mchllngr.quickopen.module.settings.SettingsActivity;
 import de.mchllngr.quickopen.service.NotificationService;
-import de.mchllngr.quickopen.util.view.SimpleDividerItemDecoration;
 
 /**
  * {@link android.app.Activity} for handling the selection of applications.
@@ -74,7 +76,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
      */
     private MaterialDialog applicationDialog;
     /**
-     * {@link MaterialDialog} for showing the loading-process of the installed applications.
+     * {@link MaterialDialog} for showing the loading-process for the list of installed applications.
      */
     private MaterialDialog progressDialog;
 
@@ -82,6 +84,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
      * {@link Snackbar} for showing the undo-remove-button.
      */
     private Snackbar snackbar;
+    /**
+     * {@link ItemTouchHelper} for moving and swiping in {@link RecyclerView}.
+     */
     private ItemTouchHelper itemTouchHelper;
 
     @NonNull
@@ -119,7 +124,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
         adapter = new MainAdapter(this, new ArrayList<ApplicationModel>(), this);
         recyclerView.setAdapter(adapter);
 
-        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(
+                ContextCompat.getDrawable(this, R.drawable.recycler_view_item_divider)
+        ));
 
         itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
                 ItemTouchHelper.UP | ItemTouchHelper.DOWN,
@@ -165,6 +172,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.about:
+                AboutActivity.start(this);
+                return true;
             case R.id.settings:
                 SettingsActivity.start(this);
                 return true;

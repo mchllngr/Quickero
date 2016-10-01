@@ -6,7 +6,6 @@ An android app to quickly open your favorite apps through a notification.
 - slow or not appearing progress dialog while loading installed-applications-list
     - threading-problem ?
 - performance-issues while moving items
-- moving items are shown below the divider-line
 - settings-text eventually too long (-> multiline)
 - some apps are system-apps on one device but not on another (dropbox, photos, gmail, maps, ...)
 
@@ -15,9 +14,9 @@ An android app to quickly open your favorite apps through a notification.
 - add empty-view for recyclerview
 - check customNotification-design on all api-levels
 - check activity leak on api 19 ? (open and close settings)
+- what to do when app-list is empty ?
 
 # TODO a little bit later
-- add "about me"
 - add tutorial
 - add screenshots + real descriptions to google-play-page
 - add red background on remove-swipe
@@ -25,6 +24,8 @@ An android app to quickly open your favorite apps through a notification.
 - disable MainActivity when notification_enabled = false
 - check for uninstalled applications every start (BroadcastReceiver)
 - add "Donate a beer"
+- check night-mode on about-page
+    - https://github.com/medyo/android-about-page/issues/62
 - other app-name
 - add search-bar to application-list ?
 

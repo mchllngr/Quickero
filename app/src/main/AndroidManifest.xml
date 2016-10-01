@@ -27,9 +27,25 @@
             android:parentActivityName=".module.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".module.about.AboutActivity"
+            android:label="@string/about_title"
+            android:parentActivityName=".module.main.MainActivity"
+            android:theme="@style/AppTheme" />
+
         <service android:name=".service.NotificationService" />
 
         <service android:name=".service.StartApplicationService" />
+
+        <service
+            android:name=".service.NotificationTileService"
+            android:icon="@drawable/ic_speaker_notes_white_24px"
+            android:label="@string/pref_notification_enabled_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
 
         <receiver android:name=".receiver.NotificationServiceStarter">
             <intent-filter>
