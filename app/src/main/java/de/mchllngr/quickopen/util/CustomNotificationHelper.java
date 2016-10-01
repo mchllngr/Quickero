@@ -16,7 +16,6 @@ import java.util.List;
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.service.StartApplicationService;
-import timber.log.Timber;
 
 /**
  * Helper-class for easier handling of the custom notification.
@@ -115,7 +114,7 @@ public class CustomNotificationHelper {
      * Setter for {@code notificationIconId}.
      *
      * @param notificationIconId {@code notificationIconId}
-     * @param reloadNotification   true if notification should be reloaded after setting
+     * @param reloadNotification true if notification should be reloaded after setting
      */
     public void setNotificationIcon(int notificationIconId, boolean reloadNotification) {
         this.notificationIconId = notificationIconId;
@@ -128,7 +127,7 @@ public class CustomNotificationHelper {
      * Setter for {@code notificationVisibility}.
      *
      * @param notificationVisibility {@code notificationVisibility}
-     * @param reloadNotification   true if notification should be reloaded after setting
+     * @param reloadNotification     true if notification should be reloaded after setting
      */
     public void setNotificationVisibility(int notificationVisibility, boolean reloadNotification) {
         this.notificationVisibility = notificationVisibility;
@@ -159,7 +158,7 @@ public class CustomNotificationHelper {
     // TODO make return boolean and return false if notification is not shown for better error handling
     public void showCustomNotification(ApplicationModel... applicationModels) {
         int maxAppsInNotification = context.getResources()
-            .getInteger(R.integer.max_apps_in_notification);
+                .getInteger(R.integer.max_apps_in_notification);
         if (applicationModels == null ||
                 applicationModels.length <= 0 ||
                 applicationModels.length > maxAppsInNotification)

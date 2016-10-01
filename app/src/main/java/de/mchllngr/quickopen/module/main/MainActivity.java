@@ -84,6 +84,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
      * {@link Snackbar} for showing the undo-remove-button.
      */
     private Snackbar snackbar;
+    /**
+     * {@link ItemTouchHelper} for moving and swiping in {@link RecyclerView}.
+     */
     private ItemTouchHelper itemTouchHelper;
 
     @NonNull

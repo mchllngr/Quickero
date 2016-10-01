@@ -37,6 +37,16 @@
 
         <service android:name=".service.StartApplicationService" />
 
+        <service
+            android:name=".service.NotificationTileService"
+            android:icon="@drawable/ic_speaker_notes_white_24px"
+            android:label="@string/pref_notification_enabled_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
         <receiver android:name=".receiver.NotificationServiceStarter">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REPLACED" />

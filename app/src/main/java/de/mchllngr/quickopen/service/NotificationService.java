@@ -25,7 +25,7 @@ import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
 import rx.functions.Action1;
 
 /**
- * Service for handling the notification
+ * {@link Service} for handling the notification
  *
  * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
