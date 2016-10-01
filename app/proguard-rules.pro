@@ -20,7 +20,7 @@
 -keepattributes EnclosingMethod
 
 ##### Keep all models #####
--keepclassmembers class de.mchllngr.androidboilerplate.model.** {
+-keepclassmembers class de.mchllngr.quickopen.model.** {
   *;
 }
 
