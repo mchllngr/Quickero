@@ -106,12 +106,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
 
         startNotificationService();
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getPresenter().openApplicationList();
-            }
-        });
+        fab.setOnClickListener(view -> getPresenter().openApplicationList());
     }
 
     /**
@@ -121,7 +116,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new MainAdapter(this, new ArrayList<ApplicationModel>(), this);
+        adapter = new MainAdapter(this, new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
 
         recyclerView.addItemDecoration(new DividerItemDecoration(
@@ -273,12 +268,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
 
         snackbar = Snackbar
                 .make(coordinatorLayout, R.string.snackbar_undo_remove, Snackbar.LENGTH_LONG)
-                .setAction(R.string.snackbar_undo_remove_action, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        getPresenter().undoRemove();
-                        snackbar.dismiss();
-                    }
+                .setAction(R.string.snackbar_undo_remove_action, view -> {
+                    getPresenter().undoRemove();
+                    snackbar.dismiss();
                 });
         snackbar.getView().setBackgroundResource(R.color.snackbar_background_color);
 

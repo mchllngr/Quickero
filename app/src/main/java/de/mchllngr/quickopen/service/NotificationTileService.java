@@ -8,14 +8,12 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
-import android.util.Log;
 
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 
 import de.mchllngr.quickopen.R;
 import rx.Subscription;
-import rx.functions.Action1;
 
 /**
  * {@link Service} for handling the {@link Tile} for enabling and disabling the
@@ -57,14 +55,11 @@ public class NotificationTileService extends TileService {
         // subscribe to changes in notificationEnabledPref
         notificationEnabledSubscription = notificationEnabledPref
                 .asObservable()
-                .subscribe(new Action1<Boolean>() {
-                    @Override
-                    public void call(Boolean notificationEnabled) {
-                        if (notificationEnabled)
-                            updateTileState(Tile.STATE_ACTIVE);
-                        else
-                            updateTileState(Tile.STATE_INACTIVE);
-                    }
+                .subscribe(notificationEnabled -> {
+                    if (notificationEnabled)
+                        updateTileState(Tile.STATE_ACTIVE);
+                    else
+                        updateTileState(Tile.STATE_INACTIVE);
                 });
     }
 

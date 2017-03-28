@@ -14,10 +14,8 @@ import de.mchllngr.quickopen.injection.DaggerApplicationComponent;
  */
 public class App extends BaseApp {
 
-    /**
-     * Sets the default night mode to follow system.
-     */
     static {
+        // Sets the default night mode to follow system.
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
     }
 

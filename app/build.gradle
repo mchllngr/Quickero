@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'me.tatarka.retrolambda'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties");
 def keystoreProperties = new Properties()
@@ -53,6 +54,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     // Always show the result of every unit test, even if it passes.
     testOptions.unitTests.all {
         testLogging {
@@ -94,8 +100,6 @@ dependencies {
     compile "com.github.medyo:android-about-page:$rootProject.ext.ABOUT_PAGE_VERSION"
 
     debugCompile "com.facebook.stetho:stetho:$rootProject.ext.STETHO_VERSION"
-
-    debugCompile "de.hannesstruss.windfish:windfish-library:$rootProject.ext.WINDFISH_VERSION"
 
     debugCompile "io.palaima.debugdrawer:debugdrawer:$rootProject.ext.DEBUGDRAWER_VERSION"
     debugCompile "io.palaima.debugdrawer:debugdrawer-commons:$rootProject.ext.DEBUGDRAWER_VERSION"

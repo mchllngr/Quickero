@@ -69,15 +69,12 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         else
             holder.handle.setImageResource(R.drawable.ic_reorder_black_24px);
 
-        holder.handle.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN)
-                    if (startDragListener != null)
-                        startDragListener.onStartDrag(holder);
+        holder.handle.setOnTouchListener((v, event) -> {
+            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN)
+                if (startDragListener != null)
+                    startDragListener.onStartDrag(holder);
 
-                return false;
-            }
+            return false;
         });
     }
 

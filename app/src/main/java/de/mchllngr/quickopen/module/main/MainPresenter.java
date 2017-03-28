@@ -5,7 +5,6 @@ import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
@@ -26,8 +25,6 @@ import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 /**
@@ -170,49 +167,31 @@ public class MainPresenter extends BasePresenter<MainView> {
         Observable.from(context.getPackageManager().getInstalledApplications(0))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter(new Func1<ApplicationInfo, Boolean>() {
-                    @Override
-                    public Boolean call(ApplicationInfo applicationInfo) {
-                        if (isSystemPackage(applicationInfo) &&
-                                !TextUtils.isEmpty(applicationInfo.packageName))
-                            return false;
+                .filter(applicationInfo -> {
+                    if (isSystemPackage(applicationInfo) &&
+                            !TextUtils.isEmpty(applicationInfo.packageName))
+                        return false;
 
-                        boolean isAlreadyInList = false;
-                        for (ApplicationModel savedApplicationModel : savedApplicationModels)
-                            if (applicationInfo.packageName
-                                    .equals(savedApplicationModel.packageName)) {
-                                isAlreadyInList = true;
-                                break;
-                            }
+                    boolean isAlreadyInList = false;
+                    for (ApplicationModel savedApplicationModel : savedApplicationModels)
+                        if (applicationInfo.packageName
+                                .equals(savedApplicationModel.packageName)) {
+                            isAlreadyInList = true;
+                            break;
+                        }
 
-                        return !isAlreadyInList;
-                    }
+                    return !isAlreadyInList;
                 })
-                .map(new Func1<ApplicationInfo, ApplicationModel>() {
-                    @Override
-                    public ApplicationModel call(ApplicationInfo applicationInfo) {
-                        return ApplicationModel.getApplicationModelForPackageName(
-                                context,
-                                applicationInfo.packageName
-                        );
-                    }
-                })
-                .filter(new Func1<ApplicationModel, Boolean>() {
-                    @Override
-                    public Boolean call(ApplicationModel applicationModel) {
-                        return applicationModel != null &&
-                                !TextUtils.isEmpty(applicationModel.packageName) &&
-                                !TextUtils.isEmpty(applicationModel.name) &&
-                                applicationModel.iconDrawable != null &&
-                                applicationModel.iconBitmap != null;
-                    }
-                })
-                .toSortedList(new Func2<ApplicationModel, ApplicationModel, Integer>() {
-                    @Override
-                    public Integer call(ApplicationModel applicationModel, ApplicationModel applicationModel2) {
-                        return applicationModel.name.compareTo(applicationModel2.name);
-                    }
-                })
+                .map(applicationInfo -> ApplicationModel.getApplicationModelForPackageName(
+                        context,
+                        applicationInfo.packageName
+                ))
+                .filter(applicationModel -> applicationModel != null &&
+                        !TextUtils.isEmpty(applicationModel.packageName) &&
+                        !TextUtils.isEmpty(applicationModel.name) &&
+                        applicationModel.iconDrawable != null &&
+                        applicationModel.iconBitmap != null)
+                .toSortedList((applicationModel, applicationModel2) -> applicationModel.name.compareTo(applicationModel2.name))
                 .subscribe(new Observer<List<ApplicationModel>>() {
                     @Override
                     public void onCompleted() {

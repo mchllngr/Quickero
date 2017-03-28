@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.facebook.stetho.Stetho;
 
-import de.hannesstruss.windfish.library.WindFish;
 import timber.log.Timber;
 
 /**
@@ -19,8 +18,6 @@ public class BaseApp extends Application {
         super.onCreate();
 
         Stetho.initializeWithDefaults(this);
-
-        WindFish.install(this);
 
         initTimber();
     }
