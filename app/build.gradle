@@ -80,9 +80,6 @@ dependencies {
     compile "com.jakewharton:butterknife:$rootProject.ext.BUTTERKNIFE_VERSION"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.BUTTERKNIFE_VERSION"
 
-    compile "com.google.dagger:dagger:$rootProject.ext.DAGGER2_VERSION"
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.DAGGER2_VERSION"
-
     compile "com.jakewharton.timber:timber:$rootProject.ext.TIMBER_VERSION"
 
     compile "com.google.code.gson:gson:$rootProject.ext.GSON_VERSION"

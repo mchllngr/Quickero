@@ -67,7 +67,6 @@ public class MainPresenter extends BasePresenter<MainView> {
     @Override
     public void attachView(MainView view) {
         super.attachView(view);
-        getApplicationComponent().inject(this);
 
         RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(
                 PreferenceManager.getDefaultSharedPreferences(context)
