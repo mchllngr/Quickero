@@ -15,6 +15,8 @@ An android app to quickly open your favorite apps through a notification.
 - check customNotification-design on all api-levels
 - check activity leak on api 19 ? (open and close settings)
 - what to do when app-list is empty ?
+- rebuild MainPresenter#openApplicationList() with better rxjava-integration
+- rebuild MainPresenter#addDummyItemsIfFirstStart() with better rxjava-integration
 
 # TODO a little bit later
 - add tutorial

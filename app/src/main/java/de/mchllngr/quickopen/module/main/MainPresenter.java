@@ -23,7 +23,6 @@ import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.model.RemovedApplicationModel;
 import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
 import rx.Observable;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -100,40 +99,31 @@ public class MainPresenter extends BasePresenter<MainView> {
                         context.getResources().getStringArray(R.array.dummy_items_package_names)
                 );
 
+                // TODO rebuild with better rxjava-integration
                 Observable.from(context.getPackageManager().getInstalledApplications(0))
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.computation())
                         .toList()
-                        .subscribe(new Observer<List<ApplicationInfo>>() {
-                            @Override
-                            public void onCompleted() {
-                                loadItems();
-                            }
+                        .toSingle()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(applicationInfos -> {
+                            List<String> dummyitems = new ArrayList<>();
 
-                            @Override
-                            public void onError(Throwable e) {
-                                loadItems();
-                            }
-
-                            @Override
-                            public void onNext(List<ApplicationInfo> applicationInfos) {
-                                List<String> dummyitems = new ArrayList<>();
-
-                                for (int i = 0; i < dummyItemsPackageNames.size(); i++) {
-                                    for (ApplicationInfo applicationInfo : applicationInfos)
-                                        if (dummyItemsPackageNames.get(i)
-                                                .equals(applicationInfo.packageName)) {
-                                            dummyitems.add(applicationInfo.packageName);
-                                            break;
-                                        }
-
-                                    if (dummyitems.size() >= MAX_DUMMY_ITEMS)
+                            for (int i = 0; i < dummyItemsPackageNames.size(); i++) {
+                                for (ApplicationInfo applicationInfo : applicationInfos)
+                                    if (dummyItemsPackageNames.get(i)
+                                            .equals(applicationInfo.packageName)) {
+                                        dummyitems.add(applicationInfo.packageName);
                                         break;
-                                }
+                                    }
 
-                                packageNamesPref.set(dummyitems);
+                                if (dummyitems.size() >= MAX_DUMMY_ITEMS)
+                                    break;
                             }
-                        });
+
+                            packageNamesPref.set(dummyitems);
+
+                            loadItems();
+                        }, e -> loadItems());
             }
 
             firstStartPref.set(false);
@@ -163,9 +153,9 @@ public class MainPresenter extends BasePresenter<MainView> {
             return;
         }
 
+        // TODO rebuild with better rxjava-integration
         Observable.from(context.getPackageManager().getInstalledApplications(0))
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
                 .filter(applicationInfo -> {
                     if (isSystemPackage(applicationInfo) &&
                             !TextUtils.isEmpty(applicationInfo.packageName))
@@ -191,38 +181,31 @@ public class MainPresenter extends BasePresenter<MainView> {
                         applicationModel.iconDrawable != null &&
                         applicationModel.iconBitmap != null)
                 .toSortedList((applicationModel, applicationModel2) -> applicationModel.name.compareTo(applicationModel2.name))
-                .subscribe(new Observer<List<ApplicationModel>>() {
-                    @Override
-                    public void onCompleted() {
-                        getView().hideProgressDialog();
+                .toSingle()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(applicationList -> {
+                    if (!isViewAttached()) return;
+
+                    lastShownApplicationModels = applicationList;
+
+                    final MaterialSimpleListAdapter adapter = new MaterialSimpleListAdapter(
+                            getView().getApplicationChooserCallback()
+                    );
+
+                    for (ApplicationModel applicationModel : applicationList) {
+                        adapter.add(new MaterialSimpleListItem.Builder(context)
+                                .content(applicationModel.name)
+                                .icon(applicationModel.iconDrawable)
+                                .backgroundColor(Color.WHITE)
+                                .build());
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        getView().hideProgressDialog();
-                        getView().onOpenApplicationListError();
-                    }
+                    getView().hideProgressDialog();
 
-                    @Override
-                    public void onNext(List<ApplicationModel> applicationModels) {
-                        if (!isViewAttached()) return;
-
-                        lastShownApplicationModels = applicationModels;
-
-                        final MaterialSimpleListAdapter adapter = new MaterialSimpleListAdapter(
-                                getView().getApplicationChooserCallback()
-                        );
-
-                        for (ApplicationModel applicationModel : applicationModels) {
-                            adapter.add(new MaterialSimpleListItem.Builder(context)
-                                    .content(applicationModel.name)
-                                    .icon(applicationModel.iconDrawable)
-                                    .backgroundColor(Color.WHITE)
-                                    .build());
-                        }
-
-                        getView().showApplicationListDialog(adapter);
-                    }
+                    getView().showApplicationListDialog(adapter);
+                }, e -> {
+                    getView().hideProgressDialog();
+                    getView().onOpenApplicationListError();
                 });
     }
 
