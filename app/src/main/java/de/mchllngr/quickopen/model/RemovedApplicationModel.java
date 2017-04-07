@@ -1,7 +1,5 @@
 package de.mchllngr.quickopen.model;
 
-import android.util.Log;
-
 /**
  * Class for holding the needed data about an removed item for the remove to be undone.
  *

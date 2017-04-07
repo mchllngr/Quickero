@@ -6,7 +6,7 @@
         <CheckBoxPreference
             android:defaultValue="@string/pref_notification_enabled_default_value"
             android:key="@string/pref_notification_enabled"
-            android:title="@string/pref_notification_enabled_title" />
+            android:title="@string/pref_notification_enabled_title"/>
 
     </PreferenceCategory>
 
@@ -15,19 +15,19 @@
         <CheckBoxPreference
             android:defaultValue="@string/pref_transparent_icon_default_value"
             android:key="@string/pref_transparent_icon"
-            android:title="@string/pref_transparent_icon_title" />
+            android:title="@string/pref_transparent_icon_title"/>
 
         <CheckBoxPreference
             android:defaultValue="@string/pref_notification_show_on_lock_screen_default_value"
             android:key="@string/pref_notification_show_on_lock_screen"
-            android:title="@string/pref_notification_show_on_lock_screen_title" />
+            android:title="@string/pref_notification_show_on_lock_screen_title"/>
 
         <ListPreference
             android:defaultValue="@string/pref_notification_priority_value_max"
             android:entries="@array/pref_notification_priority_options"
             android:entryValues="@array/pref_notification_priority_values"
             android:key="@string/pref_notification_priority"
-            android:title="@string/pref_notification_priority_title" />
+            android:title="@string/pref_notification_priority_title"/>
 
     </PreferenceCategory>
 

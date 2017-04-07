@@ -14,90 +14,90 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
         android:id="@+id/app_icon_2"
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
         android:id="@+id/app_icon_3"
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
         android:id="@+id/app_icon_4"
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
         android:id="@+id/app_icon_5"
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
         android:id="@+id/app_icon_6"
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
         android:id="@+id/app_icon_7"
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
         android:id="@+id/app_icon_8"
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
         android:id="@+id/app_icon_9"
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
         android:id="@+id/app_icon_10"
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
         android:id="@+id/app_icon_11"
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
         android:id="@+id/app_icon_12"
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
         android:id="@+id/app_icon_13"
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"/>
 
 </LinearLayout>
