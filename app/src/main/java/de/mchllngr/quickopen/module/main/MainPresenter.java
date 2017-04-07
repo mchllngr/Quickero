@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
@@ -58,6 +59,10 @@ public class MainPresenter extends BasePresenter<MainView> {
      * Contains the last removed item for undoing.
      */
     private RemovedApplicationModel lastRemovedItem;
+    /**
+     * Represents the state of the item-list before reordering.
+     */
+    private List<ApplicationModel> listStateBeforeReorder;
 
     MainPresenter(Context context) {
         this.context = context;
@@ -222,6 +227,57 @@ public class MainPresenter extends BasePresenter<MainView> {
     void onApplicationSelected(int position) {
         if (lastShownApplicationModels != null && !lastShownApplicationModels.isEmpty())
             addItem(lastShownApplicationModels.get(position));
+    }
+
+    /**
+     * Gets called when the Reorder-Icon is clicked and enables the Reorder-Mode.
+     *
+     * @param currentState Current state of the list
+     */
+    void onReorderIconClick(@NonNull List<ApplicationModel> currentState) {
+        listStateBeforeReorder = new ArrayList<>();
+        listStateBeforeReorder.addAll(currentState);
+
+        if (isViewAttached()) {
+            getView().hideAddItemsButton();
+            getView().setReorderMode(true);
+        }
+    }
+
+    /**
+     * Gets called when the Reorder-Accept-Icon is clicked.
+     *
+     * @param newState New state of the list
+     */
+    void onReorderAcceptIconClick(List<ApplicationModel> newState) {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+            getView().showAddItemsButton();
+            getView().setReorderMode(false);
+        }
+
+        List<String> newStateToSave = new ArrayList<>();
+        for (ApplicationModel applicationModel : newState)
+            if (applicationModel != null && !TextUtils.isEmpty(applicationModel.packageName))
+                newStateToSave.add(applicationModel.packageName);
+
+        packageNamesPref.set(newStateToSave);
+
+        if (isViewAttached())
+            getView().hideProgressDialog();
+    }
+
+    /**
+     * Gets called when the Reorder-Cancel-Icon is clicked.
+     */
+    void onReorderCancelIconClick() {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+            getView().showAddItemsButton();
+            getView().setReorderMode(false);
+            getView().updateItems(listStateBeforeReorder);
+            getView().hideProgressDialog();
+        }
     }
 
     /**

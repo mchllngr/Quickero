@@ -12,4 +12,7 @@
     <!-- RecyclerView item divider -->
     <color name="recycler_view_item_divider_color">#e0e0e0</color> <!-- Grey 300 -->
 
+    <!-- Reorder icon color -->
+    <color name="reorder_icon_color">#000</color>
+
 </resources>

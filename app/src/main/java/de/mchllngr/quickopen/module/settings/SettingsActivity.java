@@ -26,8 +26,7 @@ public class SettingsActivity extends BaseActivity<BaseView, BasePresenter<BaseV
     /**
      * {@link Toolbar} for this {@link android.app.Activity}.
      */
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
     /**
      * Static factory method that initializes and starts the {@link SettingsActivity}.

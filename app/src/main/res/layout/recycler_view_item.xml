@@ -36,6 +36,8 @@
         android:layout_marginLeft="@dimen/recycler_view_item_drag_handle_margin_start"
         android:layout_marginStart="@dimen/recycler_view_item_drag_handle_margin_start"
         android:background="@drawable/background_transparent"
-        app:srcCompat="@drawable/ic_reorder_black_24px"/>
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_reorder_black_24px"
+        tools:visibility="visible"/>
 
 </LinearLayout>

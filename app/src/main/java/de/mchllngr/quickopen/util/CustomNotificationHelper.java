@@ -119,7 +119,8 @@ public class CustomNotificationHelper {
     public void setNotificationIcon(int notificationIconId, boolean reloadNotification) {
         this.notificationIconId = notificationIconId;
 
-        if (reloadNotification) reloadNotification();
+        if (reloadNotification)
+            reloadNotification();
     }
 
     /**
@@ -131,7 +132,8 @@ public class CustomNotificationHelper {
     public void setNotificationVisibility(int notificationVisibility, boolean reloadNotification) {
         this.notificationVisibility = notificationVisibility;
 
-        if (reloadNotification) reloadNotification();
+        if (reloadNotification)
+            reloadNotification();
     }
 
     /**
@@ -143,7 +145,8 @@ public class CustomNotificationHelper {
     public void setNotificationPriority(int notificationPriority, boolean reloadNotification) {
         this.notificationPriority = notificationPriority;
 
-        if (reloadNotification) reloadNotification();
+        if (reloadNotification)
+            reloadNotification();
     }
 
     /**

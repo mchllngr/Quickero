@@ -49,23 +49,19 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
      *
      * @see Snackbar
      */
-    @BindView(R.id.coordinator_layout)
-    CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.coordinator_layout) CoordinatorLayout coordinatorLayout;
     /**
      * {@link Toolbar} for this {@link android.app.Activity}.
      */
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    @BindView(R.id.toolbar) Toolbar toolbar;
     /**
      * {@link android.support.v7.widget.RecyclerView} for showing list of items.
      */
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
     /**
      * {@link android.support.design.widget.FloatingActionButton} for adding items.
      */
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
+    @BindView(R.id.fab) FloatingActionButton fab;
 
     /**
      * {@link MainAdapter} for updating shown items in {@code recyclerView}.
@@ -88,6 +84,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
      * {@link ItemTouchHelper} for moving and swiping in {@link RecyclerView}.
      */
     private ItemTouchHelper itemTouchHelper;
+    /**
+     * Indicates whether the Reorder-Mode is enabled or disabled.
+     */
+    private boolean reorderMode;
 
     @NonNull
     @Override
@@ -135,7 +135,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
             public boolean onMove(RecyclerView recyclerView,
                                   RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
-                getPresenter().moveItem(
+                moveItem(
                         viewHolder.getAdapterPosition(),
                         target.getAdapterPosition()
                 );
@@ -165,13 +165,35 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.getItem(0).setVisible(!reorderMode); // reorder
+        menu.getItem(1).setVisible(!reorderMode); // about
+        menu.getItem(2).setVisible(!reorderMode); // settings
+        menu.getItem(3).setVisible(reorderMode); // reorder_cancel
+        menu.getItem(4).setVisible(reorderMode); // reorder_accept
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.reorder:
+                if (adapter != null)
+                    getPresenter().onReorderIconClick(adapter.getItems());
+                return true;
             case R.id.about:
                 AboutActivity.start(this);
                 return true;
             case R.id.settings:
                 SettingsActivity.start(this);
+                return true;
+            case R.id.reorder_cancel:
+                getPresenter().onReorderCancelIconClick();
+                return true;
+            case R.id.reorder_accept:
+                if (adapter != null)
+                    getPresenter().onReorderAcceptIconClick(adapter.getItems());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -226,6 +248,15 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
     public void hideProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
+    }
+
+    @Override
+    public void setReorderMode(boolean enable) {
+        reorderMode = enable;
+        invalidateOptionsMenu();
+
+        if (adapter != null)
+            adapter.setReorderMode(enable);
     }
 
     @Override
@@ -297,8 +328,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
 
     @Override
     public void onStartDrag(MainAdapter.ViewHolder viewHolder) {
-        Log.d("DEBUG_TAG", "MainActivity#onStartDrag()"); // FIXME delete
-
         if (itemTouchHelper != null)
             itemTouchHelper.startDrag(viewHolder);
     }
