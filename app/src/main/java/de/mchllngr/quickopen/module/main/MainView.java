@@ -37,6 +37,11 @@ interface MainView extends BaseView {
     void hideProgressDialog();
 
     /**
+     * Enables/disables the Reorder-Mode.
+     */
+    void setReorderMode(boolean enable);
+
+    /**
      * Updates the shown items.
      */
     void updateItems(List<ApplicationModel> items);

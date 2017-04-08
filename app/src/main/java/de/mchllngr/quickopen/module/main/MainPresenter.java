@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
@@ -24,10 +24,7 @@ import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.model.RemovedApplicationModel;
 import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
 import rx.Observable;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 /**
@@ -62,6 +59,10 @@ public class MainPresenter extends BasePresenter<MainView> {
      * Contains the last removed item for undoing.
      */
     private RemovedApplicationModel lastRemovedItem;
+    /**
+     * Represents the state of the item-list before reordering.
+     */
+    private List<ApplicationModel> listStateBeforeReorder;
 
     MainPresenter(Context context) {
         this.context = context;
@@ -70,7 +71,6 @@ public class MainPresenter extends BasePresenter<MainView> {
     @Override
     public void attachView(MainView view) {
         super.attachView(view);
-        getApplicationComponent().inject(this);
 
         RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(
                 PreferenceManager.getDefaultSharedPreferences(context)
@@ -104,40 +104,31 @@ public class MainPresenter extends BasePresenter<MainView> {
                         context.getResources().getStringArray(R.array.dummy_items_package_names)
                 );
 
+                // TODO rebuild with better rxjava-integration
                 Observable.from(context.getPackageManager().getInstalledApplications(0))
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.computation())
                         .toList()
-                        .subscribe(new Observer<List<ApplicationInfo>>() {
-                            @Override
-                            public void onCompleted() {
-                                loadItems();
-                            }
+                        .toSingle()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(applicationInfos -> {
+                            List<String> dummyitems = new ArrayList<>();
 
-                            @Override
-                            public void onError(Throwable e) {
-                                loadItems();
-                            }
-
-                            @Override
-                            public void onNext(List<ApplicationInfo> applicationInfos) {
-                                List<String> dummyitems = new ArrayList<>();
-
-                                for (int i = 0; i < dummyItemsPackageNames.size(); i++) {
-                                    for (ApplicationInfo applicationInfo : applicationInfos)
-                                        if (dummyItemsPackageNames.get(i)
-                                                .equals(applicationInfo.packageName)) {
-                                            dummyitems.add(applicationInfo.packageName);
-                                            break;
-                                        }
-
-                                    if (dummyitems.size() >= MAX_DUMMY_ITEMS)
+                            for (int i = 0; i < dummyItemsPackageNames.size(); i++) {
+                                for (ApplicationInfo applicationInfo : applicationInfos)
+                                    if (dummyItemsPackageNames.get(i)
+                                            .equals(applicationInfo.packageName)) {
+                                        dummyitems.add(applicationInfo.packageName);
                                         break;
-                                }
+                                    }
 
-                                packageNamesPref.set(dummyitems);
+                                if (dummyitems.size() >= MAX_DUMMY_ITEMS)
+                                    break;
                             }
-                        });
+
+                            packageNamesPref.set(dummyitems);
+
+                            loadItems();
+                        }, e -> loadItems());
             }
 
             firstStartPref.set(false);
@@ -167,84 +158,59 @@ public class MainPresenter extends BasePresenter<MainView> {
             return;
         }
 
+        // TODO rebuild with better rxjava-integration
         Observable.from(context.getPackageManager().getInstalledApplications(0))
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .filter(new Func1<ApplicationInfo, Boolean>() {
-                    @Override
-                    public Boolean call(ApplicationInfo applicationInfo) {
-                        if (isSystemPackage(applicationInfo) &&
-                                !TextUtils.isEmpty(applicationInfo.packageName))
-                            return false;
+                .subscribeOn(Schedulers.computation())
+                .filter(applicationInfo -> {
+                    if (isSystemPackage(applicationInfo) &&
+                            !TextUtils.isEmpty(applicationInfo.packageName))
+                        return false;
 
-                        boolean isAlreadyInList = false;
-                        for (ApplicationModel savedApplicationModel : savedApplicationModels)
-                            if (applicationInfo.packageName
-                                    .equals(savedApplicationModel.packageName)) {
-                                isAlreadyInList = true;
-                                break;
-                            }
-
-                        return !isAlreadyInList;
-                    }
-                })
-                .map(new Func1<ApplicationInfo, ApplicationModel>() {
-                    @Override
-                    public ApplicationModel call(ApplicationInfo applicationInfo) {
-                        return ApplicationModel.getApplicationModelForPackageName(
-                                context,
-                                applicationInfo.packageName
-                        );
-                    }
-                })
-                .filter(new Func1<ApplicationModel, Boolean>() {
-                    @Override
-                    public Boolean call(ApplicationModel applicationModel) {
-                        return applicationModel != null &&
-                                !TextUtils.isEmpty(applicationModel.packageName) &&
-                                !TextUtils.isEmpty(applicationModel.name) &&
-                                applicationModel.iconDrawable != null &&
-                                applicationModel.iconBitmap != null;
-                    }
-                })
-                .toSortedList(new Func2<ApplicationModel, ApplicationModel, Integer>() {
-                    @Override
-                    public Integer call(ApplicationModel applicationModel, ApplicationModel applicationModel2) {
-                        return applicationModel.name.compareTo(applicationModel2.name);
-                    }
-                })
-                .subscribe(new Observer<List<ApplicationModel>>() {
-                    @Override
-                    public void onCompleted() {
-                        getView().hideProgressDialog();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        getView().hideProgressDialog();
-                        getView().onOpenApplicationListError();
-                    }
-
-                    @Override
-                    public void onNext(List<ApplicationModel> applicationModels) {
-                        if (!isViewAttached()) return;
-
-                        lastShownApplicationModels = applicationModels;
-
-                        final MaterialSimpleListAdapter adapter = new MaterialSimpleListAdapter(
-                                getView().getApplicationChooserCallback()
-                        );
-
-                        for (ApplicationModel applicationModel : applicationModels) {
-                            adapter.add(new MaterialSimpleListItem.Builder(context)
-                                    .content(applicationModel.name)
-                                    .icon(applicationModel.iconDrawable)
-                                    .backgroundColor(Color.WHITE)
-                                    .build());
+                    boolean isAlreadyInList = false;
+                    for (ApplicationModel savedApplicationModel : savedApplicationModels)
+                        if (applicationInfo.packageName
+                                .equals(savedApplicationModel.packageName)) {
+                            isAlreadyInList = true;
+                            break;
                         }
 
-                        getView().showApplicationListDialog(adapter);
+                    return !isAlreadyInList;
+                })
+                .map(applicationInfo -> ApplicationModel.getApplicationModelForPackageName(
+                        context,
+                        applicationInfo.packageName
+                ))
+                .filter(applicationModel -> applicationModel != null &&
+                        !TextUtils.isEmpty(applicationModel.packageName) &&
+                        !TextUtils.isEmpty(applicationModel.name) &&
+                        applicationModel.iconDrawable != null &&
+                        applicationModel.iconBitmap != null)
+                .toSortedList((applicationModel, applicationModel2) -> applicationModel.name.compareTo(applicationModel2.name))
+                .toSingle()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(applicationList -> {
+                    if (!isViewAttached()) return;
+
+                    lastShownApplicationModels = applicationList;
+
+                    final MaterialSimpleListAdapter adapter = new MaterialSimpleListAdapter(
+                            getView().getApplicationChooserCallback()
+                    );
+
+                    for (ApplicationModel applicationModel : applicationList) {
+                        adapter.add(new MaterialSimpleListItem.Builder(context)
+                                .content(applicationModel.name)
+                                .icon(applicationModel.iconDrawable)
+                                .backgroundColor(Color.WHITE)
+                                .build());
                     }
+
+                    getView().hideProgressDialog();
+
+                    getView().showApplicationListDialog(adapter);
+                }, e -> {
+                    getView().hideProgressDialog();
+                    getView().onOpenApplicationListError();
                 });
     }
 
@@ -261,6 +227,57 @@ public class MainPresenter extends BasePresenter<MainView> {
     void onApplicationSelected(int position) {
         if (lastShownApplicationModels != null && !lastShownApplicationModels.isEmpty())
             addItem(lastShownApplicationModels.get(position));
+    }
+
+    /**
+     * Gets called when the Reorder-Icon is clicked and enables the Reorder-Mode.
+     *
+     * @param currentState Current state of the list
+     */
+    void onReorderIconClick(@NonNull List<ApplicationModel> currentState) {
+        listStateBeforeReorder = new ArrayList<>();
+        listStateBeforeReorder.addAll(currentState);
+
+        if (isViewAttached()) {
+            getView().hideAddItemsButton();
+            getView().setReorderMode(true);
+        }
+    }
+
+    /**
+     * Gets called when the Reorder-Accept-Icon is clicked.
+     *
+     * @param newState New state of the list
+     */
+    void onReorderAcceptIconClick(List<ApplicationModel> newState) {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+            getView().showAddItemsButton();
+            getView().setReorderMode(false);
+        }
+
+        List<String> newStateToSave = new ArrayList<>();
+        for (ApplicationModel applicationModel : newState)
+            if (applicationModel != null && !TextUtils.isEmpty(applicationModel.packageName))
+                newStateToSave.add(applicationModel.packageName);
+
+        packageNamesPref.set(newStateToSave);
+
+        if (isViewAttached())
+            getView().hideProgressDialog();
+    }
+
+    /**
+     * Gets called when the Reorder-Cancel-Icon is clicked.
+     */
+    void onReorderCancelIconClick() {
+        if (isViewAttached()) {
+            getView().showProgressDialog();
+            getView().showAddItemsButton();
+            getView().setReorderMode(false);
+            getView().updateItems(listStateBeforeReorder);
+            getView().hideProgressDialog();
+        }
     }
 
     /**

@@ -1,6 +1,11 @@
 package de.mchllngr.quickopen.module.main;
 
+import android.animation.Animator;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,6 +42,10 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
      * Listener for notifying a drag-start.
      */
     private StartDragListener startDragListener;
+    /**
+     * Indicates whether the Reorder-Mode is enabled or disabled.
+     */
+    private boolean reorderMode;
 
     /**
      * Constructor for initialising the {@link MainAdapter}.
@@ -64,26 +73,84 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         holder.icon.setImageDrawable(applicationModel.iconDrawable);
         holder.name.setText(applicationModel.name);
 
-        if (context.getResources().getBoolean(R.bool.isNight))
-            holder.handle.setImageResource(R.drawable.ic_reorder_white_24px);
-        else
-            holder.handle.setImageResource(R.drawable.ic_reorder_black_24px);
+        if (reorderMode) {
+            Drawable drawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_reorder_black_24px, null);
+            if (drawable != null) {
+                drawable = DrawableCompat.wrap(drawable);
+                DrawableCompat.setTint(drawable, ContextCompat.getColor(context, R.color.reorder_icon_color));
+                holder.handle.setImageDrawable(drawable);
+            }
 
-        holder.handle.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            holder.handle.setOnTouchListener((v, event) -> {
                 if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN)
                     if (startDragListener != null)
                         startDragListener.onStartDrag(holder);
 
                 return false;
-            }
-        });
+            });
+
+            if (holder.handle.getVisibility() != View.VISIBLE) {
+                holder.handle.animate()
+                        .alpha(1f)
+                        .setDuration(100)
+                        .setListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+                                holder.handle.setAlpha(0f);
+                                holder.handle.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) { /* empty */ }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) { /* empty */ }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) { /* empty */ }
+                        })
+                        .start();
+            } else
+                holder.handle.setAlpha(1f);
+
+        } else {
+            if (holder.handle.getVisibility() == View.VISIBLE) {
+                holder.handle.animate()
+                        .alpha(0f)
+                        .setDuration(100)
+                        .setListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+                                holder.handle.setAlpha(1f);
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                holder.handle.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) { /* empty */ }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) { /* empty */ }
+                        })
+                        .start();
+            } else
+                holder.handle.setAlpha(0f);
+        }
     }
 
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    /**
+     * Returns the {@code items}.
+     */
+    List<ApplicationModel> getItems() {
+        return items;
     }
 
     /**
@@ -144,15 +211,20 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     }
 
     /**
+     * Sets the Reorder-Mode.
+     */
+    void setReorderMode(boolean enable) {
+        reorderMode = enable;
+        notifyDataSetChanged();
+    }
+
+    /**
      * {@link android.support.v7.widget.RecyclerView.ViewHolder} for holding all the {@link View}s.
      */
     class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.icon)
-        ImageView icon;
-        @BindView(R.id.name)
-        TextView name;
-        @BindView(R.id.handle)
-        ImageView handle;
+        @BindView(R.id.icon) ImageView icon;
+        @BindView(R.id.name) TextView name;
+        @BindView(R.id.handle) ImageView handle;
 
         ViewHolder(View view) {
             super(view);

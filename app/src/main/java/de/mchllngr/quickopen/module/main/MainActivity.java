@@ -1,6 +1,7 @@
 package de.mchllngr.quickopen.module.main;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
@@ -49,23 +51,23 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
      *
      * @see Snackbar
      */
-    @BindView(R.id.coordinator_layout)
-    CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.coordinator_layout) CoordinatorLayout coordinatorLayout;
     /**
      * {@link Toolbar} for this {@link android.app.Activity}.
      */
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    @BindView(R.id.toolbar) Toolbar toolbar;
     /**
      * {@link android.support.v7.widget.RecyclerView} for showing list of items.
      */
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
     /**
      * {@link android.support.design.widget.FloatingActionButton} for adding items.
      */
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    /**
+     * Represents the red background behind a swipeable item.
+     */
+    @BindView(R.id.swipe_background) FrameLayout swipeBackground;
 
     /**
      * {@link MainAdapter} for updating shown items in {@code recyclerView}.
@@ -88,6 +90,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
      * {@link ItemTouchHelper} for moving and swiping in {@link RecyclerView}.
      */
     private ItemTouchHelper itemTouchHelper;
+    /**
+     * Indicates whether the Reorder-Mode is enabled or disabled.
+     */
+    private boolean reorderMode;
 
     @NonNull
     @Override
@@ -106,12 +112,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
 
         startNotificationService();
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getPresenter().openApplicationList();
-            }
-        });
+        fab.setOnClickListener(view -> getPresenter().openApplicationList());
     }
 
     /**
@@ -121,7 +122,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new MainAdapter(this, new ArrayList<ApplicationModel>(), this);
+        adapter = new MainAdapter(this, new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
 
         recyclerView.addItemDecoration(new DividerItemDecoration(
@@ -137,10 +138,15 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
             }
 
             @Override
+            public boolean isItemViewSwipeEnabled() {
+                return !reorderMode;
+            }
+
+            @Override
             public boolean onMove(RecyclerView recyclerView,
                                   RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
-                getPresenter().moveItem(
+                moveItem(
                         viewHolder.getAdapterPosition(),
                         target.getAdapterPosition()
                 );
@@ -151,6 +157,22 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 getPresenter().removeItem(viewHolder.getAdapterPosition());
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                if (!reorderMode) {
+                    // set the red background one swiped item
+                    swipeBackground.setY(viewHolder.itemView.getTop());
+                    if (isCurrentlyActive) {
+                        swipeBackground.setVisibility(View.VISIBLE);
+                    } else {
+                        swipeBackground.setVisibility(View.GONE);
+                    }
+                } else
+                    swipeBackground.setVisibility(View.GONE);
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -170,13 +192,35 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.getItem(0).setVisible(!reorderMode); // reorder
+        menu.getItem(1).setVisible(!reorderMode); // about
+        menu.getItem(2).setVisible(!reorderMode); // settings
+        menu.getItem(3).setVisible(reorderMode); // reorder_cancel
+        menu.getItem(4).setVisible(reorderMode); // reorder_accept
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.reorder:
+                if (adapter != null)
+                    getPresenter().onReorderIconClick(adapter.getItems());
+                return true;
             case R.id.about:
                 AboutActivity.start(this);
                 return true;
             case R.id.settings:
                 SettingsActivity.start(this);
+                return true;
+            case R.id.reorder_cancel:
+                getPresenter().onReorderCancelIconClick();
+                return true;
+            case R.id.reorder_accept:
+                if (adapter != null)
+                    getPresenter().onReorderAcceptIconClick(adapter.getItems());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -234,6 +278,15 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
     }
 
     @Override
+    public void setReorderMode(boolean enable) {
+        reorderMode = enable;
+        invalidateOptionsMenu();
+
+        if (adapter != null)
+            adapter.setReorderMode(enable);
+    }
+
+    @Override
     public void updateItems(List<ApplicationModel> items) {
         if (adapter != null)
             adapter.updateItems(items);
@@ -273,12 +326,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
 
         snackbar = Snackbar
                 .make(coordinatorLayout, R.string.snackbar_undo_remove, Snackbar.LENGTH_LONG)
-                .setAction(R.string.snackbar_undo_remove_action, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        getPresenter().undoRemove();
-                        snackbar.dismiss();
-                    }
+                .setAction(R.string.snackbar_undo_remove_action, view -> {
+                    getPresenter().undoRemove();
+                    snackbar.dismiss();
                 });
         snackbar.getView().setBackgroundResource(R.color.snackbar_background_color);
 
@@ -305,8 +355,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
 
     @Override
     public void onStartDrag(MainAdapter.ViewHolder viewHolder) {
-        Log.d("DEBUG_TAG", "MainActivity#onStartDrag()"); // FIXME delete
-
         if (itemTouchHelper != null)
             itemTouchHelper.startDrag(viewHolder);
     }

@@ -14,7 +14,6 @@ import de.mchllngr.quickopen.base.BasePresenter;
 import de.mchllngr.quickopen.base.BaseView;
 import mehdi.sakout.aboutpage.AboutPage;
 import mehdi.sakout.aboutpage.Element;
-import timber.log.Timber;
 
 /**
  * {@link android.app.Activity} for the AboutPage.

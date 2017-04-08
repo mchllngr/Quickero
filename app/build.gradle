@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
 
-def keystorePropertiesFile = rootProject.file("keystore.properties");
+def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
@@ -53,6 +53,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     // Always show the result of every unit test, even if it passes.
     testOptions.unitTests.all {
         testLogging {
@@ -74,9 +79,6 @@ dependencies {
     compile "com.jakewharton:butterknife:$rootProject.ext.BUTTERKNIFE_VERSION"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.BUTTERKNIFE_VERSION"
 
-    compile "com.google.dagger:dagger:$rootProject.ext.DAGGER2_VERSION"
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.DAGGER2_VERSION"
-
     compile "com.jakewharton.timber:timber:$rootProject.ext.TIMBER_VERSION"
 
     compile "com.google.code.gson:gson:$rootProject.ext.GSON_VERSION"
@@ -94,8 +96,6 @@ dependencies {
     compile "com.github.medyo:android-about-page:$rootProject.ext.ABOUT_PAGE_VERSION"
 
     debugCompile "com.facebook.stetho:stetho:$rootProject.ext.STETHO_VERSION"
-
-    debugCompile "de.hannesstruss.windfish:windfish-library:$rootProject.ext.WINDFISH_VERSION"
 
     debugCompile "io.palaima.debugdrawer:debugdrawer:$rootProject.ext.DEBUGDRAWER_VERSION"
     debugCompile "io.palaima.debugdrawer:debugdrawer-commons:$rootProject.ext.DEBUGDRAWER_VERSION"

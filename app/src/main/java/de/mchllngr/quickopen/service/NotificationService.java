@@ -22,7 +22,6 @@ import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.receiver.NotificationServiceStarter;
 import de.mchllngr.quickopen.util.CustomNotificationHelper;
 import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
-import rx.functions.Action1;
 
 /**
  * {@link Service} for handling the notification
@@ -159,102 +158,87 @@ public class NotificationService extends Service {
             onError();
 
         // subscribe to changes in notificationEnabledPref
-        notificationEnabledPref.asObservable().subscribe(new Action1<Boolean>() {
-            @Override
-            public void call(Boolean notificationEnabled) {
-                NotificationService.this.notificationEnabled = notificationEnabled;
+        notificationEnabledPref.asObservable().subscribe(notificationEnabled -> {
+            NotificationService.this.notificationEnabled = notificationEnabled;
 
-                if (notificationEnabled) {
-                    ApplicationModel[] applicationModels = ApplicationModel
-                            .prepareApplicationModelsArray(
-                                    NotificationService.this,
-                                    packageNamesPref.get()
-                            );
-                    showNotification(applicationModels);
-                } else
-                    hideNotification();
-            }
-        });
-
-        // subscribe to changes in transparentIconPref
-        transparentIconPref.asObservable().subscribe(new Action1<Boolean>() {
-            @Override
-            public void call(Boolean transparentIcon) {
-                int notificationIcon;
-                if (transparentIcon) {
-                    notificationIcon = useVectorDrawables
-                            ? NOTIFICATION_ICON_ID_VECTOR_TRANSPARENT
-                            : NOTIFICATION_ICON_ID_NOT_VECTOR_TRANSPARENT;
-                } else {
-                    notificationIcon = useVectorDrawables
-                            ? NOTIFICATION_ICON_ID_VECTOR
-                            : NOTIFICATION_ICON_ID_NOT_VECTOR;
-                }
-
-                customNotificationHelper.setNotificationIcon(
-                        notificationIcon,
-                        notificationEnabled
-                );
-            }
-        });
-
-        // subscribe to changes in notificationShowOnLockScreenPref
-        notificationShowOnLockScreenPref.asObservable().subscribe(new Action1<Boolean>() {
-            @Override
-            public void call(Boolean notificationShowOnLockScreen) {
-                int notificationVisibility = NotificationCompat.VISIBILITY_PUBLIC;
-                if (!notificationShowOnLockScreen)
-                    notificationVisibility = NotificationCompat.VISIBILITY_SECRET;
-
-                customNotificationHelper.setNotificationVisibility(
-                        notificationVisibility,
-                        notificationEnabled
-                );
-            }
-        });
-
-        // subscribe to changes in notificationPriorityPref
-        notificationPriorityPref.asObservable().subscribe(new Action1<String>() {
-            @Override
-            public void call(String notificationPriority) {
-                if (TextUtils.isEmpty(notificationPriority)) return;
-
-                int notificationPriorityValue = Notification.PRIORITY_MAX;
-                if (notificationPriority.equals(getString(
-                        R.string.pref_notification_priority_value_high)))
-                    notificationPriorityValue = Notification.PRIORITY_HIGH;
-                else if (notificationPriority.equals(getString(
-                        R.string.pref_notification_priority_value_default)))
-                    notificationPriorityValue = Notification.PRIORITY_DEFAULT;
-                else if (notificationPriority.equals(getString(
-                        R.string.pref_notification_priority_value_low)))
-                    notificationPriorityValue = Notification.PRIORITY_LOW;
-                else if (notificationPriority.equals(getString(
-                        R.string.pref_notification_priority_value_min)))
-                    notificationPriorityValue = Notification.PRIORITY_MIN;
-
-                customNotificationHelper.setNotificationPriority(
-                        notificationPriorityValue,
-                        notificationEnabled
-                );
-            }
-        });
-
-        // subscribe to changes in packageNamesPref
-        packageNamesPref.asObservable().subscribe(new Action1<List>() {
-            @Override
-            public void call(List list) {
+            if (notificationEnabled) {
                 ApplicationModel[] applicationModels = ApplicationModel
                         .prepareApplicationModelsArray(
                                 NotificationService.this,
-                                list
+                                packageNamesPref.get()
                         );
+                showNotification(applicationModels);
+            } else
+                hideNotification();
+        });
 
-                if (applicationModels.length == 0)
-                    hideNotification();
-                else
-                    showNotification(applicationModels);
+        // subscribe to changes in transparentIconPref
+        transparentIconPref.asObservable().subscribe(transparentIcon -> {
+            int notificationIcon;
+            if (transparentIcon) {
+                notificationIcon = useVectorDrawables
+                        ? NOTIFICATION_ICON_ID_VECTOR_TRANSPARENT
+                        : NOTIFICATION_ICON_ID_NOT_VECTOR_TRANSPARENT;
+            } else {
+                notificationIcon = useVectorDrawables
+                        ? NOTIFICATION_ICON_ID_VECTOR
+                        : NOTIFICATION_ICON_ID_NOT_VECTOR;
             }
+
+            customNotificationHelper.setNotificationIcon(
+                    notificationIcon,
+                    notificationEnabled
+            );
+        });
+
+        // subscribe to changes in notificationShowOnLockScreenPref
+        notificationShowOnLockScreenPref.asObservable().subscribe(notificationShowOnLockScreen -> {
+            int notificationVisibility = NotificationCompat.VISIBILITY_PUBLIC;
+            if (!notificationShowOnLockScreen)
+                notificationVisibility = NotificationCompat.VISIBILITY_SECRET;
+
+            customNotificationHelper.setNotificationVisibility(
+                    notificationVisibility,
+                    notificationEnabled
+            );
+        });
+
+        // subscribe to changes in notificationPriorityPref
+        notificationPriorityPref.asObservable().subscribe(notificationPriority -> {
+            if (TextUtils.isEmpty(notificationPriority)) return;
+
+            int notificationPriorityValue = Notification.PRIORITY_MAX;
+            if (notificationPriority.equals(getString(
+                    R.string.pref_notification_priority_value_high)))
+                notificationPriorityValue = Notification.PRIORITY_HIGH;
+            else if (notificationPriority.equals(getString(
+                    R.string.pref_notification_priority_value_default)))
+                notificationPriorityValue = Notification.PRIORITY_DEFAULT;
+            else if (notificationPriority.equals(getString(
+                    R.string.pref_notification_priority_value_low)))
+                notificationPriorityValue = Notification.PRIORITY_LOW;
+            else if (notificationPriority.equals(getString(
+                    R.string.pref_notification_priority_value_min)))
+                notificationPriorityValue = Notification.PRIORITY_MIN;
+
+            customNotificationHelper.setNotificationPriority(
+                    notificationPriorityValue,
+                    notificationEnabled
+            );
+        });
+
+        // subscribe to changes in packageNamesPref
+        packageNamesPref.asObservable().subscribe(list -> {
+            ApplicationModel[] applicationModels = ApplicationModel
+                    .prepareApplicationModelsArray(
+                            NotificationService.this,
+                            list
+                    );
+
+            if (applicationModels.length == 0)
+                hideNotification();
+            else
+                showNotification(applicationModels);
         });
     }
 

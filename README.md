@@ -5,7 +5,6 @@ An android app to quickly open your favorite apps through a notification.
 - some items in the installed-applications-list are wrongly sorted at the end
 - slow or not appearing progress dialog while loading installed-applications-list
     - threading-problem ?
-- performance-issues while moving items
 - settings-text eventually too long (-> multiline)
 - some apps are system-apps on one device but not on another (dropbox, photos, gmail, maps, ...)
 
@@ -15,11 +14,14 @@ An android app to quickly open your favorite apps through a notification.
 - check customNotification-design on all api-levels
 - check activity leak on api 19 ? (open and close settings)
 - what to do when app-list is empty ?
+- rebuild MainPresenter#openApplicationList() with better rxjava-integration
+- rebuild MainPresenter#addDummyItemsIfFirstStart() with better rxjava-integration
+- add Firebase Crashlytics
 
 # TODO a little bit later
 - add tutorial
 - add screenshots + real descriptions to google-play-page
-- add red background on remove-swipe
+- add delete icon on remove-swipe
 - add feedback
 - disable MainActivity when notification_enabled = false
 - check for uninstalled applications every start (BroadcastReceiver)
@@ -36,7 +38,7 @@ An android app to quickly open your favorite apps through a notification.
 # License
 
 ```
-Copyright 2016 Michael Langer (mchllngr)
+Copyright 2016-2017 Michael Langer (mchllngr)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

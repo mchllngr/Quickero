@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:attr/colorBackground"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/activity_vertical_margin_half"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -16,7 +17,7 @@
         android:layout_height="@dimen/recycler_view_item_icon_size"
         android:layout_marginEnd="@dimen/recycler_view_item_icon_margin_end"
         android:layout_marginRight="@dimen/recycler_view_item_icon_margin_end"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"/>
 
     <TextView
         android:id="@+id/name"
@@ -27,7 +28,7 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
-        tools:text="Android-Application Android-Application Android-Application Android-Application" />
+        tools:text="Android-Application Android-Application Android-Application Android-Application"/>
 
     <ImageButton
         android:id="@+id/handle"
@@ -36,6 +37,8 @@
         android:layout_marginLeft="@dimen/recycler_view_item_drag_handle_margin_start"
         android:layout_marginStart="@dimen/recycler_view_item_drag_handle_margin_start"
         android:background="@drawable/background_transparent"
-        app:srcCompat="@drawable/ic_reorder_black_24px" />
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_reorder_black_24px"
+        tools:visibility="visible"/>
 
 </LinearLayout>

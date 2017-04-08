@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mchllngr.quickopen.util.CustomNotificationHelper;
 import de.mchllngr.quickopen.util.DrawableToBitmapConverter;
 
 /**
