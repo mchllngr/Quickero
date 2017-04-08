@@ -8,6 +8,13 @@
     tools:context=".module.main.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <FrameLayout
+        android:id="@+id/swipe_background"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/swipe_delete_color"
+        android:visibility="gone"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package de.mchllngr.quickopen.module.main;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
@@ -62,6 +64,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
      * {@link android.support.design.widget.FloatingActionButton} for adding items.
      */
     @BindView(R.id.fab) FloatingActionButton fab;
+    /**
+     * Represents the red background behind a swipeable item.
+     */
+    @BindView(R.id.swipe_background) FrameLayout swipeBackground;
 
     /**
      * {@link MainAdapter} for updating shown items in {@code recyclerView}.
@@ -151,6 +157,22 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 getPresenter().removeItem(viewHolder.getAdapterPosition());
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                if (!reorderMode) {
+                    // set the red background one swiped item
+                    swipeBackground.setY(viewHolder.itemView.getTop());
+                    if (isCurrentlyActive) {
+                        swipeBackground.setVisibility(View.VISIBLE);
+                    } else {
+                        swipeBackground.setVisibility(View.GONE);
+                    }
+                } else
+                    swipeBackground.setVisibility(View.GONE);
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);

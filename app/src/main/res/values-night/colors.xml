@@ -6,6 +6,9 @@
     <color name="colorPrimaryDark">#1B5E20</color> <!-- Green 900 -->
     <color name="colorAccent">@color/colorPrimary</color>
 
+    <!-- Background color for swipe delete -->
+    <color name="swipe_delete_color">#D32f2f</color> <!-- Red 700 -->
+
     <!-- Snackbar background -->
     <color name="snackbar_background_color">#424242</color>
 

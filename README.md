@@ -21,7 +21,7 @@ An android app to quickly open your favorite apps through a notification.
 # TODO a little bit later
 - add tutorial
 - add screenshots + real descriptions to google-play-page
-- add red background on remove-swipe
+- add delete icon on remove-swipe
 - add feedback
 - disable MainActivity when notification_enabled = false
 - check for uninstalled applications every start (BroadcastReceiver)
