@@ -17,7 +17,6 @@ An android app to quickly open your favorite apps through a notification.
 - rebuild MainPresenter#openApplicationList() with better rxjava-integration
 - rebuild MainPresenter#addDummyItemsIfFirstStart() with better rxjava-integration
 - add Firebase Crashlytics
-- disallow removing while in reorderMode ? (what happens if not ?)
 
 # TODO a little bit later
 - add tutorial

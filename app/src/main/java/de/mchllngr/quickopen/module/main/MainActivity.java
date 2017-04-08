@@ -132,6 +132,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
             }
 
             @Override
+            public boolean isItemViewSwipeEnabled() {
+                return !reorderMode;
+            }
+
+            @Override
             public boolean onMove(RecyclerView recyclerView,
                                   RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
