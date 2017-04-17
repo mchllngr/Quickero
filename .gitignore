@@ -49,6 +49,8 @@ captures/
 *.keystore
 *.jks
 keystore.properties
+# Only allow debug-Keystore
+!debug-keystore.jks
 
 
 ### Android Patch ###
