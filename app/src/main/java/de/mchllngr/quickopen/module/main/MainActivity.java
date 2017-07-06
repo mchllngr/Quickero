@@ -241,7 +241,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
     }
 
     @Override
-    public void onMaterialListItemSelected(int index, MaterialSimpleListItem item) {
+    public void onMaterialListItemSelected(MaterialDialog dialog, int index, MaterialSimpleListItem item) {
         getPresenter().onApplicationSelected(index);
 
         if (applicationDialog != null)
