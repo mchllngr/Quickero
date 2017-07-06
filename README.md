@@ -1,4 +1,4 @@
-# QuickOpen
+# QuickOpen [![Build Status](https://travis-ci.org/mchllngr/QuickOpen.svg?branch=master)](https://travis-ci.org/mchllngr/QuickOpen)
 An android app to quickly open your favorite apps through a notification.
 
 # KNOWN BUGS
