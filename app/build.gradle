@@ -1,10 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
 android {
     compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
     buildToolsVersion rootProject.ext.BUILD_TOOLS_VERSION
@@ -27,12 +23,6 @@ android {
     }
 
     signingConfigs {
-        release {
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-        }
         debug {
             storeFile file("../keystore/debug-keystore.jks")
             storePassword "debug-keystore"
@@ -47,7 +37,7 @@ android {
             shrinkResources true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
         }
         debug {
             minifyEnabled false
@@ -62,6 +52,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
     // Always show the result of every unit test, even if it passes.
@@ -114,6 +108,7 @@ dependencies {
 
     testCompile "junit:junit:$rootProject.ext.JUNIT_VERSION"
     testCompile "org.mockito:mockito-core:$rootProject.ext.MOCKITO_VERSION"
+
     androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.ext.ESPRESSO_VERSION", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

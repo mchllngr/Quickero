@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("de.mchllngr.quickopen", appContext.getPackageName());
+        assertTrue(appContext.getPackageName().contains("de.mchllngr.quickopen"));
     }
 }
