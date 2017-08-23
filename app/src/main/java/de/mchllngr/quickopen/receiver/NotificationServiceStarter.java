@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import java.text.SimpleDateFormat;
@@ -36,7 +37,7 @@ public class NotificationServiceStarter extends BroadcastReceiver {
     // FIXME delete
     @SuppressLint("ApplySharedPref")
     private void saveRestartingTime(Context context) {
-        SharedPreferences settings = context.getSharedPreferences("QuickOpenSharedPrefs", Context.MODE_PRIVATE);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = settings.edit();
 
         String restartingTimes = settings.getString("RestartingTimes", "");
