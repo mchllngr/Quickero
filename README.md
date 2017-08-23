@@ -8,6 +8,8 @@ An android app to quickly open your favorite apps through a notification.
 
 # TODO
 - check notifications channel (s. CustomNotificationHelper#showNotificationWithCustomContentView():250)
+- check in NotificationServiceStarter for correct actions
+- make it a real lasting service (like Taskter etc.) instead of just restarting it when its about to be destroyed
 - add better texts and explanations to settings-page / style settings with images
 - add empty-view for recyclerview
 - check customNotification-design on all api-levels
