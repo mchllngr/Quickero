@@ -7,8 +7,10 @@ An android app to quickly open your favorite apps through a notification.
     - threading-problem ?
 - settings-text eventually too long (-> multiline)
 - some apps are system-apps on one device but not on another (dropbox, photos, gmail, maps, ...)
+- item slide shows a red background, which doesn't look right (no trash-box for deleting, no fading, etc.)
 
 # TODO
+- check notifications channel (s. CustomNotificationHelper#showNotificationWithCustomContentView():250)
 - add better texts and explanations to settings-page / style settings with images
 - add empty-view for recyclerview
 - check customNotification-design on all api-levels

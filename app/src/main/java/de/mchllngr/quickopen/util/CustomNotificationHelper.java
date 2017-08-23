@@ -1,6 +1,7 @@
 package de.mchllngr.quickopen.util;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -24,6 +25,8 @@ import de.mchllngr.quickopen.service.StartApplicationService;
  */
 // TODO inject with dagger ?
 public class CustomNotificationHelper {
+
+    private final String CHANNEL_ID = "default";
 
     /**
      * Array of every layout used.
@@ -213,8 +216,7 @@ public class CustomNotificationHelper {
         // remove items with empty packageName or iconBitmap from array
         List<ApplicationModel> tempApplicationModels = new ArrayList<>();
         for (ApplicationModel applicationModel : applicationModels)
-            if (!TextUtils.isEmpty(applicationModel.packageName) &&
-                    applicationModel.iconBitmap != null)
+            if (!TextUtils.isEmpty(applicationModel.packageName) && applicationModel.iconBitmap != null)
                 tempApplicationModels.add(applicationModel);
 
         return tempApplicationModels.toArray(new ApplicationModel[tempApplicationModels.size()]);
@@ -228,8 +230,22 @@ public class CustomNotificationHelper {
     private void showNotificationWithCustomContentView(RemoteViews customContentView) {
         hideNotification();
 
+        /* TODO /////////////////////////////////////////////////////////////////////////////////////////
+         * - check if the channel always needs to be enabled by hand (AppSettings -> App Notifications)
+         * - check if NotificationManager.IMPORTANCE_HIGH is the right importance
+         * TODO ///////////////////////////////////////////////////////////////////////////////////////*/
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // create notification channel
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            String name = context.getString(R.string.notification_channel_default_name);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
+        }
+
         // create notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         Notification notification = builder
                 .setSmallIcon(notificationIconId)
                 .setAutoCancel(false)
@@ -241,8 +257,6 @@ public class CustomNotificationHelper {
                 .build();
 
         // show notification
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(notificationId, notification);
     }
 
@@ -250,8 +264,7 @@ public class CustomNotificationHelper {
      * Hide the notification.
      */
     public void hideNotification() {
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(notificationId);
     }
 
