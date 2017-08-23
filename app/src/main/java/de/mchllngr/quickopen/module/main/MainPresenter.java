@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import de.mchllngr.quickopen.R;
@@ -144,14 +143,12 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         getView().showProgressDialog();
 
-        final List<ApplicationModel> savedApplicationModels = ApplicationModel
-                .prepareApplicationModelsList(
-                        context,
-                        packageNamesPref.get()
-                );
+        final List<ApplicationModel> savedApplicationModels = ApplicationModel.prepareApplicationModelsList(
+                context,
+                packageNamesPref.get()
+        );
 
-        if (savedApplicationModels.size() >= context.getResources()
-                .getInteger(R.integer.max_apps_in_notification)) {
+        if (savedApplicationModels.size() >= context.getResources().getInteger(R.integer.max_apps_in_notification)) {
             getView().hideAddItemsButton();
             getView().hideProgressDialog();
             getView().showMaxItemsError();
@@ -185,7 +182,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                         !TextUtils.isEmpty(applicationModel.name) &&
                         applicationModel.iconDrawable != null &&
                         applicationModel.iconBitmap != null)
-                .toSortedList((applicationModel, applicationModel2) -> applicationModel.name.compareTo(applicationModel2.name))
+                .toSortedList((applicationModel, applicationModel2) -> applicationModel.name.toLowerCase().compareTo(applicationModel2.name.toLowerCase()))
                 .toSingle()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(applicationList -> {
@@ -209,8 +206,10 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                     getView().showApplicationListDialog(adapter);
                 }, e -> {
-                    getView().hideProgressDialog();
-                    getView().onOpenApplicationListError();
+                    if (isViewAttached()) {
+                        getView().hideProgressDialog();
+                        getView().onOpenApplicationListError();
+                    }
                 });
     }
 
@@ -315,6 +314,7 @@ public class MainPresenter extends BasePresenter<MainView> {
      * Adds an item at {@code position} to the list in {@link android.content.SharedPreferences}
      * and calls the {@link MainView} to also add it to the shown list.
      */
+    @SuppressWarnings("unchecked")
     void addItem(int position, ApplicationModel applicationModel) {
         List applicationModels = packageNamesPref.get();
 
@@ -372,32 +372,6 @@ public class MainPresenter extends BasePresenter<MainView> {
             getView().removeItem(position);
             getView().showUndoButton();
         }
-    }
-
-    /**
-     * Moves an item at {@code fromPosition} to {@code toPosition} from the list in
-     * {@link android.content.SharedPreferences} and calls the {@link MainView} to also move
-     * it in the shown list.
-     */
-    void moveItem(int fromPosition, int toPosition) {
-        List applicationModels = packageNamesPref.get();
-
-        if (applicationModels == null || applicationModels.isEmpty()) return;
-
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(applicationModels, i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(applicationModels, i, i - 1);
-            }
-        }
-
-        packageNamesPref.set(applicationModels);
-
-        if (isViewAttached())
-            getView().moveItem(fromPosition, toPosition);
     }
 
     void undoRemove() {
