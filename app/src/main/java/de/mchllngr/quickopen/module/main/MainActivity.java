@@ -1,5 +1,6 @@
 package de.mchllngr.quickopen.module.main;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -37,27 +38,24 @@ import de.mchllngr.quickopen.module.settings.SettingsActivity;
 import de.mchllngr.quickopen.service.NotificationService;
 
 /**
- * {@link android.app.Activity} for handling the selection of applications.
+ * {@link Activity} for handling the selection of applications.
  */
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView, MaterialSimpleListAdapter.Callback, MainAdapter.StartDragListener {
 
     /**
-     * {@link android.support.design.widget.CoordinatorLayout} from the layout for showing the
-     * {@link Snackbar}.
-     *
-     * @see Snackbar
+     * {@link CoordinatorLayout} from the layout for showing the {@link Snackbar}.
      */
     @BindView(R.id.coordinator_layout) CoordinatorLayout coordinatorLayout;
     /**
-     * {@link Toolbar} for this {@link android.app.Activity}.
+     * {@link Toolbar} for this {@link Activity}.
      */
     @BindView(R.id.toolbar) Toolbar toolbar;
     /**
-     * {@link android.support.v7.widget.RecyclerView} for showing list of items.
+     * {@link RecyclerView} for showing list of items.
      */
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     /**
-     * {@link android.support.design.widget.FloatingActionButton} for adding items.
+     * {@link FloatingActionButton} for adding items.
      */
     @BindView(R.id.fab) FloatingActionButton fab;
     /**
@@ -140,9 +138,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                     }
 
                     @Override
-                    public boolean onMove(RecyclerView recyclerView,
-                                          RecyclerView.ViewHolder viewHolder,
-                                          RecyclerView.ViewHolder target) {
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                         moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                         return true;
                     }

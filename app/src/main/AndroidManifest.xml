@@ -9,33 +9,41 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.Splash">
 
         <activity
-            android:name=".module.main.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".module.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <meta-data
+                android:name="theme"
+                android:resource="@style/AppTheme.NoActionBar"/>
         </activity>
 
         <activity
             android:name=".module.settings.SettingsActivity"
             android:label="@string/settings_title"
-            android:parentActivityName=".module.main.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:parentActivityName=".module.main.MainActivity">
+            <meta-data
+                android:name="theme"
+                android:resource="@style/AppTheme.NoActionBar"/>
+        </activity>
 
         <activity
             android:name=".module.about.AboutActivity"
             android:label="@string/about_title"
-            android:parentActivityName=".module.main.MainActivity"
-            android:theme="@style/AppTheme"/>
+            android:parentActivityName=".module.main.MainActivity">
+            <meta-data
+                android:name="theme"
+                android:resource="@style/AppTheme"/>
+        </activity>
 
         <service android:name=".service.NotificationService"/>
 
-        <service android:name=".service.StartApplicationService" />
+        <service android:name=".service.StartApplicationService"/>
 
         <service
             android:name=".service.NotificationTileService"
