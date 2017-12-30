@@ -11,9 +11,6 @@ import de.mchllngr.quickopen.R;
  */
 public class StartApplicationService extends IntentService {
 
-    /**
-     * Default constructor.
-     */
     public StartApplicationService() {
         super(StartApplicationService.class.getName());
     }

@@ -20,6 +20,9 @@ import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.service.StartApplicationService;
 import timber.log.Timber;
 
+import static android.os.Build.VERSION;
+import static android.os.Build.VERSION_CODES;
+
 /**
  * Helper-class for easier handling of the custom notification.
  */
@@ -204,7 +207,7 @@ public class CustomNotificationHelper {
         }
 
         // create notification channel
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (VERSION.SDK_INT >= VERSION_CODES.O) {
             String name = context.getString(R.string.notification_channel_default_name);
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
