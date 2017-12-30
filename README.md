@@ -2,13 +2,13 @@
 An android app to quickly open your favorite apps through a notification.
 
 # KNOWN BUGS
+- splashscreen is broken
 - the automatic start of NotificationService is pretty inconsistent
 - settings-text eventually too long (-> multiline)
 - some apps are system-apps on one device but not on another (dropbox, photos, gmail, maps, ...)
 - item slide shows a red background, which doesn't look right (no trash-box for deleting, no fading, etc.)
 
 # TODO
-- add splash screen
 - remove notification priority options, because this can now be handled over the channel (even by the user)
     - also the visiblity option ?
 - add licence to every file ?
