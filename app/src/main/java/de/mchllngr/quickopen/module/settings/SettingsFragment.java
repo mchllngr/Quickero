@@ -7,8 +7,6 @@ import de.mchllngr.quickopen.R;
 
 /**
  * {@link android.preference.PreferenceFragment} for handling the settings-page.
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 public class SettingsFragment extends PreferenceFragmentCompat {
 

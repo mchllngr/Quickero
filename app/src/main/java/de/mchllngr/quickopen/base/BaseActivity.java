@@ -14,10 +14,8 @@ import de.mchllngr.quickopen.R;
  *
  * @param <V> view-interface for this activity
  * @param <P> presenter for this activity
- * @author Michael Langer <a href="https://github.com/mchllngr" target="_blank">(GitHub)</a>
  */
-public abstract class BaseActivity<V extends MvpView, P extends MvpBasePresenter<V>>
-        extends DebugBaseActivity<V, P> {
+public abstract class BaseActivity<V extends MvpView, P extends MvpBasePresenter<V>> extends DebugBaseActivity<V, P> {
 
     /**
      * Overrides {@link android.support.v7.app.AppCompatActivity#setSupportActionBar(Toolbar)} to

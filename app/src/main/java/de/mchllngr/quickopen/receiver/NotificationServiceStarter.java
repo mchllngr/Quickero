@@ -17,16 +17,19 @@ import timber.log.Timber;
 
 /**
  * {@link BroadcastReceiver} for (re)starting the {@link NotificationService}.
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 public class NotificationServiceStarter extends BroadcastReceiver {
 
     /**
-     * Start the {@link NotificationService} if called.
+     * Start the {@link NotificationService} if called with the correct actions.
      */
     @Override
     public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        if (!Intent.ACTION_BOOT_COMPLETED.equals(action) && !Intent.ACTION_PACKAGE_REPLACED.equals(action)) {
+            Timber.w("Unknown action '" + action + "'");
+            return;
+        }
 
         saveRestartingTime(context); // FIXME remove
 

@@ -22,8 +22,6 @@ import jp.wasabeef.takt.Takt;
 
 /**
  * Helper-class for easier use with {@link DebugDrawer}.
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 public class DebugDrawerHelper {
 
@@ -34,28 +32,23 @@ public class DebugDrawerHelper {
     /**
      * {@link String} used for initialising the NightMode-{@link ActionsModule}.
      */
-    @BindString(R.string.debug_night_mode_select)
-    String debugNightModeSelect;
+    @BindString(R.string.debug_night_mode_select) String debugNightModeSelect;
     /**
      * {@link String} used for initialising the NightMode-{@link ActionsModule}.
      */
-    @BindString(R.string.debug_night_mode_yes)
-    String debugNightModeYes;
+    @BindString(R.string.debug_night_mode_yes) String debugNightModeYes;
     /**
      * {@link String} used for initialising the NightMode-{@link ActionsModule}.
      */
-    @BindString(R.string.debug_night_mode_no)
-    String debugNightModeNo;
+    @BindString(R.string.debug_night_mode_no) String debugNightModeNo;
     /**
      * {@link String} used for initialising the NightMode-{@link ActionsModule}.
      */
-    @BindString(R.string.debug_night_mode_auto)
-    String debugNightModeAuto;
+    @BindString(R.string.debug_night_mode_auto) String debugNightModeAuto;
     /**
      * {@link String} used for initialising the NightMode-{@link ActionsModule}.
      */
-    @BindString(R.string.debug_night_mode_follow_system)
-    String debugNightModeFollowSystem;
+    @BindString(R.string.debug_night_mode_follow_system) String debugNightModeFollowSystem;
     /**
      * {@link DebugDrawer} reference to use.
      */

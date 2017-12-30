@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,11 +38,8 @@ import de.mchllngr.quickopen.service.NotificationService;
 
 /**
  * {@link android.app.Activity} for handling the selection of applications.
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
-public class MainActivity extends BaseActivity<MainView, MainPresenter>
-        implements MainView, MaterialSimpleListAdapter.Callback, MainAdapter.StartDragListener {
+public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView, MaterialSimpleListAdapter.Callback, MainAdapter.StartDragListener {
 
     /**
      * {@link android.support.design.widget.CoordinatorLayout} from the layout for showing the
@@ -129,59 +125,55 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
                 ContextCompat.getDrawable(this, R.drawable.recycler_view_item_divider)
         ));
 
-        itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
-                ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                ItemTouchHelper.START | ItemTouchHelper.END) {
-            @Override
-            public boolean isLongPressDragEnabled() {
-                return false;
-            }
-
-            @Override
-            public boolean isItemViewSwipeEnabled() {
-                return !reorderMode;
-            }
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView,
-                                  RecyclerView.ViewHolder viewHolder,
-                                  RecyclerView.ViewHolder target) {
-                moveItem(
-                        viewHolder.getAdapterPosition(),
-                        target.getAdapterPosition()
-                );
-
-                return true;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                getPresenter().removeItem(viewHolder.getAdapterPosition());
-            }
-
-            @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                if (!reorderMode) {
-                    // set the red background one swiped item
-                    swipeBackground.setY(viewHolder.itemView.getTop());
-                    if (isCurrentlyActive) {
-                        swipeBackground.setVisibility(View.VISIBLE);
-                    } else {
-                        swipeBackground.setVisibility(View.GONE);
+        itemTouchHelper = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(
+                        ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                        ItemTouchHelper.START | ItemTouchHelper.END) {
+                    @Override
+                    public boolean isLongPressDragEnabled() {
+                        return false;
                     }
-                } else
-                    swipeBackground.setVisibility(View.GONE);
 
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-            }
-        });
+                    @Override
+                    public boolean isItemViewSwipeEnabled() {
+                        return !reorderMode;
+                    }
+
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView,
+                                          RecyclerView.ViewHolder viewHolder,
+                                          RecyclerView.ViewHolder target) {
+                        moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                        return true;
+                    }
+
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                        getPresenter().removeItem(viewHolder.getAdapterPosition());
+                    }
+
+                    @Override
+                    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                        if (!reorderMode) {
+                            // set the red background one swiped item
+                            swipeBackground.setY(viewHolder.itemView.getTop());
+                            if (isCurrentlyActive) {
+                                swipeBackground.setVisibility(View.VISIBLE);
+                            } else {
+                                swipeBackground.setVisibility(View.GONE);
+                            }
+                        } else
+                            swipeBackground.setVisibility(View.GONE);
+
+                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                    }
+                });
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
         getPresenter().loadItems();
     }
 
@@ -225,12 +217,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter>
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @NonNull
-    @Override
-    public FragmentActivity getActivity() {
-        return this;
     }
 
     /**
