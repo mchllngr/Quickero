@@ -9,8 +9,6 @@ import com.google.gson.Gson;
 /**
  * {@link com.f2prateek.rx.preferences.Preference.Adapter} to allow automatic conversion between
  * a class T and a JSON-{@link String} via {@link Gson}.
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 public class GsonPreferenceAdapter<T> implements Preference.Adapter<T> {
     private final Gson gson;

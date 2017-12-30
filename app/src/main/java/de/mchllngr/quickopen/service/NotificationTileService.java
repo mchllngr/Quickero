@@ -18,15 +18,12 @@ import rx.Subscription;
 /**
  * {@link Service} for handling the {@link Tile} for enabling and disabling the
  * {@link android.app.Notification} in Android Nougat and above.
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 @TargetApi(Build.VERSION_CODES.N)
 public class NotificationTileService extends TileService {
 
     /**
-     * {@link Preference}-reference for easier usage of the saved value for notificationEnabled
-     * in the {@link RxSharedPreferences}.
+     * {@link Preference}-reference for easier usage of the saved value for notificationEnabled in the {@link RxSharedPreferences}.
      */
     private Preference<Boolean> notificationEnabledPref;
     /**
@@ -38,9 +35,7 @@ public class NotificationTileService extends TileService {
     public void onCreate() {
         super.onCreate();
 
-        RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(
-                PreferenceManager.getDefaultSharedPreferences(this)
-        );
+        RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(this));
 
         notificationEnabledPref = rxSharedPreferences.getBoolean(
                 getString(R.string.pref_notification_enabled),
@@ -102,8 +97,7 @@ public class NotificationTileService extends TileService {
 
     @Override
     public void onStopListening() {
-        if (notificationEnabledSubscription != null &&
-                !notificationEnabledSubscription.isUnsubscribed())
+        if (notificationEnabledSubscription != null && !notificationEnabledSubscription.isUnsubscribed())
             notificationEnabledSubscription.unsubscribe();
 
         super.onStopListening();
