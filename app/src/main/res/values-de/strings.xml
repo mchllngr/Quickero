@@ -24,6 +24,7 @@
 
     <!-- Notification service -->
     <string name="notification_service_error">Fehler beim Erstellen der Notification.</string>
+    <string name="notification_channel_default_name">Standard</string>
 
     <!-- Pref groups -->
     <string name="pref_group_general_title">Allgemeine Einstellungen</string>

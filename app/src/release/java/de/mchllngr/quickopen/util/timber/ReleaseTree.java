@@ -1,13 +1,12 @@
 package de.mchllngr.quickopen.util.timber;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import timber.log.Timber;
 
 /**
  * {@link timber.log.Timber.Tree} for choosing what should be printed to the {@link Log}.
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 public class ReleaseTree extends Timber.Tree {
 
@@ -26,7 +25,7 @@ public class ReleaseTree extends Timber.Tree {
     }
 
     @Override
-    protected void log(int priority, String tag, String message, Throwable t) {
+    protected void log(int priority, String tag, @NonNull String message, Throwable t) {
         if (isLoggable(priority)) {
 
             // Message is short enough, does not need to be broken into chunks

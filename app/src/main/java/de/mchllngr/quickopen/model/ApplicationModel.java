@@ -15,8 +15,6 @@ import de.mchllngr.quickopen.util.DrawableToBitmapConverter;
 
 /**
  * Model for needed informations about an application.
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 public class ApplicationModel {
 

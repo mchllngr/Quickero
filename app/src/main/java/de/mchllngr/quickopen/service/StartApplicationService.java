@@ -8,14 +8,9 @@ import de.mchllngr.quickopen.R;
 
 /**
  * {@link IntentService} for starting the clicked application from the notification.
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 public class StartApplicationService extends IntentService {
 
-    /**
-     * Default constructor.
-     */
     public StartApplicationService() {
         super(StartApplicationService.class.getName());
     }
@@ -26,8 +21,7 @@ public class StartApplicationService extends IntentService {
         Bundle extras = intent.getExtras();
         if (extras != null && extras.containsKey(getString(R.string.key_package_name))) {
             String packageName = extras.getString(getString(R.string.key_package_name));
-
-            startOtherApplication(packageName);
+            startApplication(packageName);
         }
 
         // close navigation bar
@@ -43,7 +37,7 @@ public class StartApplicationService extends IntentService {
      *
      * @param packageName package-name from selected application
      */
-    private void startOtherApplication(String packageName) {
+    private void startApplication(String packageName) {
         Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
         if (launchIntent != null)
             startActivity(launchIntent);

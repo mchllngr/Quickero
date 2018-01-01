@@ -7,8 +7,6 @@ import android.graphics.drawable.Drawable;
 
 /**
  * Converter-class for converting a {@link Drawable} to a {@link Bitmap}.
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 public class DrawableToBitmapConverter {
 
@@ -32,8 +30,7 @@ public class DrawableToBitmapConverter {
             // Single color bitmap will be created of 1x1 pixel
             bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
         else
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
-                    drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());

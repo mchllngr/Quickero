@@ -1,11 +1,13 @@
 package de.mchllngr.quickopen.util;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
@@ -16,14 +18,18 @@ import java.util.List;
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.service.StartApplicationService;
+import timber.log.Timber;
+
+import static android.os.Build.VERSION;
+import static android.os.Build.VERSION_CODES;
 
 /**
  * Helper-class for easier handling of the custom notification.
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 // TODO inject with dagger ?
 public class CustomNotificationHelper {
+
+    private static final String CHANNEL_ID = "default";
 
     /**
      * Array of every layout used.
@@ -71,10 +77,6 @@ public class CustomNotificationHelper {
      */
     private Context context;
     /**
-     * Id used for showing the notification.
-     */
-    private int notificationId;
-    /**
      * IconId used for showing the notification.
      */
     private int notificationIconId;
@@ -86,27 +88,15 @@ public class CustomNotificationHelper {
      * Priority setting for the notification.
      */
     private int notificationPriority = Notification.PRIORITY_DEFAULT;
-    /**
-     * Reference of the last array of applications shown in the notification.
-     * <p>
-     * Used for restarting the notification.
-     *
-     * @see CustomNotificationHelper#reloadNotification()
-     */
-    private ApplicationModel[] lastApplicationModels;
 
     /**
      * Constructor for initialising.
      *
      * @param context            {@link Context}
-     * @param notificationId     id used for showing the notification
      * @param notificationIconId iconId used for showing the notification
      */
-    public CustomNotificationHelper(@NonNull Context context,
-                                    int notificationId,
-                                    int notificationIconId) {
+    public CustomNotificationHelper(@NonNull Context context, int notificationIconId) {
         this.context = context;
-        this.notificationId = notificationId;
         this.notificationIconId = notificationIconId;
     }
 
@@ -114,58 +104,41 @@ public class CustomNotificationHelper {
      * Setter for {@code notificationIconId}.
      *
      * @param notificationIconId {@code notificationIconId}
-     * @param reloadNotification true if notification should be reloaded after setting
      */
-    public void setNotificationIcon(int notificationIconId, boolean reloadNotification) {
+    public void setNotificationIcon(int notificationIconId) {
         this.notificationIconId = notificationIconId;
-
-        if (reloadNotification)
-            reloadNotification();
     }
 
     /**
      * Setter for {@code notificationVisibility}.
      *
      * @param notificationVisibility {@code notificationVisibility}
-     * @param reloadNotification     true if notification should be reloaded after setting
      */
-    public void setNotificationVisibility(int notificationVisibility, boolean reloadNotification) {
+    public void setNotificationVisibility(int notificationVisibility) {
         this.notificationVisibility = notificationVisibility;
-
-        if (reloadNotification)
-            reloadNotification();
     }
 
     /**
      * Setter for {@code notificationPriority}.
      *
      * @param notificationPriority {@code notificationPriority}
-     * @param reloadNotification   true if notification should be reloaded after setting
      */
-    public void setNotificationPriority(int notificationPriority, boolean reloadNotification) {
+    public void setNotificationPriority(int notificationPriority) {
         this.notificationPriority = notificationPriority;
-
-        if (reloadNotification)
-            reloadNotification();
     }
 
     /**
-     * Checks and prepares the given array of {@link ApplicationModel}s and shows them
-     * in a notification.
+     * Checks and prepares the given array of {@link ApplicationModel}s and returns the notification.
      *
      * @param applicationModels array of {@link ApplicationModel}s to show in notification
      */
-    // TODO make return boolean and return false if notification is not shown for better error handling
-    public void showCustomNotification(ApplicationModel... applicationModels) {
-        int maxAppsInNotification = context.getResources()
-                .getInteger(R.integer.max_apps_in_notification);
+    @Nullable
+    public Notification getCustomNotification(ApplicationModel... applicationModels) {
+        int maxAppsInNotification = context.getResources().getInteger(R.integer.max_apps_in_notification);
         if (applicationModels == null || applicationModels.length <= 0 || applicationModels.length > maxAppsInNotification)
-            return;
+            return null;
 
         applicationModels = removeEmptyItemsFromArray(applicationModels);
-
-        // save applicationModels temporarily
-        lastApplicationModels = applicationModels;
 
         // get custom notification view for length
         RemoteViews customContentView = new RemoteViews(
@@ -200,7 +173,7 @@ public class CustomNotificationHelper {
             customContentView.setOnClickPendingIntent(ICON_IDS_CUSTOM_CONTENT[i], pendingIntent);
         }
 
-        showNotificationWithCustomContentView(customContentView);
+        return getNotificationWithCustomContentView(customContentView);
     }
 
     /**
@@ -213,24 +186,36 @@ public class CustomNotificationHelper {
         // remove items with empty packageName or iconBitmap from array
         List<ApplicationModel> tempApplicationModels = new ArrayList<>();
         for (ApplicationModel applicationModel : applicationModels)
-            if (!TextUtils.isEmpty(applicationModel.packageName) &&
-                    applicationModel.iconBitmap != null)
+            if (!TextUtils.isEmpty(applicationModel.packageName) && applicationModel.iconBitmap != null)
                 tempApplicationModels.add(applicationModel);
 
         return tempApplicationModels.toArray(new ApplicationModel[tempApplicationModels.size()]);
     }
 
     /**
-     * Shows notification with a given custom {@link RemoteViews}.
+     * Returns a notification with a given custom {@link RemoteViews}.
      *
      * @param customContentView {@link RemoteViews} to show in the notification
      */
-    private void showNotificationWithCustomContentView(RemoteViews customContentView) {
-        hideNotification();
+    @Nullable
+    private Notification getNotificationWithCustomContentView(RemoteViews customContentView) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (notificationManager == null) {
+            Timber.d("Could not show notification");
+            return null;
+        }
+
+        // create notification channel
+        if (VERSION.SDK_INT >= VERSION_CODES.O) {
+            String name = context.getString(R.string.notification_channel_default_name);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
 
         // create notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        Notification notification = builder
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
+        return builder
                 .setSmallIcon(notificationIconId)
                 .setAutoCancel(false)
                 .setOngoing(true)
@@ -239,27 +224,5 @@ public class CustomNotificationHelper {
                 .setVisibility(notificationVisibility)
                 .setPriority(notificationPriority)
                 .build();
-
-        // show notification
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(notificationId, notification);
-    }
-
-    /**
-     * Hide the notification.
-     */
-    public void hideNotification() {
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(notificationId);
-    }
-
-    /**
-     * Reloads the notification with {@code lastApplicationModels}.
-     */
-    private void reloadNotification() {
-        if (lastApplicationModels != null)
-            showCustomNotification(lastApplicationModels);
     }
 }
