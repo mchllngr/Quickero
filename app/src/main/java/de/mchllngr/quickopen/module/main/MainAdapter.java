@@ -25,8 +25,6 @@ import de.mchllngr.quickopen.model.ApplicationModel;
 
 /**
  * {@link android.support.v7.widget.RecyclerView.Adapter} for handling the shown items.
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
@@ -50,9 +48,7 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     /**
      * Constructor for initialising the {@link MainAdapter}.
      */
-    MainAdapter(Context context,
-                List<ApplicationModel> items,
-                StartDragListener startDragListener) {
+    MainAdapter(Context context, List<ApplicationModel> items, StartDragListener startDragListener) {
         this.context = context;
         this.items = items;
         this.startDragListener = startDragListener;
@@ -60,9 +56,7 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_view_item, parent, false);
-
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -188,15 +182,12 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
      * Moves an item from {@code fromPosition} to {@code toPosition}.
      */
     void move(int fromPosition, int toPosition) {
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
+        if (fromPosition < toPosition)
+            for (int i = fromPosition; i < toPosition; i++)
                 Collections.swap(items, i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
+        else
+            for (int i = fromPosition; i > toPosition; i--)
                 Collections.swap(items, i, i - 1);
-            }
-        }
 
         notifyItemMoved(fromPosition, toPosition);
     }

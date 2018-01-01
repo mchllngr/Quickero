@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import de.mchllngr.quickopen.R;
@@ -29,8 +28,6 @@ import rx.schedulers.Schedulers;
 
 /**
  * {@link com.hannesdorfmann.mosby.mvp.MvpPresenter} for the {@link MainActivity}
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 @SuppressWarnings("ConstantConditions")
 public class MainPresenter extends BasePresenter<MainView> {
@@ -72,9 +69,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     public void attachView(MainView view) {
         super.attachView(view);
 
-        RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(
-                PreferenceManager.getDefaultSharedPreferences(context)
-        );
+        RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(context));
 
         firstStartPref = rxSharedPreferences.getBoolean(
                 context.getString(R.string.pref_first_start),
@@ -100,9 +95,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             if (applicationModels == null || applicationModels.isEmpty()) {
                 if (isViewAttached()) getView().showProgressDialog();
 
-                final List<String> dummyItemsPackageNames = Arrays.asList(
-                        context.getResources().getStringArray(R.array.dummy_items_package_names)
-                );
+                final List<String> dummyItemsPackageNames = Arrays.asList(context.getResources().getStringArray(R.array.dummy_items_package_names));
 
                 // TODO rebuild with better rxjava-integration
                 Observable.from(context.getPackageManager().getInstalledApplications(0))
@@ -144,14 +137,9 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         getView().showProgressDialog();
 
-        final List<ApplicationModel> savedApplicationModels = ApplicationModel
-                .prepareApplicationModelsList(
-                        context,
-                        packageNamesPref.get()
-                );
+        final List<ApplicationModel> savedApplicationModels = ApplicationModel.prepareApplicationModelsList(context, packageNamesPref.get());
 
-        if (savedApplicationModels.size() >= context.getResources()
-                .getInteger(R.integer.max_apps_in_notification)) {
+        if (savedApplicationModels.size() >= context.getResources().getInteger(R.integer.max_apps_in_notification)) {
             getView().hideAddItemsButton();
             getView().hideProgressDialog();
             getView().showMaxItemsError();
@@ -176,16 +164,13 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                     return !isAlreadyInList;
                 })
-                .map(applicationInfo -> ApplicationModel.getApplicationModelForPackageName(
-                        context,
-                        applicationInfo.packageName
-                ))
+                .map(applicationInfo -> ApplicationModel.getApplicationModelForPackageName(context, applicationInfo.packageName))
                 .filter(applicationModel -> applicationModel != null &&
                         !TextUtils.isEmpty(applicationModel.packageName) &&
                         !TextUtils.isEmpty(applicationModel.name) &&
                         applicationModel.iconDrawable != null &&
                         applicationModel.iconBitmap != null)
-                .toSortedList((applicationModel, applicationModel2) -> applicationModel.name.compareTo(applicationModel2.name))
+                .toSortedList((applicationModel, applicationModel2) -> applicationModel.name.toLowerCase().compareTo(applicationModel2.name.toLowerCase()))
                 .toSingle()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(applicationList -> {
@@ -193,9 +178,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                     lastShownApplicationModels = applicationList;
 
-                    final MaterialSimpleListAdapter adapter = new MaterialSimpleListAdapter(
-                            getView().getApplicationChooserCallback()
-                    );
+                    final MaterialSimpleListAdapter adapter = new MaterialSimpleListAdapter(getView().getApplicationChooserCallback());
 
                     for (ApplicationModel applicationModel : applicationList) {
                         adapter.add(new MaterialSimpleListItem.Builder(context)
@@ -206,11 +189,12 @@ public class MainPresenter extends BasePresenter<MainView> {
                     }
 
                     getView().hideProgressDialog();
-
                     getView().showApplicationListDialog(adapter);
                 }, e -> {
-                    getView().hideProgressDialog();
-                    getView().onOpenApplicationListError();
+                    if (isViewAttached()) {
+                        getView().hideProgressDialog();
+                        getView().onOpenApplicationListError();
+                    }
                 });
     }
 
@@ -289,10 +273,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         getView().showProgressDialog();
 
-        List<ApplicationModel> applicationModels = ApplicationModel.prepareApplicationModelsList(
-                context,
-                packageNamesPref.get()
-        );
+        List<ApplicationModel> applicationModels = ApplicationModel.prepareApplicationModelsList(context, packageNamesPref.get());
 
         if (applicationModels.size() >= context.getResources()
                 .getInteger(R.integer.max_apps_in_notification))
@@ -315,6 +296,7 @@ public class MainPresenter extends BasePresenter<MainView> {
      * Adds an item at {@code position} to the list in {@link android.content.SharedPreferences}
      * and calls the {@link MainView} to also add it to the shown list.
      */
+    @SuppressWarnings("unchecked")
     void addItem(int position, ApplicationModel applicationModel) {
         List applicationModels = packageNamesPref.get();
 
@@ -355,10 +337,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         lastRemovedItem = new RemovedApplicationModel(
                 position,
-                ApplicationModel.getApplicationModelForPackageName(
-                        context,
-                        (String) applicationModels.get(position)
-                )
+                ApplicationModel.getApplicationModelForPackageName(context, (String) applicationModels.get(position))
         );
 
         if (applicationModels != null && applicationModels.size() > 1) {
@@ -372,32 +351,6 @@ public class MainPresenter extends BasePresenter<MainView> {
             getView().removeItem(position);
             getView().showUndoButton();
         }
-    }
-
-    /**
-     * Moves an item at {@code fromPosition} to {@code toPosition} from the list in
-     * {@link android.content.SharedPreferences} and calls the {@link MainView} to also move
-     * it in the shown list.
-     */
-    void moveItem(int fromPosition, int toPosition) {
-        List applicationModels = packageNamesPref.get();
-
-        if (applicationModels == null || applicationModels.isEmpty()) return;
-
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(applicationModels, i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(applicationModels, i, i - 1);
-            }
-        }
-
-        packageNamesPref.set(applicationModels);
-
-        if (isViewAttached())
-            getView().moveItem(fromPosition, toPosition);
     }
 
     void undoRemove() {
