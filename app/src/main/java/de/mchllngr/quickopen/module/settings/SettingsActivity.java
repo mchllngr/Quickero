@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 
 import butterknife.BindView;
@@ -17,11 +16,8 @@ import de.mchllngr.quickopen.util.FragmentStarter;
 
 /**
  * {@link android.app.Activity} for handling the {@link SettingsFragment}.
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
-public class SettingsActivity extends BaseActivity<BaseView, BasePresenter<BaseView>>
-        implements BaseView {
+public class SettingsActivity extends BaseActivity<BaseView, BasePresenter<BaseView>> implements BaseView {
 
     /**
      * {@link Toolbar} for this {@link android.app.Activity}.
@@ -55,10 +51,5 @@ public class SettingsActivity extends BaseActivity<BaseView, BasePresenter<BaseV
                 SettingsFragment.newInstance(),
                 R.id.fragment_container
         );
-    }
-
-    @Override
-    public FragmentActivity getActivity() {
-        return this;
     }
 }

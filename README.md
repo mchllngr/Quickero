@@ -2,10 +2,17 @@
 An android app to quickly open your favorite apps through a notification.
 
 # KNOWN BUGS
+- splashscreen is broken
+- the automatic start of NotificationService is pretty inconsistent
 - settings-text eventually too long (-> multiline)
 - some apps are system-apps on one device but not on another (dropbox, photos, gmail, maps, ...)
+- item slide shows a red background, which doesn't look right (no trash-box for deleting, no fading, etc.)
 
 # TODO
+- remove notification priority options, because this can now be handled over the channel (even by the user)
+    - also the visiblity option ?
+- add licence to every file ?
+- remove saving restart-time in NotificationServiceStarter
 - add better texts and explanations to settings-page / style settings with images
 - add empty-view for recyclerview
 - check customNotification-design on all api-levels
@@ -13,7 +20,7 @@ An android app to quickly open your favorite apps through a notification.
 - what to do when app-list is empty ?
 - rebuild MainPresenter#openApplicationList() with better rxjava-integration
 - rebuild MainPresenter#addDummyItemsIfFirstStart() with better rxjava-integration
-- add Firebase Crashlytics
+- add Crashlytics
 
 # TODO a little bit later
 - add tutorial
@@ -35,7 +42,7 @@ An android app to quickly open your favorite apps through a notification.
 # License
 
 ```
-Copyright 2016-2017 Michael Langer (mchllngr)
+Copyright 2016 Michael Langer (mchllngr)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

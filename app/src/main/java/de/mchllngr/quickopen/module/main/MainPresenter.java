@@ -28,8 +28,6 @@ import rx.schedulers.Schedulers;
 
 /**
  * {@link com.hannesdorfmann.mosby.mvp.MvpPresenter} for the {@link MainActivity}
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 @SuppressWarnings("ConstantConditions")
 public class MainPresenter extends BasePresenter<MainView> {
@@ -71,9 +69,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     public void attachView(MainView view) {
         super.attachView(view);
 
-        RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(
-                PreferenceManager.getDefaultSharedPreferences(context)
-        );
+        RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(context));
 
         firstStartPref = rxSharedPreferences.getBoolean(
                 context.getString(R.string.pref_first_start),
@@ -99,9 +95,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             if (applicationModels == null || applicationModels.isEmpty()) {
                 if (isViewAttached()) getView().showProgressDialog();
 
-                final List<String> dummyItemsPackageNames = Arrays.asList(
-                        context.getResources().getStringArray(R.array.dummy_items_package_names)
-                );
+                final List<String> dummyItemsPackageNames = Arrays.asList(context.getResources().getStringArray(R.array.dummy_items_package_names));
 
                 // TODO rebuild with better rxjava-integration
                 Observable.from(context.getPackageManager().getInstalledApplications(0))
@@ -143,10 +137,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         getView().showProgressDialog();
 
-        final List<ApplicationModel> savedApplicationModels = ApplicationModel.prepareApplicationModelsList(
-                context,
-                packageNamesPref.get()
-        );
+        final List<ApplicationModel> savedApplicationModels = ApplicationModel.prepareApplicationModelsList(context, packageNamesPref.get());
 
         if (savedApplicationModels.size() >= context.getResources().getInteger(R.integer.max_apps_in_notification)) {
             getView().hideAddItemsButton();
@@ -173,10 +164,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                     return !isAlreadyInList;
                 })
-                .map(applicationInfo -> ApplicationModel.getApplicationModelForPackageName(
-                        context,
-                        applicationInfo.packageName
-                ))
+                .map(applicationInfo -> ApplicationModel.getApplicationModelForPackageName(context, applicationInfo.packageName))
                 .filter(applicationModel -> applicationModel != null &&
                         !TextUtils.isEmpty(applicationModel.packageName) &&
                         !TextUtils.isEmpty(applicationModel.name) &&
@@ -190,9 +178,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                     lastShownApplicationModels = applicationList;
 
-                    final MaterialSimpleListAdapter adapter = new MaterialSimpleListAdapter(
-                            getView().getApplicationChooserCallback()
-                    );
+                    final MaterialSimpleListAdapter adapter = new MaterialSimpleListAdapter(getView().getApplicationChooserCallback());
 
                     for (ApplicationModel applicationModel : applicationList) {
                         adapter.add(new MaterialSimpleListItem.Builder(context)
@@ -203,7 +189,6 @@ public class MainPresenter extends BasePresenter<MainView> {
                     }
 
                     getView().hideProgressDialog();
-
                     getView().showApplicationListDialog(adapter);
                 }, e -> {
                     if (isViewAttached()) {
@@ -288,10 +273,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         getView().showProgressDialog();
 
-        List<ApplicationModel> applicationModels = ApplicationModel.prepareApplicationModelsList(
-                context,
-                packageNamesPref.get()
-        );
+        List<ApplicationModel> applicationModels = ApplicationModel.prepareApplicationModelsList(context, packageNamesPref.get());
 
         if (applicationModels.size() >= context.getResources()
                 .getInteger(R.integer.max_apps_in_notification))
@@ -355,10 +337,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         lastRemovedItem = new RemovedApplicationModel(
                 position,
-                ApplicationModel.getApplicationModelForPackageName(
-                        context,
-                        (String) applicationModels.get(position)
-                )
+                ApplicationModel.getApplicationModelForPackageName(context, (String) applicationModels.get(position))
         );
 
         if (applicationModels != null && applicationModels.size() > 1) {

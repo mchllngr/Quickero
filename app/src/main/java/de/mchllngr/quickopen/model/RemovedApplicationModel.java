@@ -2,8 +2,6 @@ package de.mchllngr.quickopen.model;
 
 /**
  * Class for holding the needed data about an removed item for the remove to be undone.
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
  */
 public class RemovedApplicationModel {
 
