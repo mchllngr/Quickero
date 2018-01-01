@@ -15,6 +15,9 @@ import java.util.Locale;
 import de.mchllngr.quickopen.service.NotificationService;
 import timber.log.Timber;
 
+import static android.os.Build.VERSION;
+import static android.os.Build.VERSION_CODES;
+
 /**
  * {@link BroadcastReceiver} for (re)starting the {@link NotificationService}.
  */
@@ -34,7 +37,11 @@ public class NotificationServiceStarter extends BroadcastReceiver {
         saveRestartingTime(context); // FIXME remove
 
         // Starts the service
-        context.startService(new Intent(context, NotificationService.class));
+        Intent serviceIntent = new Intent(context, NotificationService.class);
+        if (VERSION.SDK_INT >= VERSION_CODES.O)
+            context.startForegroundService(serviceIntent);
+        else
+            context.startService(serviceIntent);
     }
 
     // FIXME delete
