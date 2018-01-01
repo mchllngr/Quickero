@@ -3,7 +3,6 @@ package de.mchllngr.quickopen.service;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
-import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -19,47 +18,31 @@ import java.util.List;
 
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.model.ApplicationModel;
-import de.mchllngr.quickopen.receiver.NotificationServiceStarter;
 import de.mchllngr.quickopen.util.CustomNotificationHelper;
 import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
 
+import static android.os.Build.VERSION;
+import static android.os.Build.VERSION_CODES;
+
 /**
- * {@link Service} for handling the notification
- *
- * @author Michael Langer (<a href="https://github.com/mchllngr" target="_blank">GitHub</a>)
+ * Foreground-{@link Service} for handling the notification
  */
 public class NotificationService extends Service {
 
-    /**
-     * Name of an intentFilter used to notify the {@link NotificationServiceStarter}.
-     *
-     * @see NotificationServiceStarter
-     */
-    private static final String INTENT_FILTER_NAME = "de.mchllngr.quickopen.service.RestartService";
     private static final int NOTIFICATION_ICON_ID_NOT_VECTOR = R.drawable.ic_notification;
     private static final int NOTIFICATION_ICON_ID_VECTOR = R.drawable.ic_speaker_notes_white_24px;
-    private static final int NOTIFICATION_ICON_ID_NOT_VECTOR_TRANSPARENT =
-            R.drawable.ic_notification_blank;
-    private static final int NOTIFICATION_ICON_ID_VECTOR_TRANSPARENT =
-            R.drawable.ic_blank_24px;
+    private static final int NOTIFICATION_ICON_ID_NOT_VECTOR_TRANSPARENT = R.drawable.ic_notification_blank;
+    private static final int NOTIFICATION_ICON_ID_VECTOR_TRANSPARENT = R.drawable.ic_blank_24px;
 
     /**
-     * Allows usage of VectorDrawables when current {@link android.os.Build.VERSION}
-     * is Android Lollipop or newer.
+     * Allows usage of VectorDrawables when current {@link VERSION} is Android Lollipop or newer.
      */
-    private final boolean useVectorDrawables =
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    private final boolean useVectorDrawables = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
 
     /**
      * Determines if the notification is enabled and should be shown.
      */
     private boolean notificationEnabled = true;
-    /**
-     * Determines if the current instance of the service should try to send a message to
-     * {@link NotificationServiceStarter} if its about to be
-     * destroyed for restarting the service.
-     */
-    private boolean shouldRestartAfterDestroy = true;
     /**
      * {@link CustomNotificationHelper}-reference for easier handling of the custom notification.
      */
@@ -94,19 +77,11 @@ public class NotificationService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(
-                PreferenceManager.getDefaultSharedPreferences(this)
-        );
+        RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(this));
 
-        int notificationIcon = useVectorDrawables
-                ? NOTIFICATION_ICON_ID_VECTOR
-                : NOTIFICATION_ICON_ID_NOT_VECTOR;
+        int notificationIcon = useVectorDrawables ? NOTIFICATION_ICON_ID_VECTOR : NOTIFICATION_ICON_ID_NOT_VECTOR;
 
-        customNotificationHelper = new CustomNotificationHelper(
-                this,
-                getResources().getInteger(R.integer.notification_id),
-                notificationIcon
-        );
+        customNotificationHelper = new CustomNotificationHelper(this, notificationIcon);
 
         notificationEnabledPref = rxSharedPreferences.getBoolean(
                 getString(R.string.pref_notification_enabled),
@@ -120,9 +95,7 @@ public class NotificationService extends Service {
 
         notificationShowOnLockScreenPref = rxSharedPreferences.getBoolean(
                 getString(R.string.pref_notification_show_on_lock_screen),
-                Boolean.parseBoolean(
-                        getString(R.string.pref_notification_show_on_lock_screen_default_value)
-                )
+                Boolean.parseBoolean(getString(R.string.pref_notification_show_on_lock_screen_default_value))
         );
 
         notificationPriorityPref = rxSharedPreferences.getString(
@@ -159,14 +132,10 @@ public class NotificationService extends Service {
 
         // subscribe to changes in notificationEnabledPref
         notificationEnabledPref.asObservable().subscribe(notificationEnabled -> {
-            NotificationService.this.notificationEnabled = notificationEnabled;
+            this.notificationEnabled = notificationEnabled;
 
             if (notificationEnabled) {
-                ApplicationModel[] applicationModels = ApplicationModel
-                        .prepareApplicationModelsArray(
-                                NotificationService.this,
-                                packageNamesPref.get()
-                        );
+                ApplicationModel[] applicationModels = ApplicationModel.prepareApplicationModelsArray(this, packageNamesPref.get());
                 showNotification(applicationModels);
             } else
                 hideNotification();
@@ -175,20 +144,12 @@ public class NotificationService extends Service {
         // subscribe to changes in transparentIconPref
         transparentIconPref.asObservable().subscribe(transparentIcon -> {
             int notificationIcon;
-            if (transparentIcon) {
-                notificationIcon = useVectorDrawables
-                        ? NOTIFICATION_ICON_ID_VECTOR_TRANSPARENT
-                        : NOTIFICATION_ICON_ID_NOT_VECTOR_TRANSPARENT;
-            } else {
-                notificationIcon = useVectorDrawables
-                        ? NOTIFICATION_ICON_ID_VECTOR
-                        : NOTIFICATION_ICON_ID_NOT_VECTOR;
-            }
+            if (transparentIcon)
+                notificationIcon = useVectorDrawables ? NOTIFICATION_ICON_ID_VECTOR_TRANSPARENT : NOTIFICATION_ICON_ID_NOT_VECTOR_TRANSPARENT;
+            else
+                notificationIcon = useVectorDrawables ? NOTIFICATION_ICON_ID_VECTOR : NOTIFICATION_ICON_ID_NOT_VECTOR;
 
-            customNotificationHelper.setNotificationIcon(
-                    notificationIcon,
-                    notificationEnabled
-            );
+            customNotificationHelper.setNotificationIcon(notificationIcon);
         });
 
         // subscribe to changes in notificationShowOnLockScreenPref
@@ -197,10 +158,7 @@ public class NotificationService extends Service {
             if (!notificationShowOnLockScreen)
                 notificationVisibility = NotificationCompat.VISIBILITY_SECRET;
 
-            customNotificationHelper.setNotificationVisibility(
-                    notificationVisibility,
-                    notificationEnabled
-            );
+            customNotificationHelper.setNotificationVisibility(notificationVisibility);
         });
 
         // subscribe to changes in notificationPriorityPref
@@ -208,51 +166,33 @@ public class NotificationService extends Service {
             if (TextUtils.isEmpty(notificationPriority)) return;
 
             int notificationPriorityValue = Notification.PRIORITY_MAX;
-            if (notificationPriority.equals(getString(
-                    R.string.pref_notification_priority_value_high)))
+            if (notificationPriority.equals(getString(R.string.pref_notification_priority_value_high)))
                 notificationPriorityValue = Notification.PRIORITY_HIGH;
-            else if (notificationPriority.equals(getString(
-                    R.string.pref_notification_priority_value_default)))
+            else if (notificationPriority.equals(getString(R.string.pref_notification_priority_value_default)))
                 notificationPriorityValue = Notification.PRIORITY_DEFAULT;
-            else if (notificationPriority.equals(getString(
-                    R.string.pref_notification_priority_value_low)))
+            else if (notificationPriority.equals(getString(R.string.pref_notification_priority_value_low)))
                 notificationPriorityValue = Notification.PRIORITY_LOW;
-            else if (notificationPriority.equals(getString(
-                    R.string.pref_notification_priority_value_min)))
+            else if (notificationPriority.equals(getString(R.string.pref_notification_priority_value_min)))
                 notificationPriorityValue = Notification.PRIORITY_MIN;
 
-            customNotificationHelper.setNotificationPriority(
-                    notificationPriorityValue,
-                    notificationEnabled
-            );
+            customNotificationHelper.setNotificationPriority(notificationPriorityValue);
         });
 
         // subscribe to changes in packageNamesPref
         packageNamesPref.asObservable().subscribe(list -> {
-            ApplicationModel[] applicationModels = ApplicationModel
-                    .prepareApplicationModelsArray(
-                            NotificationService.this,
-                            list
-                    );
+            ApplicationModel[] applicationModels = ApplicationModel.prepareApplicationModelsArray(this, list);
 
-            if (applicationModels.length == 0)
-                hideNotification();
-            else
+            if (applicationModels.length > 0)
                 showNotification(applicationModels);
+            else
+                hideNotification();
         });
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-
         hideNotification();
-
-        if (shouldRestartAfterDestroy) {
-            // sends broadcast when service is about to be destroyed
-            Intent broadcastIntent = new Intent(INTENT_FILTER_NAME);
-            sendBroadcast(broadcastIntent);
-        }
+        super.onDestroy();
     }
 
     @Nullable
@@ -268,26 +208,29 @@ public class NotificationService extends Service {
      * @param applicationModels array of {@link ApplicationModel}s to show in notification
      */
     private void showNotification(ApplicationModel... applicationModels) {
-        if (notificationEnabled && customNotificationHelper != null)
-            customNotificationHelper.showCustomNotification(applicationModels);
+        if (notificationEnabled && customNotificationHelper != null) {
+            Notification notification = customNotificationHelper.getCustomNotification(applicationModels);
+            if (notification != null)
+                startForeground(getResources().getInteger(R.integer.notification_id), notification);
+            else
+                onError();
+        } else
+            onError();
     }
 
     /**
-     * Calls {@link CustomNotificationHelper} to hide the notification.
+     * Hides the notification while removing {@link Service} from foreground state.
      */
     private void hideNotification() {
-        if (customNotificationHelper != null)
-            customNotificationHelper.hideNotification();
+        stopForeground(true);
     }
 
     /**
-     * Shows an error-message, stops the {@link Service} from restarting by setting
-     * {@code shouldRestartAfterDestroy} and stops the {@link Service}.
+     * Shows an error-message and stops the {@link Service}.
      */
     private void onError() {
         showErrorMessage();
-        shouldRestartAfterDestroy = false;
-        stopSelf();
+        stopService();
     }
 
     /**
@@ -295,7 +238,14 @@ public class NotificationService extends Service {
      */
     private void showErrorMessage() {
         // TODO replace Toast with Error-Notification (click starts activity)
-        Toast.makeText(this, getString(R.string.notification_service_error),
-                Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.notification_service_error), Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Stops the {@link Service}.
+     */
+    private void stopService() {
+        hideNotification();
+        stopSelf();
     }
 }
