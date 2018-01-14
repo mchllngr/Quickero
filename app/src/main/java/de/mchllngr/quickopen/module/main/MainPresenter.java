@@ -2,6 +2,8 @@ package de.mchllngr.quickopen.module.main;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -99,7 +101,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                 // TODO rebuild with better rxjava-integration
                 Observable.from(context.getPackageManager().getInstalledApplications(0))
-                        .subscribeOn(Schedulers.computation())
+                        .subscribeOn(Schedulers.newThread())
                         .toList()
                         .toSingle()
                         .observeOn(AndroidSchedulers.mainThread())
@@ -108,8 +110,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                             for (int i = 0; i < dummyItemsPackageNames.size(); i++) {
                                 for (ApplicationInfo applicationInfo : applicationInfos)
-                                    if (dummyItemsPackageNames.get(i)
-                                            .equals(applicationInfo.packageName)) {
+                                    if (dummyItemsPackageNames.get(i).equals(applicationInfo.packageName)) {
                                         dummyitems.add(applicationInfo.packageName);
                                         break;
                                     }
@@ -147,23 +148,11 @@ public class MainPresenter extends BasePresenter<MainView> {
         }
 
         // TODO rebuild with better rxjava-integration
-        Observable.from(context.getPackageManager().getInstalledApplications(0))
-                .subscribeOn(Schedulers.computation())
-                .filter(applicationInfo -> {
-                    if (isSystemPackage(applicationInfo) &&
-                            !TextUtils.isEmpty(applicationInfo.packageName))
-                        return false;
-
-                    boolean isAlreadyInList = false;
-                    for (ApplicationModel savedApplicationModel : savedApplicationModels)
-                        if (applicationInfo.packageName
-                                .equals(savedApplicationModel.packageName)) {
-                            isAlreadyInList = true;
-                            break;
-                        }
-
-                    return !isAlreadyInList;
-                })
+        Observable.from(context.getPackageManager().getInstalledPackages(PackageManager.GET_ACTIVITIES))
+                .subscribeOn(Schedulers.newThread())
+                .filter(this::isLaunchable)
+                .filter(packageInfo -> !isAppAlreadyInList(savedApplicationModels, packageInfo))
+                .map(packageInfo -> packageInfo.applicationInfo)
                 .map(applicationInfo -> ApplicationModel.getApplicationModelForPackageName(context, applicationInfo.packageName))
                 .filter(applicationModel -> applicationModel != null &&
                         !TextUtils.isEmpty(applicationModel.packageName) &&
@@ -199,10 +188,24 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     /**
-     * Checks if an application is a system application.
+     * Checks is the given app is already in the list.
      */
-    private boolean isSystemPackage(ApplicationInfo applicationInfo) {
-        return ((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+    private boolean isAppAlreadyInList(List<ApplicationModel> savedApplicationModels, PackageInfo packageInfo) {
+        boolean isAlreadyInList = false;
+        for (ApplicationModel savedApplicationModel : savedApplicationModels)
+            if (packageInfo.packageName.equals(savedApplicationModel.packageName)) {
+                isAlreadyInList = true;
+                break;
+            }
+
+        return isAlreadyInList;
+    }
+
+    /**
+     * Checks if an application is launchable by checking if there is a launch intent available.
+     */
+    private boolean isLaunchable(PackageInfo packageInfo) {
+        return !TextUtils.isEmpty(packageInfo.packageName) && context.getPackageManager().getLaunchIntentForPackage(packageInfo.packageName) != null;
     }
 
     /**

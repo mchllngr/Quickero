@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
@@ -67,49 +68,51 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.SUPPORT_VERSION"
+    implementation "com.android.support:design:$rootProject.ext.SUPPORT_VERSION"
+    implementation "com.android.support:recyclerview-v7:$rootProject.ext.SUPPORT_VERSION"
+    implementation "com.android.support:preference-v7:$rootProject.ext.SUPPORT_VERSION"
 
-    compile "com.android.support:appcompat-v7:$rootProject.ext.SUPPORT_VERSION"
-    compile "com.android.support:design:$rootProject.ext.SUPPORT_VERSION"
-    compile "com.android.support:recyclerview-v7:$rootProject.ext.SUPPORT_VERSION"
-    compile "com.android.support:preference-v7:$rootProject.ext.SUPPORT_VERSION"
+    implementation "com.hannesdorfmann.mosby:mvp:$rootProject.ext.MOSBY_VERSION"
 
-    compile "com.hannesdorfmann.mosby:mvp:$rootProject.ext.MOSBY_VERSION"
-
-    compile "com.jakewharton:butterknife:$rootProject.ext.BUTTERKNIFE_VERSION"
+    implementation "com.jakewharton:butterknife:$rootProject.ext.BUTTERKNIFE_VERSION"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.BUTTERKNIFE_VERSION"
 
-    compile "com.jakewharton.timber:timber:$rootProject.ext.TIMBER_VERSION"
+    implementation "com.jakewharton.timber:timber:$rootProject.ext.TIMBER_VERSION"
 
-    compile "com.google.code.gson:gson:$rootProject.ext.GSON_VERSION"
+    implementation "com.google.code.gson:gson:$rootProject.ext.GSON_VERSION"
 
-    compile "io.reactivex:rxjava:$rootProject.ext.RX_JAVA_VERSION"
-    compile "io.reactivex:rxandroid:$rootProject.ext.RX_ANDROID_VERSION"
+    implementation "io.reactivex:rxjava:$rootProject.ext.RX_JAVA_VERSION"
+    implementation "io.reactivex:rxandroid:$rootProject.ext.RX_ANDROID_VERSION"
 
-    compile "com.f2prateek.rx.preferences:rx-preferences:$rootProject.ext.RX_PREFERENCES_VERSION"
+    implementation "com.f2prateek.rx.preferences:rx-preferences:$rootProject.ext.RX_PREFERENCES_VERSION"
 
-    compile "com.afollestad.material-dialogs:core:$rootProject.ext.MATERIAL_DIALOGS_VERSION"
-    compile "com.afollestad.material-dialogs:commons:$rootProject.ext.MATERIAL_DIALOGS_VERSION"
+    implementation "com.afollestad.material-dialogs:core:$rootProject.ext.MATERIAL_DIALOGS_VERSION"
+    implementation "com.afollestad.material-dialogs:commons:$rootProject.ext.MATERIAL_DIALOGS_VERSION"
 
-    compile "com.bignerdranch.android:simple-item-decoration:$rootProject.ext.SIMPLE_ITEM_DECORATION_VERSION"
+    implementation "com.bignerdranch.android:simple-item-decoration:$rootProject.ext.SIMPLE_ITEM_DECORATION_VERSION"
 
-    compile "com.github.medyo:android-about-page:$rootProject.ext.ABOUT_PAGE_VERSION"
+    implementation "com.github.medyo:android-about-page:$rootProject.ext.ABOUT_PAGE_VERSION"
 
-    debugCompile "com.facebook.stetho:stetho:$rootProject.ext.STETHO_VERSION"
+    implementation("com.crashlytics.sdk.android:crashlytics:$rootProject.ext.CRASHLYTICS_VERSION@aar") {
+        transitive = true
+    }
 
-    debugCompile "io.palaima.debugdrawer:debugdrawer:$rootProject.ext.DEBUGDRAWER_VERSION"
-    debugCompile "io.palaima.debugdrawer:debugdrawer-commons:$rootProject.ext.DEBUGDRAWER_VERSION"
-    debugCompile "io.palaima.debugdrawer:debugdrawer-actions:$rootProject.ext.DEBUGDRAWER_VERSION"
-    debugCompile "io.palaima.debugdrawer:debugdrawer-scalpel:$rootProject.ext.DEBUGDRAWER_VERSION"
-    debugCompile "io.palaima.debugdrawer:debugdrawer-fps:$rootProject.ext.DEBUGDRAWER_VERSION"
+    debugImplementation "com.facebook.stetho:stetho:$rootProject.ext.STETHO_VERSION"
+
+    debugImplementation "io.palaima.debugdrawer:debugdrawer:$rootProject.ext.DEBUGDRAWER_VERSION"
+    debugImplementation "io.palaima.debugdrawer:debugdrawer-commons:$rootProject.ext.DEBUGDRAWER_VERSION"
+    debugImplementation "io.palaima.debugdrawer:debugdrawer-actions:$rootProject.ext.DEBUGDRAWER_VERSION"
+    debugImplementation "io.palaima.debugdrawer:debugdrawer-scalpel:$rootProject.ext.DEBUGDRAWER_VERSION"
+    debugImplementation "io.palaima.debugdrawer:debugdrawer-fps:$rootProject.ext.DEBUGDRAWER_VERSION"
     // Used by DebugDrawer
-    debugCompile "com.jakewharton.scalpel:scalpel:$rootProject.ext.SCALPEL_VERSION"
-    debugCompile "jp.wasabeef:takt:$rootProject.ext.TAKT_VERSION"
+    debugImplementation "com.jakewharton.scalpel:scalpel:$rootProject.ext.SCALPEL_VERSION"
+    debugImplementation "jp.wasabeef:takt:$rootProject.ext.TAKT_VERSION"
 
-    testCompile "junit:junit:$rootProject.ext.JUNIT_VERSION"
-    testCompile "org.mockito:mockito-core:$rootProject.ext.MOCKITO_VERSION"
+    testImplementation "junit:junit:$rootProject.ext.JUNIT_VERSION"
+    testImplementation "org.mockito:mockito-core:$rootProject.ext.MOCKITO_VERSION"
 
-    androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.ext.ESPRESSO_VERSION", {
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.ext.ESPRESSO_VERSION", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 }
