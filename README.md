@@ -5,12 +5,11 @@ An android app to quickly open your favorite apps through a notification.
 - splashscreen is broken
 - the automatic start of NotificationService is pretty inconsistent
 - settings-text eventually too long (-> multiline)
-- some apps are system-apps on one device but not on another (dropbox, photos, gmail, maps, ...)
 - item slide shows a red background, which doesn't look right (no trash-box for deleting, no fading, etc.)
 
 # TODO
 - remove notification priority options, because this can now be handled over the channel (even by the user)
-    - also the visiblity option ?
+    - also the visibility option ?
 - add licence to every file ?
 - remove saving restart-time in NotificationServiceStarter
 - add better texts and explanations to settings-page / style settings with images
@@ -20,7 +19,6 @@ An android app to quickly open your favorite apps through a notification.
 - what to do when app-list is empty ?
 - rebuild MainPresenter#openApplicationList() with better rxjava-integration
 - rebuild MainPresenter#addDummyItemsIfFirstStart() with better rxjava-integration
-- add Crashlytics
 
 # TODO a little bit later
 - add tutorial
@@ -38,6 +36,9 @@ An android app to quickly open your favorite apps through a notification.
 # FEATURES-IDEAS (for later)
 - profiles (e.g. work/home)
     - automatic change between profiles decided by time/location(/connected wifi?)
+
+# Crashlytics
+This app uses Crashlytics by Fabric. For it to work you must declare your own `app/fabric.properties` file containing your `apiKey` and `apiSecret`. Otherwise you first need to remove Crashlytics completely.
 
 # License
 
