@@ -19,32 +19,13 @@
     <string name="menu_about">Über</string>
 
     <!-- Titles -->
-    <string name="settings_title">Einstellungen</string>
     <string name="about_title">Über</string>
 
     <!-- Notification service -->
     <string name="notification_service_error">Fehler beim Erstellen der Notification.</string>
     <string name="notification_channel_default_name">Standard</string>
 
-    <!-- Pref groups -->
-    <string name="pref_group_general_title">Allgemeine Einstellungen</string>
-    <string name="pref_group_notification_title">Notification-Einstellungen</string>
-
     <!-- Pref notification enabled -->
     <string name="pref_notification_enabled_title">Notification anzeigen</string>
-
-    <!-- Pref transparent icon -->
-    <string name="pref_transparent_icon_title">Verstecke Notification-Icon</string>
-
-    <!-- Pref show on lockScreen -->
-    <string name="pref_notification_show_on_lock_screen_title">Auf dem Lockcreen anzeigen</string>
-
-    <!-- Pref priority -->
-    <string name="pref_notification_priority_title">Priorität der Notification</string>
-    <string name="pref_notification_priority_option_max">Maximal</string>
-    <string name="pref_notification_priority_option_high">Hoch</string>
-    <string name="pref_notification_priority_option_default">Normal</string>
-    <string name="pref_notification_priority_option_low">Niedrig</string>
-    <string name="pref_notification_priority_option_min">Minimal</string>
 
 </resources>

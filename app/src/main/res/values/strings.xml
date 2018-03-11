@@ -21,16 +21,11 @@
     <string name="menu_about">About</string>
 
     <!-- Titles -->
-    <string name="settings_title">Settings</string>
     <string name="about_title">About</string>
 
     <!-- Notification service -->
     <string name="notification_service_error">Error while creating notification.</string>
     <string name="notification_channel_default_name">Default</string>
-
-    <!-- Pref groups -->
-    <string name="pref_group_general_title">General settings</string>
-    <string name="pref_group_notification_title">Notification settings</string>
 
     <!-- Pref first start -->
     <string name="first_start_default_value" translatable="false">true</string>
@@ -38,41 +33,6 @@
     <!-- Pref notification enabled -->
     <string name="pref_notification_enabled_title">Show notification</string>
     <string name="pref_notification_enabled_default_value" translatable="false">true</string>
-
-    <!-- Pref transparent icon -->
-    <string name="pref_transparent_icon_title">Hide notification icon</string>
-    <string name="pref_transparent_icon_default_value" translatable="false">false</string>
-
-    <!-- Pref show on lockScreen -->
-    <string name="pref_notification_show_on_lock_screen_title">Show on Lockscreen</string>
-    <string name="pref_notification_show_on_lock_screen_default_value" translatable="false">true</string>
-
-    <!-- Pref priority -->
-    <string name="pref_notification_priority_title">Notification priority</string>
-    <string name="pref_notification_priority_value_max" translatable="false">max</string>
-    <string name="pref_notification_priority_value_high" translatable="false">high</string>
-    <string name="pref_notification_priority_value_default" translatable="false">default</string>
-    <string name="pref_notification_priority_value_low" translatable="false">low</string>
-    <string name="pref_notification_priority_value_min" translatable="false">min</string>
-    <string-array name="pref_notification_priority_values">
-        <item>@string/pref_notification_priority_value_max</item>
-        <item>@string/pref_notification_priority_value_high</item>
-        <item>@string/pref_notification_priority_value_default</item>
-        <item>@string/pref_notification_priority_value_low</item>
-        <item>@string/pref_notification_priority_value_min</item>
-    </string-array>
-    <string name="pref_notification_priority_option_max">Max</string>
-    <string name="pref_notification_priority_option_high">High</string>
-    <string name="pref_notification_priority_option_default">Default</string>
-    <string name="pref_notification_priority_option_low">Low</string>
-    <string name="pref_notification_priority_option_min">Min</string>
-    <string-array name="pref_notification_priority_options">
-        <item>@string/pref_notification_priority_option_max</item>
-        <item>@string/pref_notification_priority_option_high</item>
-        <item>@string/pref_notification_priority_option_default</item>
-        <item>@string/pref_notification_priority_option_low</item>
-        <item>@string/pref_notification_priority_option_min</item>
-    </string-array>
 
     <!-- Dummy items package names -->
     <string-array name="dummy_items_package_names" translatable="false">

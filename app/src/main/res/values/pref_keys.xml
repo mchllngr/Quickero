@@ -4,9 +4,6 @@
     <string name="pref_first_start" translatable="false">first_start</string>
     <string name="pref_notification_enabled" translatable="false">notification_enabled</string>
     <string name="pref_package_names" translatable="false">package_names</string>
-    <string name="pref_transparent_icon" translatable="false">transparent_icon</string>
-    <string name="pref_notification_show_on_lock_screen" translatable="false">notification_show_on_lock_screen</string>
-    <string name="pref_notification_priority" translatable="false">notification_priority</string>
 
     <!-- Keys -->
     <string name="key_package_name" translatable="false">package_name</string>

@@ -26,15 +26,6 @@
         </activity>
 
         <activity
-            android:name=".module.settings.SettingsActivity"
-            android:label="@string/settings_title"
-            android:parentActivityName=".module.main.MainActivity">
-            <meta-data
-                android:name="theme"
-                android:resource="@style/AppTheme.NoActionBar"/>
-        </activity>
-
-        <activity
             android:name=".module.about.AboutActivity"
             android:label="@string/about_title"
             android:parentActivityName=".module.main.MainActivity">
