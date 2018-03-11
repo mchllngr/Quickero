@@ -25,6 +25,8 @@
     <string name="about_title">About</string>
 
     <!-- Notification service -->
+    <string name="notification_service_loading_title">Loading&#8230;</string>
+    <string name="notification_service_loading_text">Notification is being initialised&#8230;</string>
     <string name="notification_service_error">Error while creating notification.</string>
     <string name="notification_channel_default_name">Default</string>
 
