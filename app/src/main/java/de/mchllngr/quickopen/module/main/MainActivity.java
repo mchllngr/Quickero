@@ -104,6 +104,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
         initRecyclerView();
 
+        ApplicationModel.removeNotLaunchableAppsFromList(this);
+
         startNotificationService();
 
         fab.setOnClickListener(view -> getPresenter().openApplicationList());

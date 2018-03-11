@@ -37,7 +37,7 @@ public class NotificationService extends Service {
     /**
      * Allows usage of VectorDrawables when current {@link VERSION} is Android Lollipop or newer.
      */
-    private final boolean useVectorDrawables = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
+    private static final boolean USE_VECTOR_DRAWABLES = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
 
     /**
      * Determines if the notification is enabled and should be shown.
@@ -79,7 +79,7 @@ public class NotificationService extends Service {
 
         RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(this));
 
-        int notificationIcon = useVectorDrawables ? NOTIFICATION_ICON_ID_VECTOR : NOTIFICATION_ICON_ID_NOT_VECTOR;
+        int notificationIcon = USE_VECTOR_DRAWABLES ? NOTIFICATION_ICON_ID_VECTOR : NOTIFICATION_ICON_ID_NOT_VECTOR;
 
         customNotificationHelper = new CustomNotificationHelper(this, notificationIcon);
 
@@ -145,9 +145,9 @@ public class NotificationService extends Service {
         transparentIconPref.asObservable().subscribe(transparentIcon -> {
             int notificationIcon;
             if (transparentIcon)
-                notificationIcon = useVectorDrawables ? NOTIFICATION_ICON_ID_VECTOR_TRANSPARENT : NOTIFICATION_ICON_ID_NOT_VECTOR_TRANSPARENT;
+                notificationIcon = USE_VECTOR_DRAWABLES ? NOTIFICATION_ICON_ID_VECTOR_TRANSPARENT : NOTIFICATION_ICON_ID_NOT_VECTOR_TRANSPARENT;
             else
-                notificationIcon = useVectorDrawables ? NOTIFICATION_ICON_ID_VECTOR : NOTIFICATION_ICON_ID_NOT_VECTOR;
+                notificationIcon = USE_VECTOR_DRAWABLES ? NOTIFICATION_ICON_ID_VECTOR : NOTIFICATION_ICON_ID_NOT_VECTOR;
 
             customNotificationHelper.setNotificationIcon(notificationIcon);
         });
@@ -230,7 +230,7 @@ public class NotificationService extends Service {
      */
     private void onError() {
         showErrorMessage();
-        stopService();
+        stopSelf();
     }
 
     /**
@@ -239,13 +239,5 @@ public class NotificationService extends Service {
     private void showErrorMessage() {
         // TODO replace Toast with Error-Notification (click starts activity)
         Toast.makeText(this, getString(R.string.notification_service_error), Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Stops the {@link Service}.
-     */
-    private void stopService() {
-        hideNotification();
-        stopSelf();
     }
 }
