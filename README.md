@@ -7,6 +7,7 @@ An android app to quickly open your favorite apps through a notification.
 - item slide shows a red background, which doesn't look right (no trash-box for deleting, no fading, etc.)
 
 # TODO
+- improve proguard
 - open android notification-settings page on android 8 and later?
 - remove notification priority options, because this can now be handled over the channel (even by the user)
     - also the visibility option ?
