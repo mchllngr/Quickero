@@ -37,7 +37,7 @@ public class NotificationService extends Service {
     /**
      * Allows usage of VectorDrawables when current {@link VERSION} is Android Lollipop or newer.
      */
-    private final boolean useVectorDrawables = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
+    private static final boolean USE_VECTOR_DRAWABLES = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
 
     /**
      * Determines if the notification is enabled and should be shown.
@@ -79,7 +79,7 @@ public class NotificationService extends Service {
 
         RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(this));
 
-        int notificationIcon = useVectorDrawables ? NOTIFICATION_ICON_ID_VECTOR : NOTIFICATION_ICON_ID_NOT_VECTOR;
+        int notificationIcon = USE_VECTOR_DRAWABLES ? NOTIFICATION_ICON_ID_VECTOR : NOTIFICATION_ICON_ID_NOT_VECTOR;
 
         customNotificationHelper = new CustomNotificationHelper(this, notificationIcon);
 
@@ -109,6 +109,9 @@ public class NotificationService extends Service {
                 null,
                 adapter
         );
+
+        // this is needed because sometimes the OS crashes the app when startForeground is not called in onCreate
+        showLoadingNotification();
     }
 
     @Override
@@ -145,9 +148,9 @@ public class NotificationService extends Service {
         transparentIconPref.asObservable().subscribe(transparentIcon -> {
             int notificationIcon;
             if (transparentIcon)
-                notificationIcon = useVectorDrawables ? NOTIFICATION_ICON_ID_VECTOR_TRANSPARENT : NOTIFICATION_ICON_ID_NOT_VECTOR_TRANSPARENT;
+                notificationIcon = USE_VECTOR_DRAWABLES ? NOTIFICATION_ICON_ID_VECTOR_TRANSPARENT : NOTIFICATION_ICON_ID_NOT_VECTOR_TRANSPARENT;
             else
-                notificationIcon = useVectorDrawables ? NOTIFICATION_ICON_ID_VECTOR : NOTIFICATION_ICON_ID_NOT_VECTOR;
+                notificationIcon = USE_VECTOR_DRAWABLES ? NOTIFICATION_ICON_ID_VECTOR : NOTIFICATION_ICON_ID_NOT_VECTOR;
 
             customNotificationHelper.setNotificationIcon(notificationIcon);
         });
@@ -180,6 +183,7 @@ public class NotificationService extends Service {
 
         // subscribe to changes in packageNamesPref
         packageNamesPref.asObservable().subscribe(list -> {
+            ApplicationModel.removeNotLaunchableAppsFromList(this);
             ApplicationModel[] applicationModels = ApplicationModel.prepareApplicationModelsArray(this, list);
 
             if (applicationModels.length > 0)
@@ -202,19 +206,34 @@ public class NotificationService extends Service {
     }
 
     /**
-     * Calls {@link CustomNotificationHelper} to show the notification with given array of
-     * {@link ApplicationModel}s.
+     * Calls {@link CustomNotificationHelper} to show the notification with given array of {@link ApplicationModel}s.
      *
      * @param applicationModels array of {@link ApplicationModel}s to show in notification
      */
     private void showNotification(ApplicationModel... applicationModels) {
-        if (notificationEnabled && customNotificationHelper != null) {
-            Notification notification = customNotificationHelper.getCustomNotification(applicationModels);
-            if (notification != null)
-                startForeground(getResources().getInteger(R.integer.notification_id), notification);
-            else
-                onError();
-        } else
+        if (notificationEnabled && customNotificationHelper != null)
+            showNotification(customNotificationHelper.getCustomNotification(applicationModels));
+        else
+            onError();
+    }
+
+    /**
+     * Calls {@link CustomNotificationHelper} to show a loading notification.
+     */
+    private void showLoadingNotification() {
+        if (notificationEnabled && customNotificationHelper != null)
+            showNotification(customNotificationHelper.getLoadingNotification());
+        else
+            onError();
+    }
+
+    /**
+     * Shows a given {@link Notification} for the Foreground{@link Service}.
+     */
+    private void showNotification(@Nullable Notification notification) {
+        if (notification != null)
+            startForeground(getResources().getInteger(R.integer.notification_id), notification);
+        else
             onError();
     }
 
@@ -230,7 +249,7 @@ public class NotificationService extends Service {
      */
     private void onError() {
         showErrorMessage();
-        stopService();
+        stopSelf();
     }
 
     /**
@@ -239,13 +258,5 @@ public class NotificationService extends Service {
     private void showErrorMessage() {
         // TODO replace Toast with Error-Notification (click starts activity)
         Toast.makeText(this, getString(R.string.notification_service_error), Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Stops the {@link Service}.
-     */
-    private void stopService() {
-        hideNotification();
-        stopSelf();
     }
 }

@@ -5,23 +5,33 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+
+import com.f2prateek.rx.preferences.Preference;
+import com.f2prateek.rx.preferences.RxSharedPreferences;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.util.DrawableToBitmapConverter;
+import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
+import timber.log.Timber;
 
 /**
- * Model for needed informations about an application.
+ * Model for needed information about an application.
  */
 public class ApplicationModel {
 
-    public String packageName;
-    public Drawable iconDrawable;
-    public Bitmap iconBitmap;
-    public String name;
+    public final String packageName;
+    public final Drawable iconDrawable;
+    public final Bitmap iconBitmap;
+    public final String name;
 
     /**
      * Private constructor. ApplicationModel should be instantiated through
@@ -43,16 +53,16 @@ public class ApplicationModel {
      *
      * @param context     {@link Context}
      * @param packageName package-name
-     * @return {@link ApplicationModel} if an application with the {@code packageName} is found,
-     * otherwise null.
+     * @return {@link ApplicationModel} if an application with the {@code packageName} is found, otherwise null.
      */
     @Nullable
     public static ApplicationModel getApplicationModelForPackageName(Context context,
                                                                      String packageName) {
         try {
             // will throw NameNotFoundException if no application with packageName is found
-            ApplicationInfo info = context.getPackageManager().getApplicationInfo(packageName, 0);
-            String name = (String) context.getPackageManager().getApplicationLabel(info);
+            PackageManager packageManager = context.getPackageManager();
+            ApplicationInfo info = packageManager.getApplicationInfo(packageName, 0);
+            String name = (String) packageManager.getApplicationLabel(info);
 
             return new ApplicationModel(
                     packageName,
@@ -69,8 +79,7 @@ public class ApplicationModel {
      *
      * @param context     {@link Context}
      * @param packageName package-name
-     * @return {@link Drawable} if an application with the {@code packageName} is found,
-     * otherwise null.
+     * @return {@link Drawable} if an application with the {@code packageName} is found, otherwise null.
      */
     private static Drawable getApplicationIconForPackageName(Context context, String packageName) {
         try {
@@ -86,7 +95,7 @@ public class ApplicationModel {
      * If the given {@link List} is null or empty it returns an empty list.
      *
      * @param context {@link Context}
-     * @param list {@link List} of packageNames
+     * @param list    {@link List} of packageNames
      * @return list of {@link ApplicationModel}s
      */
     @NonNull
@@ -97,11 +106,10 @@ public class ApplicationModel {
 
         for (Object o : list)
             if (o instanceof String) {
-                ApplicationModel applicationModel = ApplicationModel.
-                        getApplicationModelForPackageName(
-                                context,
-                                (String) o
-                        );
+                ApplicationModel applicationModel = ApplicationModel.getApplicationModelForPackageName(
+                        context,
+                        (String) o
+                );
 
                 if (applicationModel != null)
                     applicationModels.add(applicationModel);
@@ -116,7 +124,7 @@ public class ApplicationModel {
      * If the given {@link List} is null or empty it returns an empty list.
      *
      * @param context {@link Context}
-     * @param list {@link List} of packageNames
+     * @param list    {@link List} of packageNames
      * @return array of {@link ApplicationModel}s
      */
     @NonNull
@@ -126,5 +134,41 @@ public class ApplicationModel {
         List<ApplicationModel> applicationModels = prepareApplicationModelsList(context, list);
 
         return applicationModels.toArray(new ApplicationModel[applicationModels.size()]);
+    }
+
+    /**
+     * Checks if an application is launchable by checking if there is a launch intent available.
+     */
+    public static boolean isLaunchable(@NonNull Context context, String packageName) {
+        return !TextUtils.isEmpty(packageName) && context.getPackageManager().getLaunchIntentForPackage(packageName) != null;
+    }
+
+    /**
+     * Removes any application from the list that is not launchable.
+     *
+     * @param context context for getting the {@link android.content.SharedPreferences}
+     */
+    public static void removeNotLaunchableAppsFromList(@NonNull Context context) {
+        RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(context));
+        GsonPreferenceAdapter<List> adapter = new GsonPreferenceAdapter<>(new Gson(), List.class);
+        Preference<List> packageNamesPref = rxSharedPreferences.getObject(
+                context.getString(R.string.pref_package_names),
+                null,
+                adapter
+        );
+
+        List packageNameList = packageNamesPref.get();
+        if (packageNameList == null || packageNameList.isEmpty()) return;
+
+        Iterator iterator = packageNameList.iterator();
+        while (iterator.hasNext()) {
+            Object packageName = iterator.next();
+            if (packageName instanceof String && !isLaunchable(context, (String) packageName)) {
+                iterator.remove();
+                Timber.d("Removed app '" + packageName + "' from list, because it can not be launched (maybe it was uninstalled)");
+            }
+        }
+
+        packageNamesPref.set(packageNameList);
     }
 }
