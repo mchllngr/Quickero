@@ -6,6 +6,7 @@ An android app to quickly open your favorite apps through a notification.
 - item slide shows a red background, which doesn't look right (no trash-box for deleting, no fading, etc.)
 
 # TODO
+- improve proguard
 - add licence to every file ?
 - add empty-view for recyclerview
 - check customNotification-design on all api-levels
