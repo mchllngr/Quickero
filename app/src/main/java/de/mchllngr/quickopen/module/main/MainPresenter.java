@@ -106,20 +106,20 @@ public class MainPresenter extends BasePresenter<MainView> {
                         .toSingle()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(applicationInfos -> {
-                            List<String> dummyitems = new ArrayList<>();
+                            List<String> dummyItems = new ArrayList<>();
 
                             for (int i = 0; i < dummyItemsPackageNames.size(); i++) {
                                 for (ApplicationInfo applicationInfo : applicationInfos)
                                     if (dummyItemsPackageNames.get(i).equals(applicationInfo.packageName)) {
-                                        dummyitems.add(applicationInfo.packageName);
+                                        dummyItems.add(applicationInfo.packageName);
                                         break;
                                     }
 
-                                if (dummyitems.size() >= MAX_DUMMY_ITEMS)
+                                if (dummyItems.size() >= MAX_DUMMY_ITEMS)
                                     break;
                             }
 
-                            packageNamesPref.set(dummyitems);
+                            packageNamesPref.set(dummyItems);
 
                             loadItems();
                         }, e -> loadItems());
@@ -150,7 +150,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         // TODO rebuild with better rxjava-integration
         Observable.from(context.getPackageManager().getInstalledPackages(PackageManager.GET_ACTIVITIES))
                 .subscribeOn(Schedulers.newThread())
-                .filter(this::isLaunchable)
+                .filter(packageInfo -> ApplicationModel.isLaunchable(context, packageInfo.packageName))
                 .filter(packageInfo -> !isAppAlreadyInList(savedApplicationModels, packageInfo))
                 .map(packageInfo -> packageInfo.applicationInfo)
                 .map(applicationInfo -> ApplicationModel.getApplicationModelForPackageName(context, applicationInfo.packageName))
@@ -199,13 +199,6 @@ public class MainPresenter extends BasePresenter<MainView> {
             }
 
         return isAlreadyInList;
-    }
-
-    /**
-     * Checks if an application is launchable by checking if there is a launch intent available.
-     */
-    private boolean isLaunchable(PackageInfo packageInfo) {
-        return !TextUtils.isEmpty(packageInfo.packageName) && context.getPackageManager().getLaunchIntentForPackage(packageInfo.packageName) != null;
     }
 
     /**
