@@ -180,6 +180,7 @@ public class NotificationService extends Service {
 
         // subscribe to changes in packageNamesPref
         packageNamesPref.asObservable().subscribe(list -> {
+            ApplicationModel.removeNotLaunchableAppsFromList(this);
             ApplicationModel[] applicationModels = ApplicationModel.prepareApplicationModelsArray(this, list);
 
             if (applicationModels.length > 0)

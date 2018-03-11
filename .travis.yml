@@ -30,4 +30,4 @@ before_install:
   - chmod +x gradlew
 
 script:
-  - ./gradlew clean test build
+  - ./gradlew -PciBuild=true clean test build

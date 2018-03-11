@@ -1,6 +1,9 @@
+boolean CI_BUILD = hasProperty('ciBuild') ? ciBuild.toBoolean() : false
+println "CI_BUILD: " + CI_BUILD
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
-apply plugin: 'io.fabric'
+if (!CI_BUILD) apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
