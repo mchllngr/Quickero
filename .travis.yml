@@ -25,5 +25,8 @@ android:
   - android-$ANDROID_API_LEVEL
   - build-tools-$ANDROID_BUILD_TOOLS
 
+before_install:
+  - chmod +x gradlew
+
 script:
   - ./gradlew clean test build
