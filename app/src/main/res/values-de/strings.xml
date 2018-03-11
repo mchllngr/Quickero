@@ -23,6 +23,8 @@
     <string name="about_title">Über</string>
 
     <!-- Notification service -->
+    <string name="notification_service_loading_title">Bitte warten&#8230;</string>
+    <string name="notification_service_loading_text">Benachrichtigung wird vorbereitet&#8230;</string>
     <string name="notification_service_error">Fehler beim Erstellen der Notification.</string>
     <string name="notification_channel_default_name">Standard</string>
 
