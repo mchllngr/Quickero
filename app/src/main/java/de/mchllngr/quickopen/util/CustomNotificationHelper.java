@@ -243,8 +243,8 @@ public class CustomNotificationHelper {
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .setShowWhen(false)
-                .setVisibility(notificationVisibility)
-                .setPriority(notificationPriority)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentTitle(context.getString(R.string.notification_service_loading_title))
                 .setContentText(context.getString(R.string.notification_service_loading_text))
                 .build();
