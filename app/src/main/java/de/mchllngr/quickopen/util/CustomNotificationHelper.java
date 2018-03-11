@@ -29,12 +29,19 @@ import static android.os.Build.VERSION_CODES;
 // TODO inject with dagger ?
 public class CustomNotificationHelper {
 
-    private static final String CHANNEL_ID = "default";
+    public static final String CHANNEL_ID = "default";
 
+    private static final int NOTIFICATION_ICON_ID_NOT_VECTOR = R.drawable.ic_notification;
+    private static final int NOTIFICATION_ICON_ID_VECTOR = R.drawable.ic_speaker_notes_white_24px;
+
+    /**
+     * Allows usage of VectorDrawables when current {@link VERSION} is Android Lollipop or newer.
+     */
+    private static final boolean USE_VECTOR_DRAWABLES = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
     /**
      * Array of every layout used.
      */
-    private final int[] LAYOUT_IDS_CUSTOM_CONTENT = {
+    private static final int[] LAYOUT_IDS_CUSTOM_CONTENT = {
             R.layout.custom_notification_01,
             R.layout.custom_notification_02,
             R.layout.custom_notification_03,
@@ -54,7 +61,7 @@ public class CustomNotificationHelper {
     /**
      * Array of every iconId used.
      */
-    private final int[] ICON_IDS_CUSTOM_CONTENT = {
+    private static final int[] ICON_IDS_CUSTOM_CONTENT = {
             R.id.app_icon_1,
             R.id.app_icon_2,
             R.id.app_icon_3,
@@ -75,56 +82,20 @@ public class CustomNotificationHelper {
     /**
      * Used {@link Context}.
      */
-    private Context context;
+    private final Context context;
     /**
      * IconId used for showing the notification.
      */
-    private int notificationIconId;
-    /**
-     * Visibility setting for the notification.
-     */
-    private int notificationVisibility = NotificationCompat.VISIBILITY_PUBLIC;
-    /**
-     * Priority setting for the notification.
-     */
-    private int notificationPriority = Notification.PRIORITY_DEFAULT;
+    private final int notificationIconId;
 
     /**
      * Constructor for initialising.
      *
-     * @param context            {@link Context}
-     * @param notificationIconId iconId used for showing the notification
+     * @param context {@link Context}
      */
-    public CustomNotificationHelper(@NonNull Context context, int notificationIconId) {
+    public CustomNotificationHelper(@NonNull Context context) {
         this.context = context;
-        this.notificationIconId = notificationIconId;
-    }
-
-    /**
-     * Setter for {@code notificationIconId}.
-     *
-     * @param notificationIconId {@code notificationIconId}
-     */
-    public void setNotificationIcon(int notificationIconId) {
-        this.notificationIconId = notificationIconId;
-    }
-
-    /**
-     * Setter for {@code notificationVisibility}.
-     *
-     * @param notificationVisibility {@code notificationVisibility}
-     */
-    public void setNotificationVisibility(int notificationVisibility) {
-        this.notificationVisibility = notificationVisibility;
-    }
-
-    /**
-     * Setter for {@code notificationPriority}.
-     *
-     * @param notificationPriority {@code notificationPriority}
-     */
-    public void setNotificationPriority(int notificationPriority) {
-        this.notificationPriority = notificationPriority;
+        this.notificationIconId = USE_VECTOR_DRAWABLES ? NOTIFICATION_ICON_ID_VECTOR : NOTIFICATION_ICON_ID_NOT_VECTOR;
     }
 
     /**
@@ -221,8 +192,8 @@ public class CustomNotificationHelper {
                 .setOngoing(true)
                 .setShowWhen(false)
                 .setCustomContentView(customContentView)
-                .setVisibility(notificationVisibility)
-                .setPriority(notificationPriority)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .build();
     }
 }

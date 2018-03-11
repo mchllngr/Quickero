@@ -3,7 +3,11 @@ package de.mchllngr.quickopen.module.main;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.net.Uri;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -34,8 +38,8 @@ import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.base.BaseActivity;
 import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.module.about.AboutActivity;
-import de.mchllngr.quickopen.module.settings.SettingsActivity;
 import de.mchllngr.quickopen.service.NotificationService;
+import de.mchllngr.quickopen.util.CustomNotificationHelper;
 
 /**
  * {@link Activity} for handling the selection of applications.
@@ -203,7 +207,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 AboutActivity.start(this);
                 return true;
             case R.id.settings:
-                SettingsActivity.start(this);
+                goToNotificationSettings(CustomNotificationHelper.CHANNEL_ID);
                 return true;
             case R.id.reorder_cancel:
                 getPresenter().onReorderCancelIconClick();
@@ -215,6 +219,28 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void goToNotificationSettings(@Nullable String channel) {
+        Intent intent = new Intent();
+        if (VERSION.SDK_INT >= VERSION_CODES.O) {
+            if (channel != null) {
+                intent.setAction(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_CHANNEL_ID, channel);
+            } else {
+                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            }
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+        } else if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+            intent.putExtra("app_package", getPackageName());
+            intent.putExtra("app_uid", getApplicationInfo().uid);
+        } else {
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.addCategory(Intent.CATEGORY_DEFAULT);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+        }
+        startActivity(intent);
     }
 
     /**
