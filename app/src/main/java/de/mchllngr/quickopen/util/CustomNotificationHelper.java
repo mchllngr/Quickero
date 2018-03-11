@@ -164,6 +164,17 @@ public class CustomNotificationHelper {
     }
 
     /**
+     * Creates the NotificationChannel for Android Oreo.
+     */
+    private void createNotificationChannel(@NonNull NotificationManager notificationManager) {
+        if (VERSION.SDK_INT >= VERSION_CODES.O) {
+            String name = context.getString(R.string.notification_channel_default_name);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    /**
      * Returns a notification with a given custom {@link RemoteViews}.
      *
      * @param customContentView {@link RemoteViews} to show in the notification
@@ -177,14 +188,18 @@ public class CustomNotificationHelper {
             return null;
         }
 
-        // create notification channel
-        if (VERSION.SDK_INT >= VERSION_CODES.O) {
-            String name = context.getString(R.string.notification_channel_default_name);
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW);
-            notificationManager.createNotificationChannel(channel);
-        }
+        createNotificationChannel(notificationManager);
 
-        // create notification
+        return createNotification(customContentView);
+    }
+
+    /**
+     * Creates the {@link Notification} for the given {@link RemoteViews}.
+     *
+     * @param customContentView {@link RemoteViews} for showing inside the {@link Notification}
+     * @return {@link Notification}
+     */
+    private Notification createNotification(RemoteViews customContentView) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         return builder
                 .setSmallIcon(notificationIconId)
@@ -194,6 +209,44 @@ public class CustomNotificationHelper {
                 .setCustomContentView(customContentView)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .build();
+    }
+
+    /**
+     * Returns a loading {@link Notification}.
+     *
+     * @return {@link Notification} showing loading-texts
+     */
+    @Nullable
+    public Notification getLoadingNotification() {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (notificationManager == null) {
+            Timber.d("Could not show notification");
+            return null;
+        }
+
+        createNotificationChannel(notificationManager);
+
+        return createLoadingNotification();
+    }
+
+    /**
+     * Creates a loading {@link Notification}.
+     *
+     * @return {@link Notification} showing loading-texts
+     */
+    private Notification createLoadingNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
+        return builder
+                .setSmallIcon(notificationIconId)
+                .setAutoCancel(false)
+                .setOngoing(true)
+                .setShowWhen(false)
+                .setVisibility(notificationVisibility)
+                .setPriority(notificationPriority)
+                .setContentTitle(context.getString(R.string.notification_service_loading_title))
+                .setContentText(context.getString(R.string.notification_service_loading_text))
                 .build();
     }
 }

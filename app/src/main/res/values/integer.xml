@@ -2,6 +2,6 @@
 <resources>
 
     <integer name="max_apps_in_notification">15</integer>
-    <integer name="notification_id">1751</integer>
+    <integer name="notification_id">12751</integer>
 
 </resources>
