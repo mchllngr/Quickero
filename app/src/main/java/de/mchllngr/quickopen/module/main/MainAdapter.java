@@ -1,13 +1,15 @@
 package de.mchllngr.quickopen.module.main;
 
 import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,11 +24,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.model.ApplicationModel;
+import de.mchllngr.quickopen.util.CustomAnimatorListener;
 
 /**
- * {@link android.support.v7.widget.RecyclerView.Adapter} for handling the shown items.
+ * {@link Adapter} for handling the shown items.
  */
-class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
+class MainAdapter extends Adapter<MainAdapter.MainViewHolder> {
 
     /**
      * Current {@link Context}.
@@ -54,14 +57,16 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         this.startDragListener = startDragListener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
-        return new ViewHolder(view);
+        return new MainViewHolder(view);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
         ApplicationModel applicationModel = items.get(position);
 
         holder.icon.setImageDrawable(applicationModel.iconDrawable);
@@ -76,9 +81,8 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             }
 
             holder.handle.setOnTouchListener((v, event) -> {
-                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN)
-                    if (startDragListener != null)
-                        startDragListener.onStartDrag(holder);
+                if (event.getAction() == MotionEvent.ACTION_DOWN && startDragListener != null)
+                    startDragListener.onStartDrag(holder);
 
                 return false;
             });
@@ -87,21 +91,12 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 holder.handle.animate()
                         .alpha(1f)
                         .setDuration(100)
-                        .setListener(new Animator.AnimatorListener() {
+                        .setListener(new CustomAnimatorListener() {
                             @Override
                             public void onAnimationStart(Animator animation) {
                                 holder.handle.setAlpha(0f);
                                 holder.handle.setVisibility(View.VISIBLE);
                             }
-
-                            @Override
-                            public void onAnimationEnd(Animator animation) { /* empty */ }
-
-                            @Override
-                            public void onAnimationCancel(Animator animation) { /* empty */ }
-
-                            @Override
-                            public void onAnimationRepeat(Animator animation) { /* empty */ }
                         })
                         .start();
             } else
@@ -112,7 +107,7 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 holder.handle.animate()
                         .alpha(0f)
                         .setDuration(100)
-                        .setListener(new Animator.AnimatorListener() {
+                        .setListener(new CustomAnimatorListener() {
                             @Override
                             public void onAnimationStart(Animator animation) {
                                 holder.handle.setAlpha(1f);
@@ -122,12 +117,6 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                             public void onAnimationEnd(Animator animation) {
                                 holder.handle.setVisibility(View.GONE);
                             }
-
-                            @Override
-                            public void onAnimationCancel(Animator animation) { /* empty */ }
-
-                            @Override
-                            public void onAnimationRepeat(Animator animation) { /* empty */ }
                         })
                         .start();
             } else
@@ -210,14 +199,14 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     }
 
     /**
-     * {@link android.support.v7.widget.RecyclerView.ViewHolder} for holding all the {@link View}s.
+     * {@link RecyclerView.ViewHolder} for holding all the {@link View}s.
      */
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class MainViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.icon) ImageView icon;
         @BindView(R.id.name) TextView name;
         @BindView(R.id.handle) ImageView handle;
 
-        ViewHolder(View view) {
+        MainViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
@@ -230,6 +219,6 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         /**
          * Gets called when a drag starts.
          */
-        void onStartDrag(ViewHolder viewHolder);
+        void onStartDrag(MainViewHolder viewHolder);
     }
 }

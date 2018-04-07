@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,7 +20,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -347,39 +347,47 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void showUndoButton() {
-        hideUndoButton();
+        showSnackbar(R.string.snackbar_undo_remove, R.string.snackbar_undo_remove_action, view -> {
+            getPresenter().undoRemove();
+            snackbar.dismiss();
+        });
+    }
 
-        snackbar = Snackbar
-                .make(coordinatorLayout, R.string.snackbar_undo_remove, Snackbar.LENGTH_LONG)
-                .setAction(R.string.snackbar_undo_remove_action, view -> {
-                    getPresenter().undoRemove();
-                    snackbar.dismiss();
-                });
+    @Override
+    public void onOpenApplicationListError() {
+        showSnackbar(R.string.snackbar_max_items_error);
+    }
+
+    @Override
+    public void showMaxItemsError() {
+        showSnackbar(R.string.snackbar_max_items_error);
+    }
+
+    private void showSnackbar(@StringRes int textId) {
+        showSnackbar(textId, 0, null);
+    }
+
+    private void showSnackbar(@StringRes int textId, @StringRes int actionTextId, @Nullable View.OnClickListener listener) {
+        dismissSnackbar();
+
+        snackbar = Snackbar.make(coordinatorLayout, textId, Snackbar.LENGTH_LONG);
+
+        if (actionTextId != 0 && listener != null)
+            snackbar.setAction(actionTextId, listener);
+
         snackbar.getView().setBackgroundResource(R.color.snackbar_background_color);
 
         snackbar.show();
     }
 
     @Override
-    public void hideUndoButton() {
+    public void dismissSnackbar() {
         if (snackbar != null)
             snackbar.dismiss();
     }
 
     @Override
-    public void onOpenApplicationListError() {
-        Log.d("DEBUG_TAG", "MainActivity#onOpenApplicationListError()"); // FIXME delete
-        // TODO show error msg
-    }
-
-    @Override
-    public void showMaxItemsError() {
-        Log.d("DEBUG_TAG", "MainActivity#showMaxItemsError()"); // FIXME delete
-        // TODO show error msg
-    }
-
-    @Override
-    public void onStartDrag(MainAdapter.ViewHolder viewHolder) {
+    public void onStartDrag(MainAdapter.MainViewHolder viewHolder) {
         if (itemTouchHelper != null)
             itemTouchHelper.startDrag(viewHolder);
     }

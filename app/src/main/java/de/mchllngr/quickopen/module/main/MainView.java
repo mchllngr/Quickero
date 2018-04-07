@@ -77,7 +77,7 @@ interface MainView extends BaseView {
     /**
      * Hides the button to undo the last remove;
      */
-    void hideUndoButton();
+    void dismissSnackbar();
 
     /**
      * Shows an error message.

@@ -331,12 +331,17 @@ public class MainPresenter extends BasePresenter<MainView> {
     void removeItem(int position) {
         List applicationModels = packageNamesPref.get();
 
+        if (applicationModels == null) {
+            packageNamesPref.delete();
+            return;
+        }
+
         lastRemovedItem = new RemovedApplicationModel(
                 position,
                 ApplicationModel.getApplicationModelForPackageName(context, (String) applicationModels.get(position))
         );
 
-        if (applicationModels != null && applicationModels.size() > 1) {
+        if (applicationModels.size() > 1) {
             applicationModels.remove(position);
             packageNamesPref.set(applicationModels);
         } else
@@ -355,6 +360,6 @@ public class MainPresenter extends BasePresenter<MainView> {
         addItem(lastRemovedItem.position, lastRemovedItem.applicationModel);
 
         if (isViewAttached())
-            getView().hideUndoButton();
+            getView().dismissSnackbar();
     }
 }
