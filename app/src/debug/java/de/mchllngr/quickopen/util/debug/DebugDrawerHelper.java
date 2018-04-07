@@ -71,13 +71,15 @@ public class DebugDrawerHelper {
         debugDrawer = new DebugDrawer.Builder(activity)
                 .modules(
                         new ActionsModule(getNightModeActionsModule()),
-                        new NetworkModule(activity),
+                        new NetworkModule(),
                         new ScalpelModule(activity),
                         new FpsModule(Takt.stock(activity.getApplication())),
-                        new BuildModule(activity),
-                        new DeviceModule(activity),
-                        new SettingsModule(activity)
-                ).build();
+                        new BuildModule(),
+                        new DeviceModule(),
+                        new SettingsModule()
+                )
+                .withTheme(R.style.AppTheme)
+                .build();
     }
 
     /**
@@ -113,31 +115,15 @@ public class DebugDrawerHelper {
     }
 
     /**
-     * Attach {@link DebugDrawer} to lifecycle.
+     * Closes the {@link DebugDrawer} if it's opened.
+     *
+     * @return true if the {@link DebugDrawer} was closed, false otherwise
      */
-    public void onStart() {
-        debugDrawer.onStart();
-    }
-
-    /**
-     * Attach {@link DebugDrawer} to lifecycle.
-     */
-    public void onResume() {
-        debugDrawer.onResume();
-    }
-
-    /**
-     * Attach {@link DebugDrawer} to lifecycle.
-     */
-    public void onPause() {
-        debugDrawer.onPause();
-    }
-
-
-    /**
-     * Attach {@link DebugDrawer} to lifecycle.
-     */
-    public void onStop() {
-        debugDrawer.onStop();
+    public boolean closeDrawerIfOpened() {
+        if (debugDrawer.isDrawerOpen()) {
+            debugDrawer.closeDrawer();
+            return true;
+        }
+        return false;
     }
 }
