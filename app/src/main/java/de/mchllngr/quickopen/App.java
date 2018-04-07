@@ -15,7 +15,7 @@ public class App extends BaseApp {
 
     static {
         // Sets the default night mode to follow system.
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
     }
 
     @Override
