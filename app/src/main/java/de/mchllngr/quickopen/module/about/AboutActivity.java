@@ -1,5 +1,6 @@
 package de.mchllngr.quickopen.module.about;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,13 +16,14 @@ import mehdi.sakout.aboutpage.AboutPage;
 import mehdi.sakout.aboutpage.Element;
 
 /**
- * {@link android.app.Activity} for the AboutPage.
+ * {@link Activity} for the AboutPage.
  */
 public class AboutActivity extends BaseActivity<BaseView, BasePresenter<BaseView>> implements BaseView {
 
-    /**
-     * Static factory method that initializes and starts the {@link AboutActivity}.
-     */
+    private static final String DESCRIPTION = "TODO description"; // TODO set description
+    private static final String EMAIL = "quickopen@michaellanger.me";
+    private static final String GITHUB = "mchllngr/quickopen";
+
     public static void start(Context context) {
         Intent starter = new Intent(context, AboutActivity.class);
         context.startActivity(starter);
@@ -47,13 +49,12 @@ public class AboutActivity extends BaseActivity<BaseView, BasePresenter<BaseView
         versionElement.setTitle("Version " + BuildConfig.VERSION_NAME);
 
         return new AboutPage(this)
-                .setImage(R.mipmap.ic_launcher) // TODO set image
-//                .setDescription(DESCRIPTION) // TODO set description
+                .setImage(R.mipmap.ic_launcher)
+                .setDescription(DESCRIPTION)
                 .addItem(versionElement)
-                .addWebsite("http://mchllngr.de/") // TODO set website
-                .addEmail("quickopen@mlanger.net") // TODO set email
+                .addEmail(EMAIL)
                 .addPlayStore(BuildConfig.APPLICATION_ID)
-                .addGitHub("mchllngr/quickopen") // TODO set github
+                .addGitHub(GITHUB)
                 .create();
     }
 }

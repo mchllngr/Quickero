@@ -2,29 +2,31 @@
 An android app to quickly open your favorite apps through a notification.
 
 # KNOWN BUGS
+- NightMode starting automatically?
 - splashscreen is broken (only api 27?)
 - item slide shows a red background, which doesn't look right (no trash-box for deleting, no fading, etc.)
+- white status bar color on release (happened on Nexus7 API 27 Emulator)
+- AboutPage "Rate us on the Play Store" seems to be non functional
 
 # TODO
-- improve proguard
-- add licence to every file ?
+- add delete icon on remove-swipe
 - add empty-view for recyclerview
-- check customNotification-design on all api-levels
-- check activity leak on api 19 ? (open and close settings)
 - what to do when app-list is empty ?
+- disable MainActivity when notification_enabled = false
+- new notification icon
+- check customNotification-design on all api-levels
+- other app-name
+- add responsive icon + new icon design
+- add licence to every file ?
+- improve proguard
+- add screenshots + real descriptions to google-play-page (and about-page)
 
 # TODO a little bit later
-- rebuild app completely
+- rebuild app completely in kotlin
+- show installed apps on another page
 - add tutorial
-- add screenshots + real descriptions to google-play-page
-- add delete icon on remove-swipe
 - add feedback
-- disable MainActivity when notification_enabled = false
-- check for uninstalled applications every start (BroadcastReceiver)
 - add "Donate a beer"
-- check night-mode on about-page
-    - https://github.com/medyo/android-about-page/issues/62
-- other app-name
 - add search-bar to application-list ?
 
 # FEATURES-IDEAS (for later)
