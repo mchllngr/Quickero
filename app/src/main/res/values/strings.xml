@@ -9,9 +9,11 @@
     <!-- Progress dialog -->
     <string name="progress_dialog_please_wait">Please wait&#8230;</string>
 
-    <!-- Snackbar undo remove -->
+    <!-- Snackbar -->
     <string name="snackbar_undo_remove">Item removed.</string>
     <string name="snackbar_undo_remove_action">UNDO</string>
+    <string name="snackbar_max_items_error">Max items reached.</string>
+    <string name="snackbar_open_application_list_error">Error while showing application list.</string>
 
     <!-- Menu -->
     <string name="menu_settings">Settings</string>
