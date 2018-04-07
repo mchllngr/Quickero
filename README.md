@@ -2,7 +2,6 @@
 An android app to quickly open your favorite apps through a notification.
 
 # KNOWN BUGS
-- NightMode starting automatically?
 - splashscreen is broken (only api 27?)
 - white status bar color on release (happened on Nexus7 API 27 Emulator)
 - AboutPage "Rate us on the Play Store" seems to be non functional
@@ -13,11 +12,12 @@ An android app to quickly open your favorite apps through a notification.
 - disable MainActivity when notification_enabled = false
 - new notification icon
 - check customNotification-design on all api-levels
+- add firebase for crashlytics
 - other app-name
 - add responsive icon + new icon design
 - add licence to every file ?
 - improve proguard
-- add screenshots + real descriptions to google-play-page (and about-page)
+- add screenshots + real descriptions to google-play-page (and app-about-page)
 
 # TODO a little bit later
 - rebuild app completely in kotlin
