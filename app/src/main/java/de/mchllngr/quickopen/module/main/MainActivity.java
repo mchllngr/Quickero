@@ -18,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -92,6 +93,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      * Indicates whether the Reorder-Mode is enabled or disabled.
      */
     private boolean reorderMode;
+    /**
+     * Current device screen width in pixels.
+     */
+    private int deviceScreenWidthPixels;
 
     @NonNull
     @Override
@@ -106,6 +111,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
+        getDeviceScreenWidthPixels();
+
         initRecyclerView();
 
         ApplicationModel.removeNotLaunchableAppsFromList(this);
@@ -113,6 +120,12 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         startNotificationService();
 
         fab.setOnClickListener(view -> getPresenter().openApplicationList());
+    }
+
+    private void getDeviceScreenWidthPixels() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        deviceScreenWidthPixels = metrics.widthPixels;
     }
 
     /**
@@ -157,15 +170,17 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                     @Override
                     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                         if (!reorderMode) {
-                            // set the red background one swiped item
                             swipeBackground.setY(viewHolder.itemView.getTop());
                             if (isCurrentlyActive) {
-                                swipeBackground.setVisibility(View.VISIBLE);
-                            } else {
-                                swipeBackground.setVisibility(View.GONE);
-                            }
+                                float halfDeviceScreenWidthPixels = deviceScreenWidthPixels / 2f;
+                                float absDX = Math.abs(dX);
+                                float currentDX = absDX > halfDeviceScreenWidthPixels ? halfDeviceScreenWidthPixels : absDX;
+                                swipeBackground.setAlpha(currentDX / halfDeviceScreenWidthPixels);
+                            } else
+                                swipeBackground.setAlpha(0f);
+
                         } else
-                            swipeBackground.setVisibility(View.GONE);
+                            swipeBackground.setAlpha(0f);
 
                         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                     }
