@@ -1,5 +1,7 @@
 package de.mchllngr.quickopen.module.main;
 
+import android.support.annotation.Nullable;
+
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
 
 import java.util.List;
@@ -11,6 +13,16 @@ import de.mchllngr.quickopen.model.ApplicationModel;
  * Interface for the {@link MainActivity}
  */
 interface MainView extends BaseView {
+
+    /**
+     * Will check if the notification for the given {@code channelId} is enabled.
+     */
+    boolean isNotificationEnabled(@Nullable String channelId);
+
+    /**
+     * Will show a dialog to the user, because the notification is disabled.
+     */
+    void showNotificationDisabledDialog();
 
     /**
      * Will update the state of the view that represents if the notification is enabled/disabled.

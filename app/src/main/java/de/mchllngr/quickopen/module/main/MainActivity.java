@@ -1,9 +1,11 @@
 package de.mchllngr.quickopen.module.main;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -84,13 +87,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      */
     private MainAdapter adapter;
     /**
-     * {@link MaterialDialog} for showing the installed application-list.
+     * {@link MaterialDialog} for showing various dialogs.
      */
-    private MaterialDialog applicationDialog;
-    /**
-     * {@link MaterialDialog} for showing the loading-process for the list of installed applications.
-     */
-    private MaterialDialog progressDialog;
+    private MaterialDialog dialog;
 
     /**
      * {@link Snackbar} for showing the undo-remove-button.
@@ -204,13 +203,20 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     protected void onResume() {
         super.onResume();
-        getPresenter().checkIfNotificationEnabled();
+        getPresenter().checkIfNotificationEnabledInPrefs();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         getPresenter().loadItems();
+        getPresenter().checkIfNotificationEnabledInAndroidSettings();
+    }
+
+    @Override
+    protected void onStop() {
+        hideDialog();
+        super.onStop();
     }
 
     @Override
@@ -260,26 +266,51 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         }
     }
 
-    private void goToNotificationSettings(@Nullable String channel) {
+    private void goToNotificationSettings(@Nullable String channelId) {
         Intent intent = new Intent();
         if (VERSION.SDK_INT >= VERSION_CODES.O) {
-            if (channel != null) {
+            if (channelId != null) {
                 intent.setAction(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
-                intent.putExtra(Settings.EXTRA_CHANNEL_ID, channel);
+                intent.putExtra(Settings.EXTRA_CHANNEL_ID, channelId);
             } else {
                 intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
             }
             intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
-        } else if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+        } else {
             intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
             intent.putExtra("app_package", getPackageName());
             intent.putExtra("app_uid", getApplicationInfo().uid);
-        } else {
-            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.addCategory(Intent.CATEGORY_DEFAULT);
-            intent.setData(Uri.parse("package:" + getPackageName()));
         }
         startActivity(intent);
+    }
+
+    @Override
+    public boolean isNotificationEnabled(@Nullable String channelId) {
+        if (VERSION.SDK_INT >= VERSION_CODES.O) {
+            if (channelId != null) {
+                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                if (manager != null) {
+                    NotificationChannel channel = manager.getNotificationChannel(channelId);
+                    return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
+                }
+            }
+            return false;
+        } else {
+            return NotificationManagerCompat.from(this).areNotificationsEnabled();
+        }
+    }
+
+    @Override
+    public void showNotificationDisabledDialog() {
+        hideDialog();
+        dialog = new MaterialDialog.Builder(this)
+                .title(R.string.dialog_notification_disabled_title)
+                .content(getString(R.string.dialog_notification_disabled_text, getString(R.string.app_name)))
+                .cancelable(false)
+                .positiveText(R.string.dialog_notification_disabled_button_ok)
+                .negativeText(R.string.dialog_notification_disabled_button_settings)
+                .onNegative((d, w) -> goToNotificationSettings(CustomNotificationHelper.CHANNEL_ID))
+                .show();
     }
 
     /**
@@ -298,15 +329,14 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     public void onMaterialListItemSelected(MaterialDialog dialog, int index, MaterialSimpleListItem item) {
         getPresenter().onApplicationSelected(index);
-
-        if (applicationDialog != null)
-            applicationDialog.dismiss();
+        hideDialog();
     }
 
     @Override
     public void showApplicationListDialog(MaterialSimpleListAdapter adapter) {
-        applicationDialog = new MaterialDialog.Builder(this)
-                .title(R.string.application_list_dialog_title)
+        hideDialog();
+        dialog = new MaterialDialog.Builder(this)
+                .title(R.string.dialog_application_list_title)
                 .adapter(adapter, null)
                 .show();
     }
@@ -318,18 +348,23 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void showProgressDialog() {
-        hideProgressDialog();
-
-        progressDialog = new MaterialDialog.Builder(this)
-                .content(R.string.progress_dialog_please_wait)
+        hideDialog();
+        dialog = new MaterialDialog.Builder(this)
+                .content(R.string.dialog_progress_please_wait)
+                .cancelable(false)
                 .progress(true, 0)
                 .show();
     }
 
     @Override
     public void hideProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
+        hideDialog();
+    }
+
+    private void hideDialog() {
+        if (dialog != null && dialog.isShowing())
+            dialog.dismiss();
+        dialog = null;
     }
 
     @Override

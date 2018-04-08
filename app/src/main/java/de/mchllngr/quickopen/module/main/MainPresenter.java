@@ -24,6 +24,7 @@ import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.base.BasePresenter;
 import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.model.RemovedApplicationModel;
+import de.mchllngr.quickopen.util.CustomNotificationHelper;
 import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
 import rx.Observable;
 import rx.Subscription;
@@ -112,9 +113,14 @@ public class MainPresenter extends BasePresenter<MainView> {
         super.detachView(retainInstance);
     }
 
-    void checkIfNotificationEnabled() {
+    void checkIfNotificationEnabledInPrefs() {
         if (isViewAttached())
             getView().setEnableState(notificationEnabledPref.get());
+    }
+
+    void checkIfNotificationEnabledInAndroidSettings() {
+        if (isViewAttached() && !getView().isNotificationEnabled(CustomNotificationHelper.CHANNEL_ID))
+            getView().showNotificationDisabledDialog();
     }
 
     /**
