@@ -128,8 +128,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
         ApplicationModel.removeNotLaunchableAppsFromList(this);
 
-        startNotificationService();
-
         fab.setOnClickListener(view -> getPresenter().openApplicationList());
     }
 
@@ -223,23 +221,18 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean notificationsEnabled = enableNotificationSwitch.isChecked();
-        menu.getItem(0).setVisible(notificationsEnabled && !reorderMode && (adapter == null || adapter.getItems().size() > 1)); // reorder
+        menu.getItem(0).setVisible(!reorderMode && (adapter == null || adapter.getItems().size() > 1)); // reorder
         menu.getItem(1).setVisible(!reorderMode); // about
         menu.getItem(2).setVisible(!reorderMode); // settings
-        menu.getItem(3).setVisible(notificationsEnabled && reorderMode); // reorder_cancel
-        menu.getItem(4).setVisible(notificationsEnabled && reorderMode); // reorder_accept
+        menu.getItem(3).setVisible(reorderMode); // reorder_cancel
+        menu.getItem(4).setVisible(reorderMode); // reorder_accept
 
         return super.onPrepareOptionsMenu(menu);
     }
 
     @OnClick(R.id.enable)
     public void onEnableClick(Switch view) {
-
-        // TODO check why notifications is not always shown again after some enabling/disabling
-
         getPresenter().onEnableClick(view.isChecked());
-        invalidateOptionsMenu();
     }
 
     @Override
@@ -298,7 +291,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void setEnableState(boolean state) {
-        enableNotificationSwitch.setChecked(state);
+        if (enableNotificationSwitch != null) enableNotificationSwitch.setChecked(state);
+        if (state) startNotificationService();
     }
 
     @Override
