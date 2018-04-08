@@ -33,13 +33,11 @@ public class NotificationService extends Service {
      */
     private CustomNotificationHelper customNotificationHelper;
     /**
-     * {@link Preference}-reference for easier usage of the saved value for notificationEnabled
-     * in the {@link RxSharedPreferences}.
+     * {@link Preference}-reference for easier usage of the saved value for notificationEnabled in the {@link RxSharedPreferences}.
      */
     private Preference<Boolean> notificationEnabledPref;
     /**
-     * {@link Preference}-reference for easier usage of the saved value for packageNames in the
-     * {@link RxSharedPreferences}.
+     * {@link Preference}-reference for easier usage of the saved value for packageNames in the {@link RxSharedPreferences}.
      */
     private Preference<List> packageNamesPref;
 
@@ -80,8 +78,7 @@ public class NotificationService extends Service {
      * Initialises the {@link Service} and used variables.
      */
     private void initService() {
-        if (customNotificationHelper == null ||
-                packageNamesPref == null)
+        if (customNotificationHelper == null || packageNamesPref == null)
             onError();
 
         // subscribe to changes in notificationEnabledPref
@@ -125,20 +122,26 @@ public class NotificationService extends Service {
      * @param applicationModels array of {@link ApplicationModel}s to show in notification
      */
     private void showNotification(ApplicationModel... applicationModels) {
-        if (notificationEnabled && customNotificationHelper != null)
-            showNotification(customNotificationHelper.getCustomNotification(applicationModels));
-        else
-            onError();
+        if (notificationEnabled) {
+            if (customNotificationHelper != null)
+                showNotification(customNotificationHelper.getCustomNotification(applicationModels));
+            else
+                onError();
+        } else
+            stopSelf();
     }
 
     /**
      * Calls {@link CustomNotificationHelper} to show a loading notification.
      */
     private void showLoadingNotification() {
-        if (notificationEnabled && customNotificationHelper != null)
-            showNotification(customNotificationHelper.getLoadingNotification());
-        else
-            onError();
+        if (notificationEnabled) {
+            if (customNotificationHelper != null)
+                showNotification(customNotificationHelper.getLoadingNotification());
+            else
+                onError();
+        } else
+            stopSelf();
     }
 
     /**
@@ -170,7 +173,6 @@ public class NotificationService extends Service {
      * Shows the error-message.
      */
     private void showErrorMessage() {
-        // TODO replace Toast with Error-Notification (click starts activity)
         Toast.makeText(this, getString(R.string.notification_service_error), Toast.LENGTH_SHORT).show();
     }
 }

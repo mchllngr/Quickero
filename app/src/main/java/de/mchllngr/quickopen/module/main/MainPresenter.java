@@ -26,6 +26,7 @@ import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.model.RemovedApplicationModel;
 import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -65,6 +66,10 @@ public class MainPresenter extends BasePresenter<MainView> {
      * Represents the state of the item-list before reordering.
      */
     private List<ApplicationModel> listStateBeforeReorder;
+    /**
+     * {@link Subscription} for observing updates from notificationEnabledPref.
+     */
+    private Subscription notificationEnabledSubscription;
 
     MainPresenter(Context context) {
         this.context = context;
@@ -93,7 +98,18 @@ public class MainPresenter extends BasePresenter<MainView> {
                 Boolean.parseBoolean(context.getString(R.string.pref_notification_enabled_default_value))
         );
 
+        notificationEnabledSubscription = notificationEnabledPref.asObservable().subscribe(enabled -> {
+            if (isViewAttached()) getView().setEnableState(enabled);
+        });
+
         addDummyItemsIfFirstStart();
+    }
+
+    @Override
+    public void detachView(boolean retainInstance) {
+        if (notificationEnabledSubscription != null && !notificationEnabledSubscription.isUnsubscribed()) notificationEnabledSubscription.unsubscribe();
+        notificationEnabledSubscription = null;
+        super.detachView(retainInstance);
     }
 
     void checkIfNotificationEnabled() {
