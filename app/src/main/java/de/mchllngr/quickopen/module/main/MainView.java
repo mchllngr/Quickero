@@ -35,6 +35,11 @@ interface MainView extends BaseView {
     void hideProgressDialog();
 
     /**
+     * Will set the visibility for the View shown when the list is empty.
+     */
+    void setEmptyListViewVisibility(boolean visible);
+
+    /**
      * Enables/disables the Reorder-Mode.
      */
     void setReorderMode(boolean enable);

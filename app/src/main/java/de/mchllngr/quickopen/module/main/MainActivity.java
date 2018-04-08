@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
@@ -67,6 +68,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      * Represents the red background behind a swipeable item.
      */
     @BindView(R.id.swipe_background) FrameLayout swipeBackground;
+    /**
+     * Represents the empty view that is shown when the list is empty.
+     */
+    @BindView(R.id.empty_view) TextView emptyView;
 
     /**
      * {@link MainAdapter} for updating shown items in {@code recyclerView}.
@@ -206,7 +211,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(0).setVisible(!reorderMode); // reorder
+        menu.getItem(0).setVisible(!reorderMode && (adapter == null || adapter.getItems().size() > 1)); // reorder
         menu.getItem(1).setVisible(!reorderMode); // about
         menu.getItem(2).setVisible(!reorderMode); // settings
         menu.getItem(3).setVisible(reorderMode); // reorder_cancel
@@ -307,6 +312,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Override
+    public void setEmptyListViewVisibility(boolean visible) {
+        emptyView.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
     public void setReorderMode(boolean enable) {
         reorderMode = enable;
         invalidateOptionsMenu();
@@ -319,18 +329,21 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     public void updateItems(List<ApplicationModel> items) {
         if (adapter != null)
             adapter.updateItems(items);
+        invalidateOptionsMenu();
     }
 
     @Override
     public void addItem(int position, ApplicationModel applicationModel) {
         if (adapter != null)
             adapter.add(position, applicationModel);
+        invalidateOptionsMenu();
     }
 
     @Override
     public void removeItem(int position) {
         if (adapter != null)
             adapter.remove(adapter.get(position));
+        invalidateOptionsMenu();
     }
 
     @Override

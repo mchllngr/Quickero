@@ -2,7 +2,6 @@ package de.mchllngr.quickopen.util.debug;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 
 import java.util.Arrays;
 
@@ -19,6 +18,12 @@ import io.palaima.debugdrawer.commons.SettingsModule;
 import io.palaima.debugdrawer.fps.FpsModule;
 import io.palaima.debugdrawer.scalpel.ScalpelModule;
 import jp.wasabeef.takt.Takt;
+
+import static android.support.v7.app.AppCompatDelegate.MODE_NIGHT_AUTO;
+import static android.support.v7.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+import static android.support.v7.app.AppCompatDelegate.MODE_NIGHT_NO;
+import static android.support.v7.app.AppCompatDelegate.MODE_NIGHT_YES;
+import static android.support.v7.app.AppCompatDelegate.NightMode;
 
 /**
  * Helper-class for easier use with {@link DebugDrawer}.
@@ -83,11 +88,9 @@ public class DebugDrawerHelper {
     }
 
     /**
-     * Returns the {@link ActionsModule} for selecting the
-     * {@link android.support.v7.app.AppCompatDelegate.NightMode}
+     * Returns the {@link ActionsModule} for selecting the {@link NightMode}
      *
-     * @return {@link ActionsModule} for selecting the
-     * {@link android.support.v7.app.AppCompatDelegate.NightMode}
+     * @return {@link ActionsModule} for selecting the {@link NightMode}
      */
     private SpinnerAction getNightModeActionsModule() {
         return new SpinnerAction<>(
@@ -99,14 +102,14 @@ public class DebugDrawerHelper {
                         debugNightModeFollowSystem
                 ),
                 value -> {
-                    int selectedMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+                    int selectedMode = MODE_NIGHT_FOLLOW_SYSTEM;
 
                     if (value.equals(debugNightModeYes))
-                        selectedMode = AppCompatDelegate.MODE_NIGHT_YES;
+                        selectedMode = MODE_NIGHT_YES;
                     else if (value.equals(debugNightModeNo))
-                        selectedMode = AppCompatDelegate.MODE_NIGHT_NO;
+                        selectedMode = MODE_NIGHT_NO;
                     else if (value.equals(debugNightModeAuto))
-                        selectedMode = AppCompatDelegate.MODE_NIGHT_AUTO;
+                        selectedMode = MODE_NIGHT_AUTO;
 
                     activity.getDelegate().setLocalNightMode(selectedMode);
                     activity.recreate();

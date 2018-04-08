@@ -3,6 +3,9 @@
 
     <string name="app_name" translatable="false">QuickOpen</string>
 
+    <!-- Empty application list -->
+    <string name="application_list_empty">Click \"+\" to add applications.</string>
+
     <!-- Application list dialog -->
     <string name="application_list_dialog_title">Select an application&#8230;</string>
 
