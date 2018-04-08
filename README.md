@@ -3,11 +3,10 @@ An android app to quickly open your favorite apps through a notification.
 
 # KNOWN BUGS
 - splashscreen is broken (only api 27?)
-- white status bar color on release (happened on Nexus7 API 27 Emulator)
 - AboutPage "Rate us on the Play Store" seems to be non functional
 
 # TODO
-- add empty-view for recyclerview
+- remove support for API 19
 - disable MainActivity when notification_enabled = false
 - new notification icon
 - check customNotification-design on all api-levels

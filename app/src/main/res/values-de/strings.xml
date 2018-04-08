@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Empty application list -->
+    <string name="application_list_empty">Klicken Sie auf das \"+\" um\nApplikationen hinzuzufügen.</string>
+
     <!-- Application list dialog -->
     <string name="application_list_dialog_title">Wähle eine Applikation&#8230;</string>
 

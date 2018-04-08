@@ -221,6 +221,8 @@ public class MainPresenter extends BasePresenter<MainView> {
      * @param currentState Current state of the list
      */
     void onReorderIconClick(@NonNull List<ApplicationModel> currentState) {
+        if (currentState.size() < 2) return;
+
         listStateBeforeReorder = new ArrayList<>();
         listStateBeforeReorder.addAll(currentState);
 
@@ -277,9 +279,15 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         List<ApplicationModel> applicationModels = ApplicationModel.prepareApplicationModelsList(context, packageNamesPref.get());
 
-        if (applicationModels.size() >= context.getResources()
-                .getInteger(R.integer.max_apps_in_notification))
-            getView().hideAddItemsButton();
+        if (applicationModels.isEmpty())
+            getView().setEmptyListViewVisibility(true);
+        else {
+            getView().setEmptyListViewVisibility(false);
+
+            if (applicationModels.size() >= context.getResources()
+                    .getInteger(R.integer.max_apps_in_notification))
+                getView().hideAddItemsButton();
+        }
 
         getView().updateItems(applicationModels);
 
@@ -325,8 +333,10 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         packageNamesPref.set(applicationModels);
 
-        if (isViewAttached())
+        if (isViewAttached()) {
+            getView().setEmptyListViewVisibility(false);
             getView().addItem(position, applicationModel);
+        }
     }
 
     /**
@@ -347,13 +357,14 @@ public class MainPresenter extends BasePresenter<MainView> {
                 ApplicationModel.getApplicationModelForPackageName(context, (String) applicationModels.get(position))
         );
 
-        if (applicationModels.size() > 1) {
-            applicationModels.remove(position);
+        applicationModels.remove(position);
+        if (!applicationModels.isEmpty())
             packageNamesPref.set(applicationModels);
-        } else
+        else
             packageNamesPref.delete();
 
         if (isViewAttached()) {
+            getView().setEmptyListViewVisibility(applicationModels.isEmpty());
             getView().showAddItemsButton();
             getView().removeItem(position);
             getView().showUndoButton();

@@ -14,6 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
+        android:contentDescription="@null"
         tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
@@ -21,6 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
+        android:contentDescription="@null"
         tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
@@ -28,6 +30,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
+        android:contentDescription="@null"
         tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
@@ -35,6 +38,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
+        android:contentDescription="@null"
         tools:src="@mipmap/ic_launcher"/>
 
     <ImageView
@@ -42,6 +46,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/notification_image_height"
         android:layout_weight="1"
+        android:contentDescription="@null"
         tools:src="@mipmap/ic_launcher"/>
 
 </LinearLayout>
