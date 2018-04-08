@@ -13,6 +13,11 @@ import de.mchllngr.quickopen.model.ApplicationModel;
 interface MainView extends BaseView {
 
     /**
+     * Will update the state of the view that represents if the notification is enabled/disabled.
+     */
+    void setEnableState(boolean state);
+
+    /**
      * Shows the list dialog for choosing one of the installed applications.
      *
      * @param adapter prepared {@code adapter} containing the items to show

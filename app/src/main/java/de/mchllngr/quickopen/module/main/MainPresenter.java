@@ -42,15 +42,17 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     private final Context context;
     /**
-     * {@link Preference}-reference for easier usage of the saved value for firstStart in the
-     * {@link RxSharedPreferences}.
+     * {@link Preference}-reference for easier usage of the saved value for firstStart in the {@link RxSharedPreferences}.
      */
     private Preference<Boolean> firstStartPref;
     /**
-     * {@link Preference}-reference for easier usage of the saved value for packageNames in the
-     * {@link RxSharedPreferences}.
+     * {@link Preference}-reference for easier usage of the saved value for packageNames in the {@link RxSharedPreferences}.
      */
     private Preference<List> packageNamesPref;
+    /**
+     * {@link Preference}-reference for easier usage of the saved value for notificationEnabled in the {@link RxSharedPreferences}.
+     */
+    private Preference<Boolean> notificationEnabledPref;
     /**
      * Contains the last shown {@link ApplicationModel}s to get the selected item.
      */
@@ -86,7 +88,17 @@ public class MainPresenter extends BasePresenter<MainView> {
                 adapter
         );
 
+        notificationEnabledPref = rxSharedPreferences.getBoolean(
+                context.getString(R.string.pref_notification_enabled),
+                Boolean.parseBoolean(context.getString(R.string.pref_notification_enabled_default_value))
+        );
+
         addDummyItemsIfFirstStart();
+    }
+
+    void checkIfNotificationEnabled() {
+        if (isViewAttached())
+            getView().setEnableState(notificationEnabledPref.get());
     }
 
     /**
@@ -128,6 +140,13 @@ public class MainPresenter extends BasePresenter<MainView> {
 
             firstStartPref.set(false);
         }
+    }
+
+    /**
+     * Will be called when the state for enabling/disabling the notification changes.
+     */
+    void onEnableClick(boolean newState) {
+        notificationEnabledPref.set(newState);
     }
 
     /**
