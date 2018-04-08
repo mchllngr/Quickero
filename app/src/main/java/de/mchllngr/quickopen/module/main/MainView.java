@@ -15,7 +15,7 @@ interface MainView extends BaseView {
     /**
      * Will update the state of the view that represents if the notification is enabled/disabled.
      */
-    void setEnableState(boolean state);
+    void setEnableState(boolean stateEnabled);
 
     /**
      * Shows the list dialog for choosing one of the installed applications.
