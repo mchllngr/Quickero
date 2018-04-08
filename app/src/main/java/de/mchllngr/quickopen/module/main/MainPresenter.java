@@ -165,6 +165,12 @@ public class MainPresenter extends BasePresenter<MainView> {
                 .subscribe(applicationList -> {
                     if (!isViewAttached()) return;
 
+                    if (applicationList.isEmpty()) {
+                        getView().onEmptyApplicationListError();
+                        getView().hideProgressDialog();
+                        return;
+                    }
+
                     lastShownApplicationModels = applicationList;
 
                     final MaterialSimpleListAdapter adapter = new MaterialSimpleListAdapter(getView().getApplicationChooserCallback());
@@ -284,7 +290,7 @@ public class MainPresenter extends BasePresenter<MainView> {
      * Adds an item at the end of the list in {@link android.content.SharedPreferences} and calls
      * the {@link MainView} to also add it to the shown list.
      */
-    void addItem(ApplicationModel applicationModel) {
+    private void addItem(ApplicationModel applicationModel) {
         addItem(Integer.MAX_VALUE, applicationModel);
     }
 
@@ -293,7 +299,7 @@ public class MainPresenter extends BasePresenter<MainView> {
      * and calls the {@link MainView} to also add it to the shown list.
      */
     @SuppressWarnings("unchecked")
-    void addItem(int position, ApplicationModel applicationModel) {
+    private void addItem(int position, ApplicationModel applicationModel) {
         List applicationModels = packageNamesPref.get();
 
         if (applicationModels == null)

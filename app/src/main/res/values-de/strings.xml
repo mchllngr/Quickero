@@ -12,6 +12,7 @@
     <string name="snackbar_undo_remove_action">RÜCKGÄNGIG</string>
     <string name="snackbar_max_items_error">Maximale Anzahl erreicht.</string>
     <string name="snackbar_open_application_list_error">Fehler beim Anzeigen der Applikationen.</string>
+    <string name="snackbar_empty_application_list_error">Keine Applikation zum Hinzufügen gefunden.</string>
 
     <!-- Menu -->
     <string name="menu_settings">Einstellungen</string>

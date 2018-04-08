@@ -171,16 +171,20 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                         if (!reorderMode) {
                             swipeBackground.setY(viewHolder.itemView.getTop());
-                            if (isCurrentlyActive) {
-                                float halfDeviceScreenWidthPixels = deviceScreenWidthPixels / 2f;
-                                float absDX = Math.abs(dX);
-                                float currentDX = absDX > halfDeviceScreenWidthPixels ? halfDeviceScreenWidthPixels : absDX;
-                                swipeBackground.setAlpha(currentDX / halfDeviceScreenWidthPixels);
-                            } else
-                                swipeBackground.setAlpha(0f);
 
-                        } else
+                            float halfDeviceScreenWidthPixels = deviceScreenWidthPixels / 2f;
+                            float absDX = Math.abs(dX);
+                            float calculatedDX;
+
+                            if (absDX <= halfDeviceScreenWidthPixels)
+                                calculatedDX = absDX;
+                            else
+                                calculatedDX = halfDeviceScreenWidthPixels - (absDX - halfDeviceScreenWidthPixels);
+
+                            swipeBackground.setAlpha(calculatedDX / halfDeviceScreenWidthPixels);
+                        } else {
                             swipeBackground.setAlpha(0f);
+                        }
 
                         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                     }
@@ -356,6 +360,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     public void onOpenApplicationListError() {
         showSnackbar(R.string.snackbar_max_items_error);
+    }
+
+    @Override
+    public void onEmptyApplicationListError() {
+        showSnackbar(R.string.snackbar_empty_application_list_error);
     }
 
     @Override
