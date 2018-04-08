@@ -290,9 +290,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Override
-    public void setEnableState(boolean state) {
-        if (enableNotificationSwitch != null) enableNotificationSwitch.setChecked(state);
-        if (state) startNotificationService();
+    public void setEnableState(boolean stateEnabled) {
+        if (enableNotificationSwitch != null) enableNotificationSwitch.setChecked(stateEnabled);
+        if (stateEnabled) startNotificationService();
     }
 
     @Override
