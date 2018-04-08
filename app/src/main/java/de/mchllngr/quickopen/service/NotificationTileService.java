@@ -2,6 +2,7 @@ package de.mchllngr.quickopen.service;
 
 import android.annotation.TargetApi;
 import android.app.Service;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.os.Build;
@@ -16,8 +17,7 @@ import de.mchllngr.quickopen.R;
 import rx.Subscription;
 
 /**
- * {@link Service} for handling the {@link Tile} for enabling and disabling the
- * {@link android.app.Notification} in Android Nougat and above.
+ * {@link Service} for handling the {@link Tile} for enabling and disabling the {@link android.app.Notification} in Android Nougat and above.
  */
 @TargetApi(Build.VERSION_CODES.N)
 public class NotificationTileService extends TileService {
@@ -84,14 +84,13 @@ public class NotificationTileService extends TileService {
     public void onClick() {
         super.onClick();
 
-        Tile tile = getQsTile();
-        switch (tile.getState()) {
-            case Tile.STATE_ACTIVE:
-                notificationEnabledPref.set(false);
-                break;
-            case Tile.STATE_INACTIVE:
-                notificationEnabledPref.set(true);
-                break;
+        int i = getQsTile().getState();
+        if (i == Tile.STATE_ACTIVE) {
+            notificationEnabledPref.set(false);
+        } else if (i == Tile.STATE_INACTIVE) {
+            notificationEnabledPref.set(true);
+            startNotificationService();
+
         }
     }
 
@@ -109,5 +108,12 @@ public class NotificationTileService extends TileService {
         notificationEnabledPref = null;
 
         super.onDestroy();
+    }
+
+    /**
+     * Starts the {@link NotificationService}.
+     */
+    private void startNotificationService() {
+        startService(new Intent(this, NotificationService.class));
     }
 }

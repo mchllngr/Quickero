@@ -67,42 +67,9 @@ public abstract class DebugBaseActivity<V extends MvpView, P extends MvpBasePres
         debugDrawerHelper.initDebugDrawer();
     }
 
-    /**
-     * Attach {@link DebugDrawer} to lifecycle.
-     */
     @Override
-    protected void onStart() {
-        super.onStart();
-        debugDrawerHelper.onStart();
-    }
-
-
-    /**
-     * Attach {@link DebugDrawer} to lifecycle.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        debugDrawerHelper.onResume();
-    }
-
-
-    /**
-     * Attach {@link DebugDrawer} to lifecycle.
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        debugDrawerHelper.onPause();
-    }
-
-
-    /**
-     * Attach {@link DebugDrawer} to lifecycle.
-     */
-    @Override
-    protected void onStop() {
-        super.onStop();
-        debugDrawerHelper.onStop();
+    public void onBackPressed() {
+        if (!debugDrawerHelper.closeDrawerIfOpened())
+            super.onBackPressed();
     }
 }

@@ -18,13 +18,16 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.base.BasePresenter;
 import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.model.RemovedApplicationModel;
+import de.mchllngr.quickopen.util.CustomNotificationHelper;
 import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -41,15 +44,17 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     private final Context context;
     /**
-     * {@link Preference}-reference for easier usage of the saved value for firstStart in the
-     * {@link RxSharedPreferences}.
+     * {@link Preference}-reference for easier usage of the saved value for firstStart in the {@link RxSharedPreferences}.
      */
     private Preference<Boolean> firstStartPref;
     /**
-     * {@link Preference}-reference for easier usage of the saved value for packageNames in the
-     * {@link RxSharedPreferences}.
+     * {@link Preference}-reference for easier usage of the saved value for packageNames in the {@link RxSharedPreferences}.
      */
     private Preference<List> packageNamesPref;
+    /**
+     * {@link Preference}-reference for easier usage of the saved value for notificationEnabled in the {@link RxSharedPreferences}.
+     */
+    private Preference<Boolean> notificationEnabledPref;
     /**
      * Contains the last shown {@link ApplicationModel}s to get the selected item.
      */
@@ -62,6 +67,10 @@ public class MainPresenter extends BasePresenter<MainView> {
      * Represents the state of the item-list before reordering.
      */
     private List<ApplicationModel> listStateBeforeReorder;
+    /**
+     * {@link Subscription} for observing updates from notificationEnabledPref.
+     */
+    private Subscription notificationEnabledSubscription;
 
     MainPresenter(Context context) {
         this.context = context;
@@ -85,7 +94,33 @@ public class MainPresenter extends BasePresenter<MainView> {
                 adapter
         );
 
+        notificationEnabledPref = rxSharedPreferences.getBoolean(
+                context.getString(R.string.pref_notification_enabled),
+                Boolean.parseBoolean(context.getString(R.string.pref_notification_enabled_default_value))
+        );
+
+        notificationEnabledSubscription = notificationEnabledPref.asObservable().subscribe(enabled -> {
+            if (isViewAttached()) getView().setEnableState(enabled);
+        });
+
         addDummyItemsIfFirstStart();
+    }
+
+    @Override
+    public void detachView(boolean retainInstance) {
+        if (notificationEnabledSubscription != null && !notificationEnabledSubscription.isUnsubscribed()) notificationEnabledSubscription.unsubscribe();
+        notificationEnabledSubscription = null;
+        super.detachView(retainInstance);
+    }
+
+    void checkIfNotificationEnabledInPrefs() {
+        if (isViewAttached())
+            getView().setEnableState(notificationEnabledPref.get());
+    }
+
+    void checkIfNotificationEnabledInAndroidSettings() {
+        if (isViewAttached() && !getView().isNotificationEnabled(CustomNotificationHelper.CHANNEL_ID))
+            getView().showNotificationDisabledDialog();
     }
 
     /**
@@ -130,6 +165,13 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     /**
+     * Will be called when the state for enabling/disabling the notification changes.
+     */
+    void onEnableClick(boolean newState) {
+        notificationEnabledPref.set(newState);
+    }
+
+    /**
      * Loads the list of installed applications, prepares them and calls the {@link MainView}
      * to show them.
      */
@@ -159,11 +201,17 @@ public class MainPresenter extends BasePresenter<MainView> {
                         !TextUtils.isEmpty(applicationModel.name) &&
                         applicationModel.iconDrawable != null &&
                         applicationModel.iconBitmap != null)
-                .toSortedList((applicationModel, applicationModel2) -> applicationModel.name.toLowerCase().compareTo(applicationModel2.name.toLowerCase()))
+                .toSortedList((applicationModel, applicationModel2) -> applicationModel.name.toLowerCase(Locale.getDefault()).compareTo(applicationModel2.name.toLowerCase(Locale.getDefault())))
                 .toSingle()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(applicationList -> {
                     if (!isViewAttached()) return;
+
+                    if (applicationList.isEmpty()) {
+                        getView().onEmptyApplicationListError();
+                        getView().hideProgressDialog();
+                        return;
+                    }
 
                     lastShownApplicationModels = applicationList;
 
@@ -215,6 +263,8 @@ public class MainPresenter extends BasePresenter<MainView> {
      * @param currentState Current state of the list
      */
     void onReorderIconClick(@NonNull List<ApplicationModel> currentState) {
+        if (currentState.size() < 2) return;
+
         listStateBeforeReorder = new ArrayList<>();
         listStateBeforeReorder.addAll(currentState);
 
@@ -271,9 +321,15 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         List<ApplicationModel> applicationModels = ApplicationModel.prepareApplicationModelsList(context, packageNamesPref.get());
 
-        if (applicationModels.size() >= context.getResources()
-                .getInteger(R.integer.max_apps_in_notification))
-            getView().hideAddItemsButton();
+        if (applicationModels.isEmpty())
+            getView().setEmptyListViewVisibility(true);
+        else {
+            getView().setEmptyListViewVisibility(false);
+
+            if (applicationModels.size() >= context.getResources()
+                    .getInteger(R.integer.max_apps_in_notification))
+                getView().hideAddItemsButton();
+        }
 
         getView().updateItems(applicationModels);
 
@@ -284,7 +340,7 @@ public class MainPresenter extends BasePresenter<MainView> {
      * Adds an item at the end of the list in {@link android.content.SharedPreferences} and calls
      * the {@link MainView} to also add it to the shown list.
      */
-    void addItem(ApplicationModel applicationModel) {
+    private void addItem(ApplicationModel applicationModel) {
         addItem(Integer.MAX_VALUE, applicationModel);
     }
 
@@ -293,7 +349,7 @@ public class MainPresenter extends BasePresenter<MainView> {
      * and calls the {@link MainView} to also add it to the shown list.
      */
     @SuppressWarnings("unchecked")
-    void addItem(int position, ApplicationModel applicationModel) {
+    private void addItem(int position, ApplicationModel applicationModel) {
         List applicationModels = packageNamesPref.get();
 
         if (applicationModels == null)
@@ -319,8 +375,10 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         packageNamesPref.set(applicationModels);
 
-        if (isViewAttached())
+        if (isViewAttached()) {
+            getView().setEmptyListViewVisibility(false);
             getView().addItem(position, applicationModel);
+        }
     }
 
     /**
@@ -331,18 +389,24 @@ public class MainPresenter extends BasePresenter<MainView> {
     void removeItem(int position) {
         List applicationModels = packageNamesPref.get();
 
+        if (applicationModels == null) {
+            packageNamesPref.delete();
+            return;
+        }
+
         lastRemovedItem = new RemovedApplicationModel(
                 position,
                 ApplicationModel.getApplicationModelForPackageName(context, (String) applicationModels.get(position))
         );
 
-        if (applicationModels != null && applicationModels.size() > 1) {
-            applicationModels.remove(position);
+        applicationModels.remove(position);
+        if (!applicationModels.isEmpty())
             packageNamesPref.set(applicationModels);
-        } else
+        else
             packageNamesPref.delete();
 
         if (isViewAttached()) {
+            getView().setEmptyListViewVisibility(applicationModels.isEmpty());
             getView().showAddItemsButton();
             getView().removeItem(position);
             getView().showUndoButton();
@@ -355,6 +419,6 @@ public class MainPresenter extends BasePresenter<MainView> {
         addItem(lastRemovedItem.position, lastRemovedItem.applicationModel);
 
         if (isViewAttached())
-            getView().hideUndoButton();
+            getView().dismissSnackbar();
     }
 }

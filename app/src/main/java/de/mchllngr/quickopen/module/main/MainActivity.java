@@ -1,24 +1,34 @@
 package de.mchllngr.quickopen.module.main;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
@@ -30,12 +40,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.base.BaseActivity;
 import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.module.about.AboutActivity;
-import de.mchllngr.quickopen.module.settings.SettingsActivity;
 import de.mchllngr.quickopen.service.NotificationService;
+import de.mchllngr.quickopen.util.CustomNotificationHelper;
 
 /**
  * {@link Activity} for handling the selection of applications.
@@ -62,19 +73,23 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      * Represents the red background behind a swipeable item.
      */
     @BindView(R.id.swipe_background) FrameLayout swipeBackground;
+    /**
+     * Represents the empty view that is shown when the list is empty.
+     */
+    @BindView(R.id.empty_view) TextView emptyView;
+    /**
+     * Represents the view for enabling/disabling the notification.
+     */
+    @BindView(R.id.enable) Switch enableNotificationSwitch;
 
     /**
      * {@link MainAdapter} for updating shown items in {@code recyclerView}.
      */
     private MainAdapter adapter;
     /**
-     * {@link MaterialDialog} for showing the installed application-list.
+     * {@link MaterialDialog} for showing various dialogs.
      */
-    private MaterialDialog applicationDialog;
-    /**
-     * {@link MaterialDialog} for showing the loading-process for the list of installed applications.
-     */
-    private MaterialDialog progressDialog;
+    private MaterialDialog dialog;
 
     /**
      * {@link Snackbar} for showing the undo-remove-button.
@@ -88,6 +103,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      * Indicates whether the Reorder-Mode is enabled or disabled.
      */
     private boolean reorderMode;
+    /**
+     * Current device screen width in pixels.
+     */
+    private int deviceScreenWidthPixels;
 
     @NonNull
     @Override
@@ -102,13 +121,19 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
+        getDeviceScreenWidthPixels();
+
         initRecyclerView();
 
         ApplicationModel.removeNotLaunchableAppsFromList(this);
 
-        startNotificationService();
-
         fab.setOnClickListener(view -> getPresenter().openApplicationList());
+    }
+
+    private void getDeviceScreenWidthPixels() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        deviceScreenWidthPixels = metrics.widthPixels;
     }
 
     /**
@@ -153,15 +178,21 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                     @Override
                     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                         if (!reorderMode) {
-                            // set the red background one swiped item
                             swipeBackground.setY(viewHolder.itemView.getTop());
-                            if (isCurrentlyActive) {
-                                swipeBackground.setVisibility(View.VISIBLE);
-                            } else {
-                                swipeBackground.setVisibility(View.GONE);
-                            }
-                        } else
-                            swipeBackground.setVisibility(View.GONE);
+
+                            float halfDeviceScreenWidthPixels = deviceScreenWidthPixels / 2f;
+                            float absDX = Math.abs(dX);
+                            float calculatedDX;
+
+                            if (absDX <= halfDeviceScreenWidthPixels)
+                                calculatedDX = absDX;
+                            else
+                                calculatedDX = halfDeviceScreenWidthPixels - (absDX - halfDeviceScreenWidthPixels);
+
+                            swipeBackground.setAlpha(calculatedDX / halfDeviceScreenWidthPixels);
+                        } else {
+                            swipeBackground.setAlpha(0f);
+                        }
 
                         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                     }
@@ -170,9 +201,22 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        getPresenter().checkIfNotificationEnabledInPrefs();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         getPresenter().loadItems();
+        getPresenter().checkIfNotificationEnabledInAndroidSettings();
+    }
+
+    @Override
+    protected void onStop() {
+        hideDialog();
+        super.onStop();
     }
 
     @Override
@@ -183,13 +227,18 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(0).setVisible(!reorderMode); // reorder
+        menu.getItem(0).setVisible(!reorderMode && (adapter == null || adapter.getItems().size() > 1)); // reorder
         menu.getItem(1).setVisible(!reorderMode); // about
         menu.getItem(2).setVisible(!reorderMode); // settings
         menu.getItem(3).setVisible(reorderMode); // reorder_cancel
         menu.getItem(4).setVisible(reorderMode); // reorder_accept
 
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    @OnClick(R.id.enable)
+    public void onEnableClick(Switch view) {
+        getPresenter().onEnableClick(view.isChecked());
     }
 
     @Override
@@ -203,7 +252,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 AboutActivity.start(this);
                 return true;
             case R.id.settings:
-                SettingsActivity.start(this);
+                goToNotificationSettings(CustomNotificationHelper.CHANNEL_ID);
                 return true;
             case R.id.reorder_cancel:
                 getPresenter().onReorderCancelIconClick();
@@ -217,6 +266,53 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         }
     }
 
+    private void goToNotificationSettings(@Nullable String channelId) {
+        Intent intent = new Intent();
+        if (VERSION.SDK_INT >= VERSION_CODES.O) {
+            if (channelId != null) {
+                intent.setAction(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_CHANNEL_ID, channelId);
+            } else {
+                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            }
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+        } else {
+            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+            intent.putExtra("app_package", getPackageName());
+            intent.putExtra("app_uid", getApplicationInfo().uid);
+        }
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean isNotificationEnabled(@Nullable String channelId) {
+        if (VERSION.SDK_INT >= VERSION_CODES.O) {
+            if (channelId != null) {
+                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                if (manager != null) {
+                    NotificationChannel channel = manager.getNotificationChannel(channelId);
+                    return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
+                }
+            }
+            return false;
+        } else {
+            return NotificationManagerCompat.from(this).areNotificationsEnabled();
+        }
+    }
+
+    @Override
+    public void showNotificationDisabledDialog() {
+        hideDialog();
+        dialog = new MaterialDialog.Builder(this)
+                .title(R.string.dialog_notification_disabled_title)
+                .content(getString(R.string.dialog_notification_disabled_text, getString(R.string.app_name)))
+                .cancelable(false)
+                .positiveText(R.string.dialog_notification_disabled_button_ok)
+                .negativeText(R.string.dialog_notification_disabled_button_settings)
+                .onNegative((d, w) -> goToNotificationSettings(CustomNotificationHelper.CHANNEL_ID))
+                .show();
+    }
+
     /**
      * Starts the {@link NotificationService}.
      */
@@ -225,17 +321,22 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Override
+    public void setEnableState(boolean stateEnabled) {
+        if (enableNotificationSwitch != null) enableNotificationSwitch.setChecked(stateEnabled);
+        if (stateEnabled) startNotificationService();
+    }
+
+    @Override
     public void onMaterialListItemSelected(MaterialDialog dialog, int index, MaterialSimpleListItem item) {
         getPresenter().onApplicationSelected(index);
-
-        if (applicationDialog != null)
-            applicationDialog.dismiss();
+        hideDialog();
     }
 
     @Override
     public void showApplicationListDialog(MaterialSimpleListAdapter adapter) {
-        applicationDialog = new MaterialDialog.Builder(this)
-                .title(R.string.application_list_dialog_title)
+        hideDialog();
+        dialog = new MaterialDialog.Builder(this)
+                .title(R.string.dialog_application_list_title)
                 .adapter(adapter, null)
                 .show();
     }
@@ -247,18 +348,28 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void showProgressDialog() {
-        hideProgressDialog();
-
-        progressDialog = new MaterialDialog.Builder(this)
-                .content(R.string.progress_dialog_please_wait)
+        hideDialog();
+        dialog = new MaterialDialog.Builder(this)
+                .content(R.string.dialog_progress_please_wait)
+                .cancelable(false)
                 .progress(true, 0)
                 .show();
     }
 
     @Override
     public void hideProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
+        hideDialog();
+    }
+
+    private void hideDialog() {
+        if (dialog != null && dialog.isShowing())
+            dialog.dismiss();
+        dialog = null;
+    }
+
+    @Override
+    public void setEmptyListViewVisibility(boolean visible) {
+        emptyView.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -274,18 +385,21 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     public void updateItems(List<ApplicationModel> items) {
         if (adapter != null)
             adapter.updateItems(items);
+        invalidateOptionsMenu();
     }
 
     @Override
     public void addItem(int position, ApplicationModel applicationModel) {
         if (adapter != null)
             adapter.add(position, applicationModel);
+        invalidateOptionsMenu();
     }
 
     @Override
     public void removeItem(int position) {
         if (adapter != null)
             adapter.remove(adapter.get(position));
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -306,39 +420,52 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void showUndoButton() {
-        hideUndoButton();
+        showSnackbar(R.string.snackbar_undo_remove, R.string.snackbar_undo_remove_action, view -> {
+            getPresenter().undoRemove();
+            snackbar.dismiss();
+        });
+    }
 
-        snackbar = Snackbar
-                .make(coordinatorLayout, R.string.snackbar_undo_remove, Snackbar.LENGTH_LONG)
-                .setAction(R.string.snackbar_undo_remove_action, view -> {
-                    getPresenter().undoRemove();
-                    snackbar.dismiss();
-                });
+    @Override
+    public void onOpenApplicationListError() {
+        showSnackbar(R.string.snackbar_open_application_list_error);
+    }
+
+    @Override
+    public void onEmptyApplicationListError() {
+        showSnackbar(R.string.snackbar_empty_application_list_error);
+    }
+
+    @Override
+    public void showMaxItemsError() {
+        showSnackbar(R.string.snackbar_max_items_error);
+    }
+
+    private void showSnackbar(@StringRes int textId) {
+        showSnackbar(textId, 0, null);
+    }
+
+    private void showSnackbar(@StringRes int textId, @StringRes int actionTextId, @Nullable View.OnClickListener listener) {
+        dismissSnackbar();
+
+        snackbar = Snackbar.make(coordinatorLayout, textId, Snackbar.LENGTH_LONG);
+
+        if (actionTextId != 0 && listener != null)
+            snackbar.setAction(actionTextId, listener);
+
         snackbar.getView().setBackgroundResource(R.color.snackbar_background_color);
 
         snackbar.show();
     }
 
     @Override
-    public void hideUndoButton() {
+    public void dismissSnackbar() {
         if (snackbar != null)
             snackbar.dismiss();
     }
 
     @Override
-    public void onOpenApplicationListError() {
-        Log.d("DEBUG_TAG", "MainActivity#onOpenApplicationListError()"); // FIXME delete
-        // TODO show error msg
-    }
-
-    @Override
-    public void showMaxItemsError() {
-        Log.d("DEBUG_TAG", "MainActivity#showMaxItemsError()"); // FIXME delete
-        // TODO show error msg
-    }
-
-    @Override
-    public void onStartDrag(MainAdapter.ViewHolder viewHolder) {
+    public void onStartDrag(MainAdapter.MainViewHolder viewHolder) {
         if (itemTouchHelper != null)
             itemTouchHelper.startDrag(viewHolder);
     }
