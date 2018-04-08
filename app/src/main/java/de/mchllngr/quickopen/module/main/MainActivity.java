@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -36,6 +37,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.base.BaseActivity;
 import de.mchllngr.quickopen.model.ApplicationModel;
@@ -72,6 +74,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      * Represents the empty view that is shown when the list is empty.
      */
     @BindView(R.id.empty_view) TextView emptyView;
+    /**
+     * Represents the view for enabling/disabling the notification.
+     */
+    @BindView(R.id.enable) Switch enableNotificationSwitch;
 
     /**
      * {@link MainAdapter} for updating shown items in {@code recyclerView}.
@@ -198,6 +204,12 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        getPresenter().checkIfNotificationEnabled();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         getPresenter().loadItems();
@@ -211,13 +223,23 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(0).setVisible(!reorderMode && (adapter == null || adapter.getItems().size() > 1)); // reorder
+        boolean notificationsEnabled = enableNotificationSwitch.isChecked();
+        menu.getItem(0).setVisible(notificationsEnabled && !reorderMode && (adapter == null || adapter.getItems().size() > 1)); // reorder
         menu.getItem(1).setVisible(!reorderMode); // about
         menu.getItem(2).setVisible(!reorderMode); // settings
-        menu.getItem(3).setVisible(reorderMode); // reorder_cancel
-        menu.getItem(4).setVisible(reorderMode); // reorder_accept
+        menu.getItem(3).setVisible(notificationsEnabled && reorderMode); // reorder_cancel
+        menu.getItem(4).setVisible(notificationsEnabled && reorderMode); // reorder_accept
 
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    @OnClick(R.id.enable)
+    public void onEnableClick(Switch view) {
+
+        // TODO check why notifications is not always shown again after some enabling/disabling
+
+        getPresenter().onEnableClick(view.isChecked());
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -272,6 +294,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      */
     private void startNotificationService() {
         startService(new Intent(this, NotificationService.class));
+    }
+
+    @Override
+    public void setEnableState(boolean state) {
+        enableNotificationSwitch.setChecked(state);
     }
 
     @Override

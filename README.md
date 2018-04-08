@@ -8,7 +8,7 @@ An android app to quickly open your favorite apps through a notification.
 - AboutPage "Rate us on the Play Store" seems to be non functional
 
 # TODO
-- disable MainActivity when notification_enabled = false
+- add a Dialog if Notifications are disabled in Android (onStart)
 - new notification icon
 - check customNotification-design on all api-levels
 - add firebase for crashlytics
@@ -20,8 +20,9 @@ An android app to quickly open your favorite apps through a notification.
 
 # TODO a little bit later
 - rebuild app completely in kotlin
+- redesign of en-/disabling-switch
 - show installed apps on another page
-- add tutorial
+- add tutorial?
 - add feedback
 - add "Donate a beer"
 - add search-bar to application-list ?
