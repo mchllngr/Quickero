@@ -372,7 +372,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void onOpenApplicationListError() {
-        showSnackbar(R.string.snackbar_max_items_error);
+        showSnackbar(R.string.snackbar_open_application_list_error);
     }
 
     @Override

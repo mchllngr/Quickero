@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.base.BasePresenter;
@@ -159,7 +160,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                         !TextUtils.isEmpty(applicationModel.name) &&
                         applicationModel.iconDrawable != null &&
                         applicationModel.iconBitmap != null)
-                .toSortedList((applicationModel, applicationModel2) -> applicationModel.name.toLowerCase().compareTo(applicationModel2.name.toLowerCase()))
+                .toSortedList((applicationModel, applicationModel2) -> applicationModel.name.toLowerCase(Locale.getDefault()).compareTo(applicationModel2.name.toLowerCase(Locale.getDefault())))
                 .toSingle()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(applicationList -> {

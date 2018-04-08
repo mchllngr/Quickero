@@ -73,7 +73,7 @@ class MainAdapter extends Adapter<MainAdapter.MainViewHolder> {
         holder.name.setText(applicationModel.name);
 
         if (reorderMode) {
-            Drawable drawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_reorder_black_24px, null);
+            Drawable drawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_reorder_black_24dp, null);
             if (drawable != null) {
                 drawable = DrawableCompat.wrap(drawable);
                 DrawableCompat.setTint(drawable, ContextCompat.getColor(context, R.color.reorder_icon_color));

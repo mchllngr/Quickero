@@ -7,8 +7,8 @@
     android:background="?android:attr/colorBackground"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/activity_vertical_margin_half"
-    android:paddingStart="@dimen/activity_horizontal_margin"
     android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:paddingStart="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin_half">
 
     <ImageView
@@ -16,6 +16,7 @@
         android:layout_width="@dimen/recycler_view_item_icon_size"
         android:layout_height="@dimen/recycler_view_item_icon_size"
         android:layout_marginEnd="@dimen/recycler_view_item_icon_margin_end"
+        android:contentDescription="@null"
         tools:src="@mipmap/ic_launcher"/>
 
     <TextView
@@ -35,8 +36,9 @@
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/recycler_view_item_drag_handle_margin_start"
         android:background="@drawable/background_transparent"
+        android:contentDescription="@null"
         android:visibility="gone"
-        app:srcCompat="@drawable/ic_reorder_black_24px"
+        app:srcCompat="@drawable/ic_reorder_black_24dp"
         tools:visibility="visible"/>
 
 </LinearLayout>

@@ -30,7 +30,7 @@ public class CustomNotificationHelper {
 
     public static final String CHANNEL_ID = "default";
 
-    private static final int NOTIFICATION_ICON_ID = R.drawable.ic_speaker_notes_white_24px;
+    private static final int NOTIFICATION_ICON_ID = R.drawable.ic_speaker_notes_white_24dp;
     /**
      * Array of every layout used.
      */
