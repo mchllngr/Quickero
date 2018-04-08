@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import de.mchllngr.quickopen.R;
+import timber.log.Timber;
 
 /**
  * http://blog.davidmedenjak.com/android/2017/09/02/splash-screens.html
@@ -28,7 +29,7 @@ public class SplashScreenHelper implements Application.ActivityLifecycleCallback
 
             activity.setTheme(theme);
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
     }
 
