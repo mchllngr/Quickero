@@ -14,6 +14,7 @@
     <string name="snackbar_undo_remove_action">UNDO</string>
     <string name="snackbar_max_items_error">Max items reached.</string>
     <string name="snackbar_open_application_list_error">Error while showing application list.</string>
+    <string name="snackbar_empty_application_list_error">No addable applications found.</string>
 
     <!-- Menu -->
     <string name="menu_settings">Settings</string>

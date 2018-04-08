@@ -8,7 +8,6 @@ An android app to quickly open your favorite apps through a notification.
 
 # TODO
 - add empty-view for recyclerview
-- what to do when app-list is empty ?
 - disable MainActivity when notification_enabled = false
 - new notification icon
 - check customNotification-design on all api-levels

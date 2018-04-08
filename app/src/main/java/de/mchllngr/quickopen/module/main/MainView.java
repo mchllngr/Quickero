@@ -85,6 +85,11 @@ interface MainView extends BaseView {
     void onOpenApplicationListError();
 
     /**
+     * Shows an error message when no addable applications were found.
+     */
+    void onEmptyApplicationListError();
+
+    /**
      * Shows an error message when trying to add an item, but maxCount is already reached.
      */
     void showMaxItemsError();
