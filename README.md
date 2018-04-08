@@ -1,34 +1,29 @@
 # QuickOpen [![Build Status](https://travis-ci.org/mchllngr/QuickOpen.svg?branch=master)](https://travis-ci.org/mchllngr/QuickOpen)
 An android app to quickly open your favorite apps through a notification.
 
+<a href='https://play.google.com/store/apps/details?id=de.mchllngr.quickopen&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width='300' alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+
 # KNOWN BUGS
 - splashscreen is broken (only api 27?)
-- settings-text eventually too long (-> multiline)
-- item slide shows a red background, which doesn't look right (no trash-box for deleting, no fading, etc.)
+- AboutPage "Rate us on the Play Store" seems to be non functional
 
 # TODO
-- open android notification-settings page on android 8 and later?
-- remove notification priority options, because this can now be handled over the channel (even by the user)
-    - also the visibility option ?
-- add licence to every file ?
-- add better texts and explanations to settings-page / style settings with images
-- add empty-view for recyclerview
+- new notification icon
 - check customNotification-design on all api-levels
-- check activity leak on api 19 ? (open and close settings)
-- what to do when app-list is empty ?
+- add firebase for crashlytics
+- other app-name
+- add responsive icon + new icon design
+- add licence to every file ?
+- improve proguard
+- add screenshots + real descriptions to google-play-page (and app-about-page)
 
 # TODO a little bit later
-- rebuild app completely
-- add tutorial
-- add screenshots + real descriptions to google-play-page
-- add delete icon on remove-swipe
+- rebuild app completely in kotlin
+- redesign of en-/disabling-switch
+- show installed apps on another page
+- add tutorial?
 - add feedback
-- disable MainActivity when notification_enabled = false
-- check for uninstalled applications every start (BroadcastReceiver)
 - add "Donate a beer"
-- check night-mode on about-page
-    - https://github.com/medyo/android-about-page/issues/62
-- other app-name
 - add search-bar to application-list ?
 
 # FEATURES-IDEAS (for later)
