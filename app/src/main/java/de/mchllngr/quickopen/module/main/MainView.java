@@ -1,5 +1,7 @@
 package de.mchllngr.quickopen.module.main;
 
+import android.support.annotation.Nullable;
+
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
 
 import java.util.List;
@@ -11,6 +13,21 @@ import de.mchllngr.quickopen.model.ApplicationModel;
  * Interface for the {@link MainActivity}
  */
 interface MainView extends BaseView {
+
+    /**
+     * Will check if the notification for the given {@code channelId} is enabled.
+     */
+    boolean isNotificationEnabled(@Nullable String channelId);
+
+    /**
+     * Will show a dialog to the user, because the notification is disabled.
+     */
+    void showNotificationDisabledDialog();
+
+    /**
+     * Will update the state of the view that represents if the notification is enabled/disabled.
+     */
+    void setEnableState(boolean stateEnabled);
 
     /**
      * Shows the list dialog for choosing one of the installed applications.
@@ -33,6 +50,11 @@ interface MainView extends BaseView {
      * Hides the shown progress dialog when loading is finished.
      */
     void hideProgressDialog();
+
+    /**
+     * Will set the visibility for the View shown when the list is empty.
+     */
+    void setEmptyListViewVisibility(boolean visible);
 
     /**
      * Enables/disables the Reorder-Mode.
@@ -77,12 +99,17 @@ interface MainView extends BaseView {
     /**
      * Hides the button to undo the last remove;
      */
-    void hideUndoButton();
+    void dismissSnackbar();
 
     /**
      * Shows an error message.
      */
     void onOpenApplicationListError();
+
+    /**
+     * Shows an error message when no addable applications were found.
+     */
+    void onEmptyApplicationListError();
 
     /**
      * Shows an error message when trying to add an item, but maxCount is already reached.
