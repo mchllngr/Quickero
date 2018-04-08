@@ -4,11 +4,13 @@
     <!-- Empty application list -->
     <string name="application_list_empty">Klicken Sie auf das \"+\" um\nApplikationen hinzuzufügen.</string>
 
-    <!-- Application list dialog -->
-    <string name="application_list_dialog_title">Wähle eine Applikation&#8230;</string>
-
-    <!-- Progress dialog -->
-    <string name="progress_dialog_please_wait">Bitte warten&#8230;</string>
+    <!-- Dialog -->
+    <string name="dialog_application_list_title">Wähle eine Applikation&#8230;</string>
+    <string name="dialog_progress_please_wait">Bitte warten&#8230;</string>
+    <string name="dialog_notification_disabled_title">Benachrichtigungen deaktiviert</string>
+    <string name="dialog_notification_disabled_text">Bitte aktivieren Sie die Benachrichtungen in den Einstellungen damit %s ordentlich funktionieren kann.</string>
+    <string name="dialog_notification_disabled_button_ok">OK</string>
+    <string name="dialog_notification_disabled_button_settings">Einstellungen</string>
 
     <!-- Snackbar -->
     <string name="snackbar_undo_remove">Item gelöscht.</string>

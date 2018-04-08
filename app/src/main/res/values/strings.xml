@@ -6,11 +6,13 @@
     <!-- Empty application list -->
     <string name="application_list_empty">Click \"+\" to add applications.</string>
 
-    <!-- Application list dialog -->
-    <string name="application_list_dialog_title">Select an application&#8230;</string>
-
-    <!-- Progress dialog -->
-    <string name="progress_dialog_please_wait">Please wait&#8230;</string>
+    <!-- Dialog -->
+    <string name="dialog_application_list_title">Select an application&#8230;</string>
+    <string name="dialog_progress_please_wait">Please wait&#8230;</string>
+    <string name="dialog_notification_disabled_title">Notifications disabled</string>
+    <string name="dialog_notification_disabled_text">Please enable the notifications in the settings for %s to work properly.</string>
+    <string name="dialog_notification_disabled_button_ok">OK</string>
+    <string name="dialog_notification_disabled_button_settings">Settings</string>
 
     <!-- Snackbar -->
     <string name="snackbar_undo_remove">Item removed.</string>
