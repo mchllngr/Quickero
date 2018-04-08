@@ -1,12 +1,13 @@
 # QuickOpen [![Build Status](https://travis-ci.org/mchllngr/QuickOpen.svg?branch=master)](https://travis-ci.org/mchllngr/QuickOpen)
 An android app to quickly open your favorite apps through a notification.
 
+<a href='https://play.google.com/store/apps/details?id=de.mchllngr.quickopen&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width='300' alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+
 # KNOWN BUGS
 - splashscreen is broken (only api 27?)
 - AboutPage "Rate us on the Play Store" seems to be non functional
 
 # TODO
-- remove support for API 19
 - disable MainActivity when notification_enabled = false
 - new notification icon
 - check customNotification-design on all api-levels
