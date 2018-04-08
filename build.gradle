@@ -28,7 +28,7 @@ ext {
     // Tools and sdk
     COMPILE_SDK_VERSION = 27
     BUILD_TOOLS_VERSION = "27.0.3"
-    MIN_SDK_VERSION = 19
+    MIN_SDK_VERSION = 21
     TARGET_SDK_VERSION = 27
 
     // Version

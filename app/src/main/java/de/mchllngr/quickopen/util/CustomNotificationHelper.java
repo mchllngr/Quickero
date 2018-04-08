@@ -26,18 +26,11 @@ import static android.os.Build.VERSION_CODES;
 /**
  * Helper-class for easier handling of the custom notification.
  */
-// TODO inject with dagger ?
 public class CustomNotificationHelper {
 
     public static final String CHANNEL_ID = "default";
 
-    private static final int NOTIFICATION_ICON_ID_NOT_VECTOR = R.drawable.ic_notification;
-    private static final int NOTIFICATION_ICON_ID_VECTOR = R.drawable.ic_speaker_notes_white_24px;
-
-    /**
-     * Allows usage of VectorDrawables when current {@link VERSION} is Android Lollipop or newer.
-     */
-    private static final boolean USE_VECTOR_DRAWABLES = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
+    private static final int NOTIFICATION_ICON_ID = R.drawable.ic_speaker_notes_white_24px;
     /**
      * Array of every layout used.
      */
@@ -83,10 +76,6 @@ public class CustomNotificationHelper {
      * Used {@link Context}.
      */
     private final Context context;
-    /**
-     * IconId used for showing the notification.
-     */
-    private final int notificationIconId;
 
     /**
      * Constructor for initialising.
@@ -95,7 +84,6 @@ public class CustomNotificationHelper {
      */
     public CustomNotificationHelper(@NonNull Context context) {
         this.context = context;
-        this.notificationIconId = USE_VECTOR_DRAWABLES ? NOTIFICATION_ICON_ID_VECTOR : NOTIFICATION_ICON_ID_NOT_VECTOR;
     }
 
     /**
@@ -202,7 +190,7 @@ public class CustomNotificationHelper {
     private Notification createNotification(RemoteViews customContentView) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         return builder
-                .setSmallIcon(notificationIconId)
+                .setSmallIcon(NOTIFICATION_ICON_ID)
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .setShowWhen(false)
@@ -239,7 +227,7 @@ public class CustomNotificationHelper {
     private Notification createLoadingNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         return builder
-                .setSmallIcon(notificationIconId)
+                .setSmallIcon(NOTIFICATION_ICON_ID)
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .setShowWhen(false)
