@@ -10,8 +10,6 @@ An android app to quickly open your favorite apps through a notification.
 
 # TODO
 - new notification icon
-- check customNotification-design on all api-levels
-- add firebase for crashlytics
 - other app-name
 - add responsive icon + new icon design
 - add licence to every file ?
@@ -31,8 +29,8 @@ An android app to quickly open your favorite apps through a notification.
 - profiles (e.g. work/home)
     - automatic change between profiles decided by time/location(/connected wifi?)
 
-# Crashlytics
-This app uses Crashlytics by Fabric. For it to work you must declare your own `app/fabric.properties` file containing your `apiKey` and `apiSecret`. Otherwise you first need to remove Crashlytics completely.
+# Firebase
+This app uses Firebase. For it to work you must declare your own [`google-services.json`](https://developers.google.com/android/guides/google-services-plugin). Otherwise you first need to remove Firebase completely.
 
 # License
 
