@@ -171,18 +171,18 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                     }
 
                     @Override
-                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                         moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                         return true;
                     }
 
                     @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         getPresenter().removeItem(viewHolder.getAdapterPosition());
                     }
 
                     @Override
-                    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                         if (!reorderMode) {
                             swipeBackground.setY(viewHolder.itemView.getTop());
 
