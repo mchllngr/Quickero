@@ -1,5 +1,6 @@
 package de.mchllngr.quickopen.module.main;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -25,6 +26,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Switch;
@@ -114,6 +116,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         return new MainPresenter(this);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,6 +131,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         ApplicationModel.removeNotLaunchableAppsFromList(this);
 
         fab.setOnClickListener(view -> getPresenter().openApplicationList());
+
+        // consume move actions to only allow clicking
+        enableNotificationSwitch.setOnTouchListener((v, event) -> event.getActionMasked() == MotionEvent.ACTION_MOVE);
     }
 
     private void getDeviceScreenWidthPixels() {
@@ -290,6 +296,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             if (channelId != null) {
                 NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 if (manager != null) {
+                    if (manager.getNotificationChannel(channelId) == null)
+                        new CustomNotificationHelper(this).createNotificationChannel(manager);
+
                     NotificationChannel channel = manager.getNotificationChannel(channelId);
                     return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
                 }
