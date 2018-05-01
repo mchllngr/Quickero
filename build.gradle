@@ -5,7 +5,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0-alpha09'
+        classpath 'com.android.tools.build:gradle:3.2.0-alpha12'
         classpath "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.2"
         classpath 'io.fabric.tools:gradle:1.+'
     }
@@ -34,7 +34,7 @@ ext {
     // Version
     MAJOR_VERSION = 0
     MINOR_VERSION = 7
-    BUGFIX_VERSION = 0
+    BUGFIX_VERSION = 1
     VERSIONCODE = MAJOR_VERSION * 1000000 + MINOR_VERSION * 1000 + BUGFIX_VERSION
     VERSIONAME = "$MAJOR_VERSION.$MINOR_VERSION.$BUGFIX_VERSION"
 

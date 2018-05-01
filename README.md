@@ -4,6 +4,7 @@ An android app to quickly open your favorite apps through a notification.
 <a href='https://play.google.com/store/apps/details?id=de.mchllngr.quickopen&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width='300' alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
 # KNOWN BUGS
+- Enable-Switch layout is broken on Android-P
 - splashscreen is broken (only api 27?)
 - AboutPage "Rate us on the Play Store" seems to be non functional
 
