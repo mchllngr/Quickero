@@ -133,7 +133,7 @@ public class ApplicationModel {
 
         List<ApplicationModel> applicationModels = prepareApplicationModelsList(context, list);
 
-        return applicationModels.toArray(new ApplicationModel[applicationModels.size()]);
+        return applicationModels.toArray(new ApplicationModel[0]);
     }
 
     /**

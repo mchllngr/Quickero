@@ -12,7 +12,7 @@
     <dimen name="recycler_view_item_drag_handle_margin_start">16dp</dimen>
 
     <!-- Custom Notification -->
-    <dimen name="notification_padding_vertical">8dp</dimen>
+    <dimen name="notification_padding_vertical">16dp</dimen>
     <dimen name="notification_padding_horizontal">8dp</dimen>
     <dimen name="notification_image_height">32dp</dimen>
 
