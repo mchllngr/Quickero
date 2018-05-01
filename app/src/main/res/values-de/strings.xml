@@ -13,7 +13,7 @@
     <string name="dialog_notification_disabled_button_settings">Einstellungen</string>
 
     <!-- Snackbar -->
-    <string name="snackbar_undo_remove">Item gelöscht.</string>
+    <string name="snackbar_undo_remove">Applikation gelöscht.</string>
     <string name="snackbar_undo_remove_action">RÜCKGÄNGIG</string>
     <string name="snackbar_max_items_error">Maximale Anzahl erreicht.</string>
     <string name="snackbar_open_application_list_error">Fehler beim Anzeigen der Applikationen.</string>
@@ -32,10 +32,10 @@
     <!-- Notification service -->
     <string name="notification_service_loading_title">Bitte warten&#8230;</string>
     <string name="notification_service_loading_text">Benachrichtigung wird vorbereitet&#8230;</string>
-    <string name="notification_service_error">Fehler beim Erstellen der Notification.</string>
+    <string name="notification_service_error">Fehler beim Erstellen der Benachrichtigung.</string>
     <string name="notification_channel_default_name">Standard</string>
 
     <!-- Pref notification enabled -->
-    <string name="pref_notification_enabled_title">Notification anzeigen</string>
+    <string name="pref_notification_enabled_title">Benachrichtigung anzeigen</string>
 
 </resources>
