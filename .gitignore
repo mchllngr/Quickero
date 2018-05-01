@@ -188,3 +188,6 @@ $RECYCLE.BIN/
 /.idea/libraries
 /build
 /captures
+
+# Firebase
+google-services.json

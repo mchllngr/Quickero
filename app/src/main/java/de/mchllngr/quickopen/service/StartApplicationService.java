@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import de.mchllngr.quickopen.R;
-import de.mchllngr.quickopen.util.CrashlyticsUtils;
+import de.mchllngr.quickopen.util.FirebaseUtils;
 
 /**
  * {@link IntentService} for starting the clicked application from the notification.
@@ -39,7 +39,7 @@ public class StartApplicationService extends IntentService {
      * @param packageName package-name from selected application
      */
     private void startApplication(String packageName) {
-        CrashlyticsUtils.logStartApplicationEvent();
+        FirebaseUtils.logStartApplicationEvent(this);
         Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
         if (launchIntent != null)
             startActivity(launchIntent);
