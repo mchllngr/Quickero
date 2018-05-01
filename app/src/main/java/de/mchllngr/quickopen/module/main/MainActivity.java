@@ -1,5 +1,6 @@
 package de.mchllngr.quickopen.module.main;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -25,6 +26,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Switch;
@@ -114,6 +116,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         return new MainPresenter(this);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,6 +131,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         ApplicationModel.removeNotLaunchableAppsFromList(this);
 
         fab.setOnClickListener(view -> getPresenter().openApplicationList());
+
+        // consume move actions to only allow clicking
+        enableNotificationSwitch.setOnTouchListener((v, event) -> event.getActionMasked() == MotionEvent.ACTION_MOVE);
     }
 
     private void getDeviceScreenWidthPixels() {
@@ -165,18 +171,18 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                     }
 
                     @Override
-                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                         moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                         return true;
                     }
 
                     @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         getPresenter().removeItem(viewHolder.getAdapterPosition());
                     }
 
                     @Override
-                    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                         if (!reorderMode) {
                             swipeBackground.setY(viewHolder.itemView.getTop());
 
@@ -290,6 +296,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             if (channelId != null) {
                 NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 if (manager != null) {
+                    if (manager.getNotificationChannel(channelId) == null)
+                        new CustomNotificationHelper(this).createNotificationChannel(manager);
+
                     NotificationChannel channel = manager.getNotificationChannel(channelId);
                     return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
                 }

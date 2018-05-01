@@ -29,6 +29,10 @@ public class NotificationService extends Service {
      */
     private boolean notificationEnabled = true;
     /**
+     * Determines if the {@code packageNamesPref} observable was checked at least once.
+     */
+    private boolean packageNamesPrefCheckedAtLeastOnce = false;
+    /**
      * {@link CustomNotificationHelper}-reference for easier handling of the custom notification.
      */
     private CustomNotificationHelper customNotificationHelper;
@@ -85,11 +89,14 @@ public class NotificationService extends Service {
         notificationEnabledPref.asObservable().subscribe(enabled -> {
             this.notificationEnabled = enabled;
 
-            if (enabled) {
-                ApplicationModel[] applicationModels = ApplicationModel.prepareApplicationModelsArray(this, packageNamesPref.get());
-                showNotification(applicationModels);
-            } else
-                hideNotification();
+            // make sure packageNamesPref was checked before this so that the service won't be stopped too early
+            if (packageNamesPrefCheckedAtLeastOnce) {
+                if (enabled) {
+                    ApplicationModel[] applicationModels = ApplicationModel.prepareApplicationModelsArray(this, packageNamesPref.get());
+                    showNotification(applicationModels);
+                } else
+                    hideNotification();
+            }
         });
 
         // subscribe to changes in packageNamesPref
@@ -101,6 +108,8 @@ public class NotificationService extends Service {
                 showNotification(applicationModels);
             else
                 hideNotification();
+
+            packageNamesPrefCheckedAtLeastOnce = true;
         });
     }
 

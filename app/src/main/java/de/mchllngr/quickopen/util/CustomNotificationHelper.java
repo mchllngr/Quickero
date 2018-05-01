@@ -154,7 +154,7 @@ public class CustomNotificationHelper {
     /**
      * Creates the NotificationChannel for Android Oreo.
      */
-    private void createNotificationChannel(@NonNull NotificationManager notificationManager) {
+    public void createNotificationChannel(@NonNull NotificationManager notificationManager) {
         if (VERSION.SDK_INT >= VERSION_CODES.O) {
             String name = context.getString(R.string.notification_channel_default_name);
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW);

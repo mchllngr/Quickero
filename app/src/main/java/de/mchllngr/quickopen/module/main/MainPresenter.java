@@ -25,6 +25,7 @@ import de.mchllngr.quickopen.base.BasePresenter;
 import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.model.RemovedApplicationModel;
 import de.mchllngr.quickopen.util.CustomNotificationHelper;
+import de.mchllngr.quickopen.util.FirebaseUtils;
 import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
 import rx.Observable;
 import rx.Subscription;
@@ -114,13 +115,25 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     void checkIfNotificationEnabledInPrefs() {
-        if (isViewAttached())
-            getView().setEnableState(notificationEnabledPref.get());
+        if (isViewAttached()) {
+            if (notificationEnabledPref.get()) {
+                FirebaseUtils.setUserPropertyNotificationsEnabledInPrefs(context, true);
+                getView().setEnableState(true);
+            } else {
+                FirebaseUtils.setUserPropertyNotificationsEnabledInPrefs(context, false);
+                getView().setEnableState(false);
+            }
+        }
     }
 
     void checkIfNotificationEnabledInAndroidSettings() {
-        if (isViewAttached() && !getView().isNotificationEnabled(CustomNotificationHelper.CHANNEL_ID))
-            getView().showNotificationDisabledDialog();
+        if (isViewAttached()) {
+            if (!getView().isNotificationEnabled(CustomNotificationHelper.CHANNEL_ID)) {
+                FirebaseUtils.setUserPropertyNotificationsEnabledInAndroidSettings(context, false);
+                getView().showNotificationDisabledDialog();
+            } else
+                FirebaseUtils.setUserPropertyNotificationsEnabledInAndroidSettings(context, true);
+        }
     }
 
     /**
@@ -168,6 +181,7 @@ public class MainPresenter extends BasePresenter<MainView> {
      * Will be called when the state for enabling/disabling the notification changes.
      */
     void onEnableClick(boolean newState) {
+        FirebaseUtils.setUserPropertyNotificationsEnabledInPrefs(context, newState);
         notificationEnabledPref.set(newState);
     }
 
