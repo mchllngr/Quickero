@@ -49,6 +49,8 @@ import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.module.about.AboutActivity;
 import de.mchllngr.quickopen.service.NotificationService;
 import de.mchllngr.quickopen.util.CustomNotificationHelper;
+import de.mchllngr.quickopen.util.FirebaseUtils;
+import timber.log.Timber;
 
 /**
  * {@link Activity} for handling the selection of applications.
@@ -210,6 +212,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     protected void onResume() {
         super.onResume();
         getPresenter().checkIfNotificationEnabledInPrefs();
+
+        FirebaseUtils.fetchRemoteConfig(ignored -> {
+            Timber.d("DEBUG: getLowestSupportedVersion: " + FirebaseUtils.getLowestSupportedVersion());
+        });
     }
 
     @Override
