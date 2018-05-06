@@ -30,7 +30,7 @@ An android app to quickly open your favorite apps through a notification.
     - automatic change between profiles decided by time/location(/connected wifi?)
 
 # Firebase
-This app uses Firebase. For it to work you must declare your own [`google-services.json`](https://developers.google.com/android/guides/google-services-plugin). Otherwise you first need to remove Firebase completely.
+This app uses Firebase. For it to work you must update the mocked [`google-services.json`](https://developers.google.com/android/guides/google-services-plugin)-files (in `app/src/debug` and `app/src/release`) or remove those and declare your own. Otherwise you first need to remove Firebase completely.
 
 # License
 
