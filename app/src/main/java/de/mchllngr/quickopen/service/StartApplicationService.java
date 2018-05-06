@@ -3,8 +3,13 @@ package de.mchllngr.quickopen.service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.preference.PreferenceManager;
+
+import com.f2prateek.rx.preferences.Preference;
+import com.f2prateek.rx.preferences.RxSharedPreferences;
 
 import de.mchllngr.quickopen.R;
+import de.mchllngr.quickopen.util.CustomNotificationHelper;
 import de.mchllngr.quickopen.util.FirebaseUtils;
 
 /**
@@ -29,8 +34,13 @@ public class StartApplicationService extends IntentService {
         Intent i = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         sendBroadcast(i);
 
-        // stop service
-        stopSelf();
+        // check if version is still supported
+        FirebaseUtils.isVersionSupported(supported -> {
+            handleVersionSupportedResult(supported);
+
+            // stop service
+            stopSelf();
+        });
     }
 
     /**
@@ -43,5 +53,20 @@ public class StartApplicationService extends IntentService {
         Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
         if (launchIntent != null)
             startActivity(launchIntent);
+    }
+
+    private void handleVersionSupportedResult(boolean supported) {
+        if (!supported) {
+            // set notification disabled
+            RxSharedPreferences rxSharedPreferences = RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(this));
+            Preference<Boolean> notificationEnabledPref = rxSharedPreferences.getBoolean(
+                    getString(R.string.pref_notification_enabled),
+                    Boolean.parseBoolean(getString(R.string.pref_notification_enabled_default_value))
+            );
+            notificationEnabledPref.set(false);
+
+            // show notification
+            new CustomNotificationHelper(this).showVersionNotSupportedNotification();
+        }
     }
 }

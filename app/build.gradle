@@ -98,6 +98,7 @@ dependencies {
     implementation "com.crashlytics.sdk.android:crashlytics:$rootProject.ext.CRASHLYTICS_VERSION"
 
     implementation "com.google.firebase:firebase-core:$rootProject.ext.FIREBASE_VERSION"
+    implementation "com.google.firebase:firebase-config:$rootProject.ext.FIREBASE_VERSION"
 
     debugImplementation "com.facebook.stetho:stetho:$rootProject.ext.STETHO_VERSION"
 

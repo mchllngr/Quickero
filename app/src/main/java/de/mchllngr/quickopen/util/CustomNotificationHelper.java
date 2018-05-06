@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
 
@@ -17,6 +18,7 @@ import java.util.List;
 
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.model.ApplicationModel;
+import de.mchllngr.quickopen.module.main.MainActivity;
 import de.mchllngr.quickopen.service.StartApplicationService;
 import timber.log.Timber;
 
@@ -28,9 +30,16 @@ import static android.os.Build.VERSION_CODES;
  */
 public class CustomNotificationHelper {
 
-    public static final String CHANNEL_ID = "default";
+    public static final String CHANNEL_DEFAULT_ID = "default";
+    private static final String CHANNEL_ERROR_ID = "error";
+
+    private static final int NOTIFICATION_ERROR_ID = 56422;
 
     private static final int NOTIFICATION_ICON_ID = R.drawable.ic_speaker_notes_white_24dp;
+    private static final int NOTIFICATION_ERROR_ICON_ID = R.drawable.ic_error_outline_white_24dp;
+
+    private static final String ERROR_MSG_COULD_NOT_SHOW_NOTIFICATION = "Could not show notification";
+
     /**
      * Array of every layout used.
      */
@@ -148,17 +157,23 @@ public class CustomNotificationHelper {
             if (!TextUtils.isEmpty(applicationModel.packageName) && applicationModel.iconBitmap != null)
                 tempApplicationModels.add(applicationModel);
 
-        return tempApplicationModels.toArray(new ApplicationModel[tempApplicationModels.size()]);
+        return tempApplicationModels.toArray(new ApplicationModel[0]);
     }
 
     /**
-     * Creates the NotificationChannel for Android Oreo.
+     * Creates the NotificationChannels for Android Oreo.
      */
-    public void createNotificationChannel(@NonNull NotificationManager notificationManager) {
+    public void createNotificationChannels(@NonNull NotificationManager notificationManager) {
         if (VERSION.SDK_INT >= VERSION_CODES.O) {
-            String name = context.getString(R.string.notification_channel_default_name);
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW);
-            notificationManager.createNotificationChannel(channel);
+            // default
+            String nameDefault = context.getString(R.string.notification_channel_default_name);
+            NotificationChannel channelDefault = new NotificationChannel(CHANNEL_DEFAULT_ID, nameDefault, NotificationManager.IMPORTANCE_LOW);
+            notificationManager.createNotificationChannel(channelDefault);
+
+            // error
+            String nameError = context.getString(R.string.notification_channel_error_name);
+            NotificationChannel channelError = new NotificationChannel(CHANNEL_ERROR_ID, nameError, NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channelError);
         }
     }
 
@@ -172,11 +187,11 @@ public class CustomNotificationHelper {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (notificationManager == null) {
-            Timber.d("Could not show notification");
+            Timber.d(ERROR_MSG_COULD_NOT_SHOW_NOTIFICATION);
             return null;
         }
 
-        createNotificationChannel(notificationManager);
+        createNotificationChannels(notificationManager);
 
         return createNotification(customContentView);
     }
@@ -187,9 +202,10 @@ public class CustomNotificationHelper {
      * @param customContentView {@link RemoteViews} for showing inside the {@link Notification}
      * @return {@link Notification}
      */
+    @NonNull
     private Notification createNotification(RemoteViews customContentView) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
-        return builder
+        return new NotificationCompat.Builder(context, CHANNEL_DEFAULT_ID)
+                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setSmallIcon(NOTIFICATION_ICON_ID)
                 .setAutoCancel(false)
                 .setOngoing(true)
@@ -210,11 +226,11 @@ public class CustomNotificationHelper {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (notificationManager == null) {
-            Timber.d("Could not show notification");
+            Timber.d(ERROR_MSG_COULD_NOT_SHOW_NOTIFICATION);
             return null;
         }
 
-        createNotificationChannel(notificationManager);
+        createNotificationChannels(notificationManager);
 
         return createLoadingNotification();
     }
@@ -224,9 +240,10 @@ public class CustomNotificationHelper {
      *
      * @return {@link Notification} showing loading-texts
      */
+    @NonNull
     private Notification createLoadingNotification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
-        return builder
+        return new NotificationCompat.Builder(context, CHANNEL_DEFAULT_ID)
+                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setSmallIcon(NOTIFICATION_ICON_ID)
                 .setAutoCancel(false)
                 .setOngoing(true)
@@ -235,6 +252,42 @@ public class CustomNotificationHelper {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentTitle(context.getString(R.string.notification_service_loading_title))
                 .setContentText(context.getString(R.string.notification_service_loading_text))
+                .build();
+    }
+
+    /**
+     * Shows an error {@link Notification} when the version is not supported anymore.
+     */
+    public void showVersionNotSupportedNotification() {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (notificationManager == null) {
+            Timber.d(ERROR_MSG_COULD_NOT_SHOW_NOTIFICATION);
+            return;
+        }
+
+        createNotificationChannels(notificationManager);
+        notificationManager.notify(NOTIFICATION_ERROR_ID, createVersionNotSupportedNotification());
+    }
+
+    /**
+     * Creates a version-not-supported {@link Notification}.
+     */
+    @NonNull
+    private Notification createVersionNotSupportedNotification() {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, NOTIFICATION_ERROR_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return new NotificationCompat.Builder(context, CHANNEL_ERROR_ID)
+                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                .setSmallIcon(NOTIFICATION_ERROR_ICON_ID)
+                .setAutoCancel(true)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentTitle(context.getString(R.string.notification_version_not_supported_title, context.getString(R.string.app_name)))
+                .setContentText(context.getString(R.string.notification_version_not_supported_text, context.getString(R.string.app_name)))
+                .setStyle(new NotificationCompat.BigTextStyle())
+                .setContentIntent(pendingIntent)
                 .build();
     }
 }
