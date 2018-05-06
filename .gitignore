@@ -191,3 +191,4 @@ $RECYCLE.BIN/
 
 # Firebase
 google-services.json
+!app/google-services.json
