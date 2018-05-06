@@ -20,6 +20,11 @@ interface MainView extends BaseView {
     boolean isNotificationEnabled(@Nullable String channelId);
 
     /**
+     * Will show a dialog to the user, because the current version is not supported anymore.
+     */
+    void showVersionNotSupportedDialog();
+
+    /**
      * Will show a dialog to the user, because the notification is disabled.
      */
     void showNotificationDisabledDialog();

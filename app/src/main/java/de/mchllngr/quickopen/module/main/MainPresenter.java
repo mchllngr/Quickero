@@ -114,6 +114,22 @@ public class MainPresenter extends BasePresenter<MainView> {
         super.detachView(retainInstance);
     }
 
+    void checkIfVersionIsSupportedOnCreate() {
+        if (isViewAttached() && !FirebaseUtils.isVersionSupportedFromCache()) {
+            getView().showVersionNotSupportedDialog();
+            onEnableClick(false);
+        }
+    }
+
+    void checkIfVersionIsSupported() {
+        FirebaseUtils.isVersionSupported(supported -> {
+            if (isViewAttached() && !supported) {
+                getView().showVersionNotSupportedDialog();
+                onEnableClick(false);
+            }
+        });
+    }
+
     void checkIfNotificationEnabledInPrefs() {
         if (isViewAttached()) {
             if (notificationEnabledPref.get()) {
@@ -128,7 +144,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     void checkIfNotificationEnabledInAndroidSettings() {
         if (isViewAttached()) {
-            if (!getView().isNotificationEnabled(CustomNotificationHelper.CHANNEL_ID)) {
+            if (!getView().isNotificationEnabled(CustomNotificationHelper.CHANNEL_DEFAULT_ID)) {
                 FirebaseUtils.setUserPropertyNotificationsEnabledInAndroidSettings(context, false);
                 getView().showNotificationDisabledDialog();
             } else
