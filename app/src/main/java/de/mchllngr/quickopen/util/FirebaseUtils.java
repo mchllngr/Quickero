@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
@@ -18,7 +18,8 @@ public class FirebaseUtils {
     private static final String EVENT_CLICKED_APP_IN_NOTIFICATION = "clicked_app_in_notification";
     private static final String USER_PROPERTY_NOTIFICATION_ON_PREFS = "notification_on_prefs";
     private static final String USER_PROPERTY_NOTIFICATION_ON_SETTINGS = "notification_on_settings";
-    private static final int DEFAULT_CACHE_EXPIRATION_SECONDS = 3600;
+    private static final String CONFIG_LOWEST_SUPPORTED_VERSION = "lowest_supported_version";
+    private static final int DEFAULT_CACHE_EXPIRATION_SECONDS = 60 * 60; // 1 hour
 
     private FirebaseUtils() { /* private */ }
 
@@ -52,17 +53,31 @@ public class FirebaseUtils {
         Timber.i("Setting user property '" + USER_PROPERTY_NOTIFICATION_ON_SETTINGS + "' to '" + enabled + "'");
     }
 
-    public static void fetchRemoteConfig(@Nullable OnSuccessListener<Void> listener) {
+    private static void fetchRemoteConfig(@Nullable OnCompleteListener<Void> listener) {
         FirebaseRemoteConfig remoteConfig = getFirebaseRemoteConfig();
         long cacheExpirationSeconds = remoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled() ? 0L : DEFAULT_CACHE_EXPIRATION_SECONDS;
         remoteConfig.fetch(cacheExpirationSeconds)
-                .addOnSuccessListener(task -> {
-                    remoteConfig.activateFetched();
-                    if (listener != null) listener.onSuccess(null);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        remoteConfig.activateFetched();
+                    }
+                    if (listener != null) listener.onComplete(task);
                 });
     }
 
-    public static long getLowestSupportedVersion() {
-        return getFirebaseRemoteConfig().getLong("lowest_supported_version");
+    public static boolean isVersionSupportedFromCache() {
+        boolean supported = BuildConfig.VERSION_CODE >= getFirebaseRemoteConfig().getLong(CONFIG_LOWEST_SUPPORTED_VERSION);
+        Timber.v("Version '" + BuildConfig.VERSION_CODE + "' is " + (supported ? "" : "not ") + "supported");
+        return supported;
+    }
+
+    public static void isVersionSupported(@Nullable VersionSupportedResultListener listener) {
+        fetchRemoteConfig(ignored -> {
+            if (listener != null) listener.onVersionSupportedResult(isVersionSupportedFromCache());
+        });
+    }
+
+    public interface VersionSupportedResultListener {
+        void onVersionSupportedResult(boolean supported);
     }
 }
