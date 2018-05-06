@@ -49,11 +49,12 @@ import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.module.about.AboutActivity;
 import de.mchllngr.quickopen.service.NotificationService;
 import de.mchllngr.quickopen.util.CustomNotificationHelper;
+import de.mchllngr.quickopen.util.DialogHelper;
 
 /**
  * {@link Activity} for handling the selection of applications.
  */
-public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView, MaterialSimpleListAdapter.Callback, MainAdapter.StartDragListener {
+public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView, MaterialSimpleListAdapter.Callback, MainAdapter.StartDragListener, DialogHelper.GoToNotificationSettingsListener {
 
     /**
      * {@link CoordinatorLayout} from the layout for showing the {@link Snackbar}.
@@ -88,10 +89,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      * {@link MainAdapter} for updating shown items in {@code recyclerView}.
      */
     private MainAdapter adapter;
-    /**
-     * {@link MaterialDialog} for showing various dialogs.
-     */
-    private MaterialDialog dialog;
 
     /**
      * {@link Snackbar} for showing the undo-remove-button.
@@ -109,6 +106,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      * Current device screen width in pixels.
      */
     private int deviceScreenWidthPixels;
+    /**
+     * Helper-Class for showing dialogs.
+     */
+    private DialogHelper dialogHelper = new DialogHelper(this, this);
 
     @NonNull
     @Override
@@ -134,6 +135,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
         // consume move actions to only allow clicking
         enableNotificationSwitch.setOnTouchListener((v, event) -> event.getActionMasked() == MotionEvent.ACTION_MOVE);
+
+        getPresenter().checkIfVersionIsSupportedOnCreate();
     }
 
     private void getDeviceScreenWidthPixels() {
@@ -210,6 +213,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     protected void onResume() {
         super.onResume();
         getPresenter().checkIfNotificationEnabledInPrefs();
+        getPresenter().checkIfVersionIsSupported();
     }
 
     @Override
@@ -221,7 +225,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     protected void onStop() {
-        hideDialog();
+        dialogHelper.hideDialog();
         super.onStop();
     }
 
@@ -258,7 +262,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 AboutActivity.start(this);
                 return true;
             case R.id.settings:
-                goToNotificationSettings(CustomNotificationHelper.CHANNEL_ID);
+                goToNotificationSettings(CustomNotificationHelper.CHANNEL_DEFAULT_ID);
                 return true;
             case R.id.reorder_cancel:
                 getPresenter().onReorderCancelIconClick();
@@ -297,7 +301,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 if (manager != null) {
                     if (manager.getNotificationChannel(channelId) == null)
-                        new CustomNotificationHelper(this).createNotificationChannel(manager);
+                        new CustomNotificationHelper(this).createNotificationChannels(manager);
 
                     NotificationChannel channel = manager.getNotificationChannel(channelId);
                     return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
@@ -310,16 +314,13 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Override
+    public void showVersionNotSupportedDialog() {
+        dialogHelper.showVersionNotSupportedDialog();
+    }
+
+    @Override
     public void showNotificationDisabledDialog() {
-        hideDialog();
-        dialog = new MaterialDialog.Builder(this)
-                .title(R.string.dialog_notification_disabled_title)
-                .content(getString(R.string.dialog_notification_disabled_text, getString(R.string.app_name)))
-                .cancelable(false)
-                .positiveText(R.string.dialog_notification_disabled_button_ok)
-                .negativeText(R.string.dialog_notification_disabled_button_settings)
-                .onNegative((d, w) -> goToNotificationSettings(CustomNotificationHelper.CHANNEL_ID))
-                .show();
+        dialogHelper.showNotificationDisabledDialog();
     }
 
     /**
@@ -338,16 +339,12 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     public void onMaterialListItemSelected(MaterialDialog dialog, int index, MaterialSimpleListItem item) {
         getPresenter().onApplicationSelected(index);
-        hideDialog();
+        dialogHelper.hideDialog();
     }
 
     @Override
     public void showApplicationListDialog(MaterialSimpleListAdapter adapter) {
-        hideDialog();
-        dialog = new MaterialDialog.Builder(this)
-                .title(R.string.dialog_application_list_title)
-                .adapter(adapter, null)
-                .show();
+        dialogHelper.showApplicationListDialog(adapter);
     }
 
     @Override
@@ -357,23 +354,12 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void showProgressDialog() {
-        hideDialog();
-        dialog = new MaterialDialog.Builder(this)
-                .content(R.string.dialog_progress_please_wait)
-                .cancelable(false)
-                .progress(true, 0)
-                .show();
+        dialogHelper.showProgressDialog();
     }
 
     @Override
     public void hideProgressDialog() {
-        hideDialog();
-    }
-
-    private void hideDialog() {
-        if (dialog != null && dialog.isShowing())
-            dialog.dismiss();
-        dialog = null;
+        dialogHelper.hideDialog();
     }
 
     @Override
@@ -477,5 +463,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     public void onStartDrag(MainAdapter.MainViewHolder viewHolder) {
         if (itemTouchHelper != null)
             itemTouchHelper.startDrag(viewHolder);
+    }
+
+    @Override
+    public void onGoToNotificationSettings() {
+        goToNotificationSettings(CustomNotificationHelper.CHANNEL_DEFAULT_ID);
     }
 }
