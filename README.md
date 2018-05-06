@@ -13,6 +13,7 @@ An android app to quickly open your favorite apps through a notification.
 - other app-name
 - add responsive icon + new icon design
 - add licence to every file ?
+- only load needed languages into apk
 - improve proguard
 - add screenshots + real descriptions to google-play-page (and app-about-page)
 
