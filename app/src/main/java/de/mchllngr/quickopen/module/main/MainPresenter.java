@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.f2prateek.rx.preferences.Preference;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.base.BasePresenter;
 import de.mchllngr.quickopen.model.ApplicationModel;
@@ -32,9 +32,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * {@link com.hannesdorfmann.mosby.mvp.MvpPresenter} for the {@link MainActivity}
+ * {@link com.hannesdorfmann.mosby3.mvp.MvpPresenter} for the {@link MainActivity}
  */
-@SuppressWarnings("ConstantConditions")
 public class MainPresenter extends BasePresenter<MainView> {
 
     /**

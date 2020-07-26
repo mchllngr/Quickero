@@ -5,7 +5,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.f2prateek.rx.preferences.Preference;
@@ -18,6 +17,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.util.DrawableToBitmapConverter;
 import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
