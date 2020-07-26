@@ -36,7 +36,8 @@ jobs:
 
       - name: Prepare keystore.properties
         run: |
-          echo $KEYSTORE | base64 -d > debug.jks
+          base64 --version
+          echo $KEYSTORE | base64 -di > debug.jks
           echo "storeFile=$(realpath debug.jks)" >> keystore.properties
           echo "storePassword=$KEYSTORE_STORE_PASSPHRASE" >> keystore.properties
           echo "keyAlias=$KEYSTORE_ALIAS" >> keystore.properties
@@ -49,7 +50,9 @@ jobs:
 
       - name: Build feature
         run: |
-          bundle exec fastlane bundleRelease build:$GITHUB_RUN_NUMBER
+          bundle exec fastlane bundleRelease build:$BUILD
+        env:
+          BUILD: ${{ GITHUB_RUN_NUMBER }}
 
       - name: Upload outputs artifact
         uses: actions/upload-artifact@v2
