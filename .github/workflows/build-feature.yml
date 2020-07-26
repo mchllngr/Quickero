@@ -36,8 +36,7 @@ jobs:
 
       - name: Prepare keystore.properties
         run: |
-          echo "${{ secrets.DEBUG_KEYSTORE }}" > debug.jks.asc
-          gpg -d --passphrase "${{ secrets.DEBUG_KEYSTORE_ENCRYPTION_PASSPHRASE }}" --batch debug.jks.asc > debug.jks
+          echo $secrets.DEBUG_KEYSTORE | base64 -d > debug.jks
           echo "storeFile=$(realpath debug.jks)" >> keystore.properties
           echo "storePassword=${secrets.DEBUG_KEYSTORE_STORE_PASSPHRASE}" >> keystore.properties
           echo "keyAlias=${secrets.DEBUG_KEYSTORE_ALIAS}" >> keystore.properties
