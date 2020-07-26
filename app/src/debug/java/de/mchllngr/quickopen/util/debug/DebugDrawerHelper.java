@@ -1,7 +1,7 @@
 package de.mchllngr.quickopen.util.debug;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Arrays;
 
@@ -19,11 +19,11 @@ import io.palaima.debugdrawer.fps.FpsModule;
 import io.palaima.debugdrawer.scalpel.ScalpelModule;
 import jp.wasabeef.takt.Takt;
 
-import static android.support.v7.app.AppCompatDelegate.MODE_NIGHT_AUTO;
-import static android.support.v7.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
-import static android.support.v7.app.AppCompatDelegate.MODE_NIGHT_NO;
-import static android.support.v7.app.AppCompatDelegate.MODE_NIGHT_YES;
-import static android.support.v7.app.AppCompatDelegate.NightMode;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
+import static androidx.appcompat.app.AppCompatDelegate.NightMode;
 
 /**
  * Helper-class for easier use with {@link DebugDrawer}.

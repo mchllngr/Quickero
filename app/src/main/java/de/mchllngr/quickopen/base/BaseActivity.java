@@ -1,8 +1,8 @@
 package de.mchllngr.quickopen.base;
 
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.widget.Toolbar;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
@@ -18,7 +18,7 @@ import de.mchllngr.quickopen.R;
 public abstract class BaseActivity<V extends MvpView, P extends MvpBasePresenter<V>> extends DebugBaseActivity<V, P> {
 
     /**
-     * Overrides {@link android.support.v7.app.AppCompatActivity#setSupportActionBar(Toolbar)} to
+     * Overrides {@link androidx.appcompat.app.AppCompatActivity#setSupportActionBar(Toolbar)} to
      * allow setting the default title when called.
      *
      * @param toolbar toolbar to set
@@ -30,17 +30,17 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpBasePresenter
     }
 
     /**
-     * Sets the default title for the {@link android.support.v7.app.ActionBar}.
+     * Sets the default title for the {@link androidx.appcompat.app.ActionBar}.
      */
     private void setDefaultActionBarTitle() {
         setActionBarTitle(R.string.app_name);
     }
 
     /**
-     * Sets the title for the {@link android.support.v7.app.ActionBar} via the
+     * Sets the title for the {@link androidx.appcompat.app.ActionBar} via the
      * given {@link StringRes}.
      * <p>
-     * If the {@link android.support.v7.app.ActionBar} is not set yet the function does nothing.
+     * If the {@link androidx.appcompat.app.ActionBar} is not set yet the function does nothing.
      *
      * @param titleResId {@link StringRes} for the title
      */
