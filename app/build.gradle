@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.getkeepsafe.dexcount'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion SdkVersions.COMPILE_SDK
 
@@ -31,11 +35,11 @@ android {
     }
 
     signingConfigs {
-        debug {
-            storeFile file("../keystore/debug-keystore.jks")
-            storePassword "debug-keystore"
-            keyAlias "debug-keystore"
-            keyPassword "debug-keystore"
+        release {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
         }
     }
 
@@ -53,7 +57,7 @@ android {
                     '../proguard/proguard-rules-rxjava.pro',
                     '../proguard/proguard-rules-timber.pro'
             }
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
 
         debug {
@@ -63,7 +67,6 @@ android {
                 obfuscate false
                 optimizeCode false
             }
-            signingConfig signingConfigs.debug
 
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"

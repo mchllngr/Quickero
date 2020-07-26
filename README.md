@@ -29,6 +29,15 @@ An android app to quickly open your favorite apps through a notification.
 - profiles (e.g. work/home)
     - automatic change between profiles decided by time/location(/connected wifi?)
 
+# Release-Builds
+To build the release variant you need to create a `keystore.properties` file in the root project directory defining the following variables:
+```
+storeFile=/path/to/keystore.jks
+storePassword=STORE_PASSWORD
+keyAlias=KEY_ALIAS
+keyPassword=KEY_PASSWORD
+```
+
 # License
 
 ```
