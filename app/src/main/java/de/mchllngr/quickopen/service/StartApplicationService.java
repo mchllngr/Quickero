@@ -3,11 +3,11 @@ package de.mchllngr.quickopen.service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceManager;
 
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 
+import androidx.preference.PreferenceManager;
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.util.CustomNotificationHelper;
 import de.mchllngr.quickopen.util.FirebaseUtils;

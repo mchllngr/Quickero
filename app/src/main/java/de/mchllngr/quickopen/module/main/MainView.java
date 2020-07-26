@@ -1,13 +1,12 @@
 package de.mchllngr.quickopen.module.main;
 
-import android.support.annotation.Nullable;
-
-import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
-
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import de.mchllngr.quickopen.base.BaseView;
 import de.mchllngr.quickopen.model.ApplicationModel;
+import de.mchllngr.quickopen.util.dialog.ApplicationItem;
 
 /**
  * Interface for the {@link MainActivity}
@@ -37,14 +36,9 @@ interface MainView extends BaseView {
     /**
      * Shows the list dialog for choosing one of the installed applications.
      *
-     * @param adapter prepared {@code adapter} containing the items to show
+     * @param items the items to show
      */
-    void showApplicationListDialog(MaterialSimpleListAdapter adapter);
-
-    /**
-     * Gets the Callback which is called when an item is selected.
-     */
-    MaterialSimpleListAdapter.Callback getApplicationChooserCallback();
+    void showApplicationListDialog(@NonNull List<ApplicationItem> items);
 
     /**
      * Shows an indeterminate progress dialog while loading.
@@ -54,7 +48,7 @@ interface MainView extends BaseView {
     /**
      * Hides the shown progress dialog when loading is finished.
      */
-    void hideProgressDialog();
+    void hideDialog();
 
     /**
      * Will set the visibility for the View shown when the list is empty.

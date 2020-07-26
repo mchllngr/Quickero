@@ -4,16 +4,19 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:3.3.2"
-        classpath "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.6"
+        classpath BuildScriptDependencies.BUILD_TOOLS_GRADLE
+        classpath BuildScriptDependencies.KOTLIN_GRADLE
+        classpath BuildScriptDependencies.DEXCOUNT_GRADLE
+        classpath BuildScriptDependencies.VERSIONS_GRADLE // allows checking for new versions with './gradlew dependencyUpdates -Drevision=release'
     }
 }
+
+apply plugin: 'com.github.ben-manes.versions'
 
 allprojects {
     repositories {
         google()
         jcenter()
-        maven { url "https://jitpack.io" }
     }
 }
 
@@ -22,32 +25,33 @@ task clean(type: Delete) {
 }
 
 ext {
-    // Tools and sdk
-    COMPILE_SDK_VERSION = 28
-    MIN_SDK_VERSION = 21
-    TARGET_SDK_VERSION = 28
+    // Injected Variables
+    MAJOR_VERSION = project.hasProperty("major") ? Integer.parseInt(major) : 0
+    MINOR_VERSION = project.hasProperty("minor") ? Integer.parseInt(minor) : 7
+    HOTFIX_VERSION = project.hasProperty("hotfix") ? Integer.parseInt(hotfix) : 4
+    BUILD_NUMBER = project.hasProperty("build") ? Integer.parseInt(build) % 1000 : 0
 
-    // Version
-    MAJOR_VERSION = 0
-    MINOR_VERSION = 7
-    BUGFIX_VERSION = 3
-    VERSIONCODE = MAJOR_VERSION * 1000000 + MINOR_VERSION * 1000 + BUGFIX_VERSION
-    VERSIONAME = "$MAJOR_VERSION.$MINOR_VERSION.$BUGFIX_VERSION"
+    if (MAJOR_VERSION < 0 || MAJOR_VERSION > 99) {
+        throw new IllegalArgumentException('major must be 0-99')
+    }
+    if (MINOR_VERSION < 0 || MINOR_VERSION > 99) {
+        throw new IllegalArgumentException('minor must be 0-99')
+    }
+    if (HOTFIX_VERSION < 0 || HOTFIX_VERSION > 99) {
+        throw new IllegalArgumentException('hotfix must be 0-99')
+    }
+    if (BUILD_NUMBER < 0) {
+        throw new IllegalArgumentException('build must be 0 or bigger')
+    }
 
-    // App dependencies
-    SUPPORT_VERSION = "28.0.0"
-    MOSBY_VERSION = "2.0.1"
-    BUTTERKNIFE_VERSION = "8.8.1"
-    TIMBER_VERSION = "4.7.1"
-    GSON_VERSION = "2.8.2"
-    RX_JAVA_VERSION = "1.2.0"
-    RX_ANDROID_VERSION = "1.2.1"
-    RX_PREFERENCES_VERSION = "1.0.2"
-    MATERIAL_DIALOGS_VERSION = "0.9.6.0"
-    SIMPLE_ITEM_DECORATION_VERSION = "1.0.0"
-    ABOUT_PAGE_VERSION = "1.2.4"
-    STETHO_VERSION = "1.5.1"
-    DEBUGDRAWER_VERSION = "0.8.0"
-    SCALPEL_VERSION = "1.1.2"
-    TAKT_VERSION = "1.0.5"
+    VERSIONCODE = MAJOR_VERSION * 10000000 + MINOR_VERSION * 100000 + HOTFIX_VERSION * 1000 + BUILD_NUMBER
+    VERSIONNAME = "$MAJOR_VERSION.$MINOR_VERSION.$HOTFIX_VERSION.$BUILD_NUMBER"
+
+    println "##### (Injected) variables #####"
+    println "MAJOR: " + MAJOR_VERSION
+    println "MINOR: " + MINOR_VERSION
+    println "HOTFIX: " + HOTFIX_VERSION
+    println "BUILD: " + BUILD_NUMBER
+    println "VERSIONCODE: " + VERSIONCODE
+    println "VERSIONNAME: " + VERSIONNAME
 }
