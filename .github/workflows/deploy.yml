@@ -30,31 +30,39 @@ jobs:
 
       - name: Prepare keystore.properties
         run: |
-          echo "${{ secrets.RELEASE_KEYSTORE }}" > release.jks.asc
-          gpg -d --passphrase "${{ secrets.RELEASE_KEYSTORE_ENCRYPTION_PASSPHRASE }}" --batch release.jks.asc > release.jks
+          echo $KEYSTORE | base64 -di > release.jks
           echo "storeFile=$(realpath release.jks)" >> keystore.properties
-          echo "storePassword=${secrets.RELEASE_KEYSTORE_STORE_PASSPHRASE}" >> keystore.properties
-          echo "keyAlias=${secrets.RELEASE_KEYSTORE_ALIAS}" >> keystore.properties
-          echo "keyPassword=${secrets.RELEASE_KEYSTORE_ALIAS_PASSPHRASE}" >> keystore.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSPHRASE" >> keystore.properties
+          echo "keyAlias=$KEYSTORE_ALIAS" >> keystore.properties
+          echo "keyPassword=$KEYSTORE_ALIAS_PASSPHRASE" >> keystore.properties
+        env:
+          KEYSTORE: ${{ secrets.RELEASE_KEYSTORE }}
+          KEYSTORE_STORE_PASSPHRASE: ${{ secrets.RELEASE_KEYSTORE_STORE_PASSPHRASE }}
+          KEYSTORE_ALIAS: ${{ secrets.RELEASE_KEYSTORE_ALIAS }}
+          KEYSTORE_ALIAS_PASSPHRASE: ${{ secrets.RELEASE_KEYSTORE_ALIAS_PASSPHRASE }}
 
       - name: Prepare google-api.json
         run: |
-          echo "${{ secrets.RELEASE_API_JSON }}" > google-api.json.asc
-          gpg -d --passphrase "${{ secrets.RELEASE_API_JSON_ENCRYPTION_PASSPHRASE }}" --batch google-api.json.asc > google-api.json
+          echo $API_JSON | base64 -di > google-api.json
           echo "json_key_file(\"$(realpath google-api.json)\")" >> fastlane/Appfile
+        env:
+          API_JSON: ${{ secrets.RELEASE_API_JSON }}
 
       - name: Deploy
         run: |
-          if [ "$GITHUB_REF" == "refs/heads/master" ]; then
+          if [ "$BRANCH" == "refs/heads/master" ]; then
             echo "Running lane 'deploy_aab_alpha'"
-            bundle exec fastlane deploy_aab_alpha build:$GITHUB_RUN_NUMBER
-          elif [ "$GITHUB_REF" == "refs/heads/develop" ]; then
+            bundle exec fastlane deploy_aab_alpha build:$BUILD --verbose
+          elif [ "$BRANCH" == "refs/heads/develop" ]; then
             echo "Running lane 'deploy_aab_internal'"
-            bundle exec fastlane deploy_aab_internal build:$GITHUB_RUN_NUMBER
+            bundle exec fastlane deploy_aab_internal build:$BUILD --verbose
           else
-            echo "Unknown branch ${GITHUB_REF}. Aborting..."
+            echo "Unknown branch ${BRANCH}. Aborting..."
             exit 1
-          fie
+          fi
+        env:
+          BRANCH: $GITHUB_REF
+          BUILD: $GITHUB_RUN_NUMBER
 
       - name: Upload outputs artifact
         uses: actions/upload-artifact@v2
