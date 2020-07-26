@@ -1,0 +1,154 @@
+opt_out_usage
+
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  ################## DEPLOY #################
+  desc "Deploy a new internal apk version to the Google Play"
+  lane :deploy_apk_internal do |options|
+    assembleRelease(options)
+    upload_apk_to_play_store_internal_track(options)
+  end
+
+  desc "Deploy a new alpha apk version to the Google Play"
+  lane :deploy_apk_alpha do |options|
+    assembleRelease(options)
+    upload_apk_to_play_store_alpha_track(options)
+  end
+
+  desc "Deploy a new internal aab version to the Google Play"
+  lane :deploy_aab_internal do |options|
+    bundleRelease(options)
+    upload_aab_to_play_store_internal_track(options)
+  end
+
+  desc "Deploy a new alpha aab version to the Google Play"
+  lane :deploy_aab_alpha do |options|
+    bundleRelease(options)
+    upload_aab_to_play_store_alpha_track(options)
+  end
+
+  ################## BUILD ##################
+  desc "Assemble a new release apk version"
+  lane :assembleRelease do |options|
+    # check if gradle build-flags are necessary
+    flags = "--refresh-dependencies"
+
+    # for version
+    if options[:major]
+      flags += " -Pmajor=" + options[:major]
+    end
+    if options[:minor]
+      flags += " -Pminor=" + options[:minor]
+    end
+    if options[:hotfix]
+      flags += " -Photfix=" + options[:hotfix]
+    end
+    if options[:build]
+      flags += " -Pbuild=" + options[:build]
+    end
+
+    # always clean before building
+    task = "clean assembleRelease"
+
+    gradle(
+      task: task,
+      flags: flags
+    )
+  end
+
+  desc "Assemble a new release aab version"
+  lane :bundleRelease do |options|
+    # check if gradle build-flags are necessary
+    flags = "--refresh-dependencies"
+
+    # for version
+    if options[:major]
+      flags += " -Pmajor=" + options[:major]
+    end
+    if options[:minor]
+      flags += " -Pminor=" + options[:minor]
+    end
+    if options[:hotfix]
+      flags += " -Photfix=" + options[:hotfix]
+    end
+    if options[:build]
+      flags += " -Pbuild=" + options[:build]
+    end
+
+    # always clean before building
+    task = "clean bundleRelease"
+
+    gradle(
+      task: task,
+      flags: flags
+    )
+  end
+
+  ################## UPLOAD #################
+  private_lane :upload_apk_to_play_store_internal_track do |options|
+    options[:track] = "internal"
+    upload_apk_to_play_store(options)
+  end
+
+  private_lane :upload_apk_to_play_store_alpha_track do |options|
+    options[:track] = "alpha"
+    upload_apk_to_play_store(options)
+  end
+
+  private_lane :upload_apk_to_play_store do |options|
+    uploadOptions = {
+      :track => options[:track],
+      :skip_upload_apk => false,
+      :skip_upload_aab => true,
+      :apk => lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+    }
+    if !options[:ignoreMapping]
+      uploadOptions[:mapping] = File.absolute_path "../app/build/outputs/mapping/release/mapping.txt"
+    end
+    upload_to_play_store(uploadOptions)
+  end
+
+  private_lane :upload_aab_to_play_store_internal_track do |options|
+    options[:track] = "internal"
+    upload_aab_to_play_store(options)
+  end
+
+  private_lane :upload_aab_to_play_store_alpha_track do |options|
+    options[:track] = "alpha"
+    upload_aab_to_play_store(options)
+  end
+
+  private_lane :upload_aab_to_play_store do |options|
+    uploadOptions = {
+      :track => options[:track],
+      :skip_upload_apk => true,
+      :skip_upload_aab => false,
+      :aab => lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]
+    }
+    if !options[:ignoreMapping]
+      uploadOptions[:mapping] = File.absolute_path "../app/build/outputs/mapping/release/mapping.txt"
+    end
+    upload_to_play_store(uploadOptions)
+  end
+
+end
+
+# More information about multiple platforms in fastlane: https://docs.fastlane.tools/advanced/#control-configuration-by-lane-and-by-platform
+# All available actions: https://docs.fastlane.tools/actions

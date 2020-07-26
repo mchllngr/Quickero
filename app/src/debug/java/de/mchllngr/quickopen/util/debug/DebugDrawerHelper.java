@@ -1,10 +1,9 @@
 package de.mchllngr.quickopen.util.debug;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-
 import java.util.Arrays;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindString;
 import butterknife.ButterKnife;
 import de.mchllngr.quickopen.R;
@@ -15,15 +14,13 @@ import io.palaima.debugdrawer.commons.BuildModule;
 import io.palaima.debugdrawer.commons.DeviceModule;
 import io.palaima.debugdrawer.commons.NetworkModule;
 import io.palaima.debugdrawer.commons.SettingsModule;
-import io.palaima.debugdrawer.fps.FpsModule;
 import io.palaima.debugdrawer.scalpel.ScalpelModule;
-import jp.wasabeef.takt.Takt;
 
-import static android.support.v7.app.AppCompatDelegate.MODE_NIGHT_AUTO;
-import static android.support.v7.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
-import static android.support.v7.app.AppCompatDelegate.MODE_NIGHT_NO;
-import static android.support.v7.app.AppCompatDelegate.MODE_NIGHT_YES;
-import static android.support.v7.app.AppCompatDelegate.NightMode;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
+import static androidx.appcompat.app.AppCompatDelegate.NightMode;
 
 /**
  * Helper-class for easier use with {@link DebugDrawer}.
@@ -78,7 +75,6 @@ public class DebugDrawerHelper {
                         new ActionsModule(getNightModeActionsModule()),
                         new NetworkModule(),
                         new ScalpelModule(activity),
-                        new FpsModule(Takt.stock(activity.getApplication())),
                         new BuildModule(),
                         new DeviceModule(),
                         new SettingsModule()
