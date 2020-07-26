@@ -3,7 +3,7 @@ package de.mchllngr.quickopen.service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;

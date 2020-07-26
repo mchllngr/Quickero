@@ -1,6 +1,6 @@
 package de.mchllngr.quickopen.module.main;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
 

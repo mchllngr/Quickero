@@ -1,7 +1,7 @@
 package de.mchllngr.quickopen.util;
 
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.f2prateek.rx.preferences.Preference;
 import com.google.gson.Gson;
