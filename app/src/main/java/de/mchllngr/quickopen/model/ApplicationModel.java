@@ -5,9 +5,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.f2prateek.rx.preferences.Preference;
@@ -18,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.util.DrawableToBitmapConverter;
 import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
@@ -38,8 +38,8 @@ public class ApplicationModel {
      * {@link ApplicationModel#getApplicationModelForPackageName(Context, String)}.
      *
      * @param packageName package-name
-     * @param icon        application icon
-     * @param name        application name
+     * @param icon application icon
+     * @param name application name
      */
     private ApplicationModel(String packageName, Drawable icon, String name) {
         this.packageName = packageName;
@@ -51,7 +51,7 @@ public class ApplicationModel {
     /**
      * Factory-method to create an {@link ApplicationModel} from a package-name.
      *
-     * @param context     {@link Context}
+     * @param context {@link Context}
      * @param packageName package-name
      * @return {@link ApplicationModel} if an application with the {@code packageName} is found, otherwise null.
      */
@@ -77,7 +77,7 @@ public class ApplicationModel {
     /**
      * Gets the iconBitmap for an Application.
      *
-     * @param context     {@link Context}
+     * @param context {@link Context}
      * @param packageName package-name
      * @return {@link Drawable} if an application with the {@code packageName} is found, otherwise null.
      */
@@ -95,7 +95,7 @@ public class ApplicationModel {
      * If the given {@link List} is null or empty it returns an empty list.
      *
      * @param context {@link Context}
-     * @param list    {@link List} of packageNames
+     * @param list {@link List} of packageNames
      * @return list of {@link ApplicationModel}s
      */
     @NonNull
@@ -124,7 +124,7 @@ public class ApplicationModel {
      * If the given {@link List} is null or empty it returns an empty list.
      *
      * @param context {@link Context}
-     * @param list    {@link List} of packageNames
+     * @param list {@link List} of packageNames
      * @return array of {@link ApplicationModel}s
      */
     @NonNull

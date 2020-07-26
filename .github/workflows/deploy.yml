@@ -1,0 +1,73 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Lint Code Base
+        uses: docker://github/super-linter:v3
+        env:
+          VALIDATE_KOTLIN: true
+          VALIDATE_YAML: true
+          VALIDATE_XML: true
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.1
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+
+      - name: Prepare keystore.properties
+        run: |
+          echo $KEYSTORE | base64 -di > release.jks.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$KEYSTORE_ENCRYPTION_PASSPHRASE" --output release.jks release.jks.gpg
+          echo "storeFile=$(realpath release.jks)" >> keystore.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSPHRASE" >> keystore.properties
+          echo "keyAlias=$KEYSTORE_ALIAS" >> keystore.properties
+          echo "keyPassword=$KEYSTORE_ALIAS_PASSPHRASE" >> keystore.properties
+        env:
+          KEYSTORE: ${{ secrets.RELEASE_KEYSTORE }}
+          KEYSTORE_ENCRYPTION_PASSPHRASE: ${{ secrets.RELEASE_KEYSTORE_ENCRYPTION_PASSPHRASE }}
+          KEYSTORE_STORE_PASSPHRASE: ${{ secrets.RELEASE_KEYSTORE_STORE_PASSPHRASE }}
+          KEYSTORE_ALIAS: ${{ secrets.RELEASE_KEYSTORE_ALIAS }}
+          KEYSTORE_ALIAS_PASSPHRASE: ${{ secrets.RELEASE_KEYSTORE_ALIAS_PASSPHRASE }}
+
+      - name: Prepare google-api.json
+        run: |
+          echo $API_JSON | base64 -di > google-api.json.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$API_JSON_ENCRYPTION_PASSPHRASE" --output google-api.json google-api.json.gpg
+          echo "json_key_file(\"$(realpath google-api.json)\")" >> fastlane/Appfile
+        env:
+          API_JSON: ${{ secrets.RELEASE_API_JSON }}
+          API_JSON_ENCRYPTION_PASSPHRASE: ${{ secrets.RELEASE_API_JSON_ENCRYPTION_PASSPHRASE }}
+
+      - name: Deploy
+        run: |
+          if [ "$BRANCH" == "refs/heads/master" ]; then
+            bundle exec fastlane deploy_aab_alpha build:$BUILD --verbose
+          elif [ "$BRANCH" == "refs/heads/develop" ]; then
+            bundle exec fastlane deploy_aab_internal build:$BUILD --verbose
+          else
+            echo "Unknown branch '$BRANCH'. Aborting..."
+            exit 1
+          fi
+        env:
+          BRANCH: ${{ github.ref }}
+          BUILD: ${{ github.run_number }}
+
+      - name: Upload outputs artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: outputs
+          path: app/build/outputs/

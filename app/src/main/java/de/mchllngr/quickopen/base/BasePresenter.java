@@ -1,7 +1,7 @@
 package de.mchllngr.quickopen.base;
 
-import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
-import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 
 /**
  * Base-class for work concerning every {@link MvpPresenter}.

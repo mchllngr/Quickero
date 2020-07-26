@@ -11,18 +11,6 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,14 +20,23 @@ import android.widget.FrameLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
-import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
 import com.dgreenhalgh.android.simpleitemdecoration.linear.DividerItemDecoration;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -49,12 +46,14 @@ import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.module.about.AboutActivity;
 import de.mchllngr.quickopen.service.NotificationService;
 import de.mchllngr.quickopen.util.CustomNotificationHelper;
-import de.mchllngr.quickopen.util.DialogHelper;
+import de.mchllngr.quickopen.util.dialog.ApplicationItem;
+import de.mchllngr.quickopen.util.dialog.DialogHelper;
 
 /**
  * {@link Activity} for handling the selection of applications.
  */
-public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView, MaterialSimpleListAdapter.Callback, MainAdapter.StartDragListener, DialogHelper.GoToNotificationSettingsListener {
+public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView,
+        MainAdapter.StartDragListener, DialogHelper.GoToNotificationSettingsListener {
 
     /**
      * {@link CoordinatorLayout} from the layout for showing the {@link Snackbar}.
@@ -109,7 +108,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     /**
      * Helper-Class for showing dialogs.
      */
-    private DialogHelper dialogHelper = new DialogHelper(this, this);
+    private final DialogHelper dialogHelper = new DialogHelper(this, this);
 
     @NonNull
     @Override
@@ -337,19 +336,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Override
-    public void onMaterialListItemSelected(MaterialDialog dialog, int index, MaterialSimpleListItem item) {
-        getPresenter().onApplicationSelected(index);
-        dialogHelper.hideDialog();
-    }
-
-    @Override
-    public void showApplicationListDialog(MaterialSimpleListAdapter adapter) {
-        dialogHelper.showApplicationListDialog(adapter);
-    }
-
-    @Override
-    public MaterialSimpleListAdapter.Callback getApplicationChooserCallback() {
-        return this;
+    public void showApplicationListDialog(@NonNull List<ApplicationItem> items) {
+        dialogHelper.showApplicationListDialog(items);
     }
 
     @Override
@@ -358,7 +346,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Override
-    public void hideProgressDialog() {
+    public void hideDialog() {
         dialogHelper.hideDialog();
     }
 
