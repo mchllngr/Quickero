@@ -1,0 +1,54 @@
+name: Build feature
+
+on:
+  push:
+    branches-ignore:
+      - master
+      - develop
+  pull_request: ~
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Lint Code Base
+        uses: docker://github/super-linter:v3
+        env:
+          VALIDATE_KOTLIN: true
+          VALIDATE_YAML: true
+          VALIDATE_XML: true
+
+  build-feature:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.1
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+
+      - name: Prepare keystore.properties
+        run: |
+          echo "${{ secrets.DEBUG_KEYSTORE }}" > debug.jks.asc
+          gpg -d --passphrase "${{ secrets.DEBUG_KEYSTORE_ENCRYPTION_PASSPHRASE }}" --batch debug.jks.asc > debug.jks
+          echo "storeFile=$(realpath debug.jks)" >> keystore.properties
+          echo "storePassword=${secrets.DEBUG_KEYSTORE_STORE_PASSPHRASE}" >> keystore.properties
+          echo "keyAlias=${secrets.DEBUG_KEYSTORE_ALIAS}" >> keystore.properties
+          echo "keyPassword=${secrets.DEBUG_KEYSTORE_ALIAS_PASSPHRASE}" >> keystore.properties
+
+      - name: Build feature
+        run: |
+          bundle exec fastlane bundleRelease build:$GITHUB_RUN_NUMBER
+
+      - name: Upload outputs artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: outputs
+          path: app/build/outputs/
