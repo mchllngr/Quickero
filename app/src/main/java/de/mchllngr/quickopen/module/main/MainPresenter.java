@@ -4,12 +4,9 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
-import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.google.gson.Gson;
@@ -27,6 +24,8 @@ import de.mchllngr.quickopen.model.RemovedApplicationModel;
 import de.mchllngr.quickopen.util.CustomNotificationHelper;
 import de.mchllngr.quickopen.util.FirebaseUtils;
 import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
+import de.mchllngr.quickopen.util.dialog.ApplicationItem;
+import kotlin.Unit;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -214,7 +213,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         if (savedApplicationModels.size() >= context.getResources().getInteger(R.integer.max_apps_in_notification)) {
             getView().hideAddItemsButton();
-            getView().hideProgressDialog();
+            getView().hideDialog();
             getView().showMaxItemsError();
             return;
         }
@@ -239,27 +238,32 @@ public class MainPresenter extends BasePresenter<MainView> {
 
                     if (applicationList.isEmpty()) {
                         getView().onEmptyApplicationListError();
-                        getView().hideProgressDialog();
+                        getView().hideDialog();
                         return;
                     }
 
                     lastShownApplicationModels = applicationList;
 
-                    final MaterialSimpleListAdapter adapter = new MaterialSimpleListAdapter(getView().getApplicationChooserCallback());
-
-                    for (ApplicationModel applicationModel : applicationList) {
-                        adapter.add(new MaterialSimpleListItem.Builder(context)
-                                .content(applicationModel.name)
-                                .icon(applicationModel.iconDrawable)
-                                .backgroundColor(Color.WHITE)
-                                .build());
+                    List<ApplicationItem> items = new ArrayList<>();
+                    for (int i = 0; i < applicationList.size(); i++) {
+                        int finalI = i;
+                        ApplicationModel applicationModel = applicationList.get(i);
+                        items.add(new ApplicationItem(
+                                applicationModel.name,
+                                applicationModel.iconDrawable,
+                                () -> {
+                                    onApplicationSelected(finalI);
+                                    ifViewAttached(MainView::hideDialog);
+                                    return Unit.INSTANCE;
+                                }
+                        ));
                     }
 
-                    getView().hideProgressDialog();
-                    getView().showApplicationListDialog(adapter);
+                    getView().hideDialog();
+                    getView().showApplicationListDialog(items);
                 }, e -> {
                     if (isViewAttached()) {
-                        getView().hideProgressDialog();
+                        getView().hideDialog();
                         getView().onOpenApplicationListError();
                     }
                 });
@@ -324,7 +328,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         packageNamesPref.set(newStateToSave);
 
         if (isViewAttached())
-            getView().hideProgressDialog();
+            getView().hideDialog();
     }
 
     /**
@@ -336,7 +340,7 @@ public class MainPresenter extends BasePresenter<MainView> {
             getView().showAddItemsButton();
             getView().setReorderMode(false);
             getView().updateItems(listStateBeforeReorder);
-            getView().hideProgressDialog();
+            getView().hideDialog();
         }
     }
 
@@ -363,7 +367,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         getView().updateItems(applicationModels);
 
-        getView().hideProgressDialog();
+        getView().hideDialog();
     }
 
     /**

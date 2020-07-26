@@ -24,7 +24,7 @@ object Dependencies {
     const val ANDROIDX_LIFECYCLE_LIVEDATA_KTX = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.LIFECYCLE}"
     const val ANDROIDX_LIFECYCLE_VIEWMODEL_KTX = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.LIFECYCLE}"
 
-    const val MOSBY = "com.hannesdorfmann.mosby:mvp:${Versions.MOSBY}"
+    const val MOSBY = "com.hannesdorfmann.mosby3:mvp:${Versions.MOSBY}"
 
     const val BUTTERKNIFE = "com.jakewharton:butterknife:${Versions.BUTTERKNIFE}"
     const val BUTTERKNIFE_COMPILER = "com.jakewharton:butterknife-compiler:${Versions.BUTTERKNIFE}"
@@ -39,7 +39,8 @@ object Dependencies {
     const val RX_PREFERENCES = "com.f2prateek.rx.preferences:rx-preferences:${Versions.RX_PREFERENCES}"
 
     const val MATERIAL_DIALOGS_CORE = "com.afollestad.material-dialogs:core:${Versions.MATERIAL_DIALOGS}"
-    const val MATERIAL_DIALOGS_COMMONS = "com.afollestad.material-dialogs:commons:${Versions.MATERIAL_DIALOGS}"
+    const val MATERIAL_DIALOGS_BOTTOMSHEETS = "com.afollestad.material-dialogs:bottomsheets:${Versions.MATERIAL_DIALOGS}"
+    const val MATERIAL_DIALOGS_LIFECYCLE = "com.afollestad.material-dialogs:lifecycle:${Versions.MATERIAL_DIALOGS}"
 
     const val SIMPLE_ITEM_DECORATION = "com.bignerdranch.android:simple-item-decoration:${Versions.SIMPLE_ITEM_DECORATION}"
 
