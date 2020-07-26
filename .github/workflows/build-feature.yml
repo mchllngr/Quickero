@@ -36,13 +36,15 @@ jobs:
 
       - name: Prepare keystore.properties
         run: |
-          echo $KEYSTORE | base64 -di > debug.jks
+          echo $KEYSTORE | base64 -di > debug.jks.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$KEYSTORE_ENCRYPTION_PASSPHRASE" --output debug.jks debug.jks.gpg
           echo "storeFile=$(realpath debug.jks)" >> keystore.properties
           echo "storePassword=$KEYSTORE_STORE_PASSPHRASE" >> keystore.properties
           echo "keyAlias=$KEYSTORE_ALIAS" >> keystore.properties
           echo "keyPassword=$KEYSTORE_ALIAS_PASSPHRASE" >> keystore.properties
         env:
           KEYSTORE: ${{ secrets.DEBUG_KEYSTORE }}
+          KEYSTORE_ENCRYPTION_PASSPHRASE: ${{ secrets.DEBUG_KEYSTORE_ENCRYPTION_PASSPHRASE }}
           KEYSTORE_STORE_PASSPHRASE: ${{ secrets.DEBUG_KEYSTORE_STORE_PASSPHRASE }}
           KEYSTORE_ALIAS: ${{ secrets.DEBUG_KEYSTORE_ALIAS }}
           KEYSTORE_ALIAS_PASSPHRASE: ${{ secrets.DEBUG_KEYSTORE_ALIAS_PASSPHRASE }}

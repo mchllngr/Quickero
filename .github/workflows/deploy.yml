@@ -30,31 +30,33 @@ jobs:
 
       - name: Prepare keystore.properties
         run: |
-          echo $KEYSTORE | base64 -di > release.jks
+          echo $KEYSTORE | base64 -di > release.jks.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$KEYSTORE_ENCRYPTION_PASSPHRASE" --output release.jks release.jks.gpg
           echo "storeFile=$(realpath release.jks)" >> keystore.properties
           echo "storePassword=$KEYSTORE_STORE_PASSPHRASE" >> keystore.properties
           echo "keyAlias=$KEYSTORE_ALIAS" >> keystore.properties
           echo "keyPassword=$KEYSTORE_ALIAS_PASSPHRASE" >> keystore.properties
         env:
           KEYSTORE: ${{ secrets.RELEASE_KEYSTORE }}
+          KEYSTORE_ENCRYPTION_PASSPHRASE: ${{ secrets.RELEASE_KEYSTORE_ENCRYPTION_PASSPHRASE }}
           KEYSTORE_STORE_PASSPHRASE: ${{ secrets.RELEASE_KEYSTORE_STORE_PASSPHRASE }}
           KEYSTORE_ALIAS: ${{ secrets.RELEASE_KEYSTORE_ALIAS }}
           KEYSTORE_ALIAS_PASSPHRASE: ${{ secrets.RELEASE_KEYSTORE_ALIAS_PASSPHRASE }}
 
       - name: Prepare google-api.json
         run: |
-          echo $API_JSON | base64 -di > google-api.json
+          echo $API_JSON | base64 -di > google-api.json.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$API_JSON_ENCRYPTION_PASSPHRASE" --output google-api.json google-api.json.gpg
           echo "json_key_file(\"$(realpath google-api.json)\")" >> fastlane/Appfile
         env:
           API_JSON: ${{ secrets.RELEASE_API_JSON }}
+          API_JSON_ENCRYPTION_PASSPHRASE: ${{ secrets.RELEASE_API_JSON_ENCRYPTION_PASSPHRASE }}
 
       - name: Deploy
         run: |
           if [ "$BRANCH" == "refs/heads/master" ]; then
-            echo "Running lane 'deploy_aab_alpha'"
             bundle exec fastlane deploy_aab_alpha build:$BUILD --verbose
           elif [ "$BRANCH" == "refs/heads/develop" ]; then
-            echo "Running lane 'deploy_aab_internal'"
             bundle exec fastlane deploy_aab_internal build:$BUILD --verbose
           else
             echo "Unknown branch '$BRANCH'. Aborting..."
