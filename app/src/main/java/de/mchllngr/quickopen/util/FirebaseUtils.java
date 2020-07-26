@@ -1,6 +1,7 @@
 package de.mchllngr.quickopen.util;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 

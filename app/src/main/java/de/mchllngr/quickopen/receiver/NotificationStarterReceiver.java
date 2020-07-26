@@ -4,9 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.service.NotificationService;
 import timber.log.Timber;

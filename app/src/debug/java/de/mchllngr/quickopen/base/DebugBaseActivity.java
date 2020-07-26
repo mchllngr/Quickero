@@ -1,6 +1,5 @@
 package de.mchllngr.quickopen.base;
 
-import androidx.annotation.LayoutRes;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -8,6 +7,7 @@ import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
+import androidx.annotation.LayoutRes;
 import de.mchllngr.quickopen.util.debug.DebugDrawerHelper;
 import io.palaima.debugdrawer.DebugDrawer;
 
@@ -49,7 +49,7 @@ public abstract class DebugBaseActivity<V extends MvpView, P extends MvpBasePres
      * Overrides {@link androidx.appcompat.app.AppCompatActivity#setContentView(View, ViewGroup.LayoutParams)}
      * to allow setting the {@link DebugDrawer} when called.
      *
-     * @param view   {@link View} used for setting the ContentView
+     * @param view {@link View} used for setting the ContentView
      * @param params {@link ViewGroup.LayoutParams} used for setting the ContentView
      */
     @Override

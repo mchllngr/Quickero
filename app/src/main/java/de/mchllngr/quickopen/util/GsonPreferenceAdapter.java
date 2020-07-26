@@ -1,10 +1,11 @@
 package de.mchllngr.quickopen.util;
 
 import android.content.SharedPreferences;
-import androidx.annotation.NonNull;
 
 import com.f2prateek.rx.preferences.Preference;
 import com.google.gson.Gson;
+
+import androidx.annotation.NonNull;
 
 /**
  * {@link com.f2prateek.rx.preferences.Preference.Adapter} to allow automatic conversion between
@@ -17,7 +18,7 @@ public class GsonPreferenceAdapter<T> implements Preference.Adapter<T> {
     /**
      * Constructor for initialising.
      *
-     * @param gson  {@link Gson}
+     * @param gson {@link Gson}
      * @param clazz {@link Class}
      */
     public GsonPreferenceAdapter(Gson gson, Class<T> clazz) {

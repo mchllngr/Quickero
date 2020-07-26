@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="de.mchllngr.quickopen">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".App"
@@ -19,13 +19,13 @@
 
         <activity android:name=".module.main.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <meta-data
                 android:name="theme"
-                android:resource="@style/AppTheme.NoActionBar"/>
+                android:resource="@style/AppTheme.NoActionBar" />
         </activity>
 
         <activity
@@ -34,12 +34,12 @@
             android:parentActivityName=".module.main.MainActivity">
             <meta-data
                 android:name="theme"
-                android:resource="@style/AppTheme"/>
+                android:resource="@style/AppTheme" />
         </activity>
 
-        <service android:name=".service.NotificationService"/>
+        <service android:name=".service.NotificationService" />
 
-        <service android:name=".service.StartApplicationService"/>
+        <service android:name=".service.StartApplicationService" />
 
         <service
             android:name=".service.NotificationTileService"
@@ -47,26 +47,26 @@
             android:label="@string/pref_notification_enabled_title"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
 
         <receiver android:name=".receiver.BootCompletedReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         <receiver android:name=".receiver.MyPackageReplacedReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
 
         <receiver android:name=".receiver.PackageFullyRemovedReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED"/>
-                <data android:scheme="package"/>
+                <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
+                <data android:scheme="package" />
             </intent-filter>
         </receiver>
 

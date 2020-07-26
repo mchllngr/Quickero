@@ -1,11 +1,10 @@
 package de.mchllngr.quickopen.module.main;
 
-import androidx.annotation.Nullable;
-
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
 
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import de.mchllngr.quickopen.base.BaseView;
 import de.mchllngr.quickopen.model.ApplicationModel;
 

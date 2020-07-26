@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
@@ -20,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.base.BasePresenter;
 import de.mchllngr.quickopen.model.ApplicationModel;
