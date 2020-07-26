@@ -112,7 +112,8 @@ dependencies {
     implementation Dependencies.RX_PREFERENCES
 
     implementation Dependencies.MATERIAL_DIALOGS_CORE
-    implementation Dependencies.MATERIAL_DIALOGS_COMMONS
+    implementation Dependencies.MATERIAL_DIALOGS_BOTTOMSHEETS
+    implementation Dependencies.MATERIAL_DIALOGS_LIFECYCLE
 
     implementation Dependencies.SIMPLE_ITEM_DECORATION
 
