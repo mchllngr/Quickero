@@ -57,11 +57,11 @@ jobs:
             echo "Running lane 'deploy_aab_internal'"
             bundle exec fastlane deploy_aab_internal build:$BUILD --verbose
           else
-            echo "Unknown branch $BRANCH. Aborting..."
+            echo "Unknown branch '$BRANCH'. Aborting..."
             exit 1
           fi
         env:
-          BRANCH: "${GITHUB_REF}"
+          BRANCH: ${{ "${GITHUB_REF}" }}
           BUILD: $GITHUB_RUN_NUMBER
 
       - name: Upload outputs artifact
