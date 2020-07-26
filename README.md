@@ -13,7 +13,6 @@ An android app to quickly open your favorite apps through a notification.
 - other app-name
 - add responsive icon + new icon design
 - add licence to every file ?
-- only load needed languages into apk
 - improve proguard
 - add screenshots + real descriptions to google-play-page (and app-about-page)
 
@@ -30,8 +29,14 @@ An android app to quickly open your favorite apps through a notification.
 - profiles (e.g. work/home)
     - automatic change between profiles decided by time/location(/connected wifi?)
 
-# Firebase
-This app uses Firebase. For it to work you must update the mocked [`google-services.json`](https://developers.google.com/android/guides/google-services-plugin)-files (in `app/src/debug` and `app/src/release`) or remove those and declare your own. Otherwise you first need to remove Firebase completely.
+# Release-Builds
+To build the release variant you need to create a `keystore.properties` file in the root project directory defining the following variables:
+```
+storeFile=/path/to/keystore.jks
+storePassword=STORE_PASSWORD
+keyAlias=KEY_ALIAS
+keyPassword=KEY_PASSWORD
+```
 
 # License
 
