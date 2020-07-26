@@ -50,10 +50,10 @@ jobs:
 
       - name: Deploy
         run: |
-          if [ "$BRANCH" == "refs/heads/master" ]; then
+          if [ $BRANCH == "refs/heads/master" ]; then
             echo "Running lane 'deploy_aab_alpha'"
             bundle exec fastlane deploy_aab_alpha build:$BUILD --verbose
-          elif [ "$BRANCH" == "refs/heads/develop" ]; then
+          elif [ $BRANCH == "refs/heads/develop" ]; then
             echo "Running lane 'deploy_aab_internal'"
             bundle exec fastlane deploy_aab_internal build:$BUILD --verbose
           else
@@ -61,7 +61,7 @@ jobs:
             exit 1
           fi
         env:
-          BRANCH: $GITHUB_REF
+          BRANCH: "$GITHUB_REF"
           BUILD: $GITHUB_RUN_NUMBER
 
       - name: Upload outputs artifact
