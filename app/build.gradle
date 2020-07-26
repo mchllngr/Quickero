@@ -1,23 +1,33 @@
-boolean CI_BUILD = hasProperty('ciBuild') ? ciBuild.toBoolean() : false
-println "CI_BUILD: " + CI_BUILD
-
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
-    compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
+    compileSdkVersion SdkVersions.COMPILE_SDK
 
     dexOptions {
         maxProcessCount 4
         javaMaxHeapSize "3g"
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     defaultConfig {
         applicationId "de.mchllngr.quickopen"
-        minSdkVersion rootProject.ext.MIN_SDK_VERSION
-        targetSdkVersion rootProject.ext.TARGET_SDK_VERSION
+        minSdkVersion SdkVersions.MIN_SDK
+        targetSdkVersion SdkVersions.TARGET_SDK
         versionCode rootProject.ext.VERSIONCODE
-        versionName rootProject.ext.VERSIONAME
+        versionName rootProject.ext.VERSIONNAME
+
+        resConfigs "en", "de"
     }
 
     signingConfigs {
@@ -31,75 +41,91 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
-            debuggable false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            postprocessing {
+                removeUnusedCode true
+                removeUnusedResources true
+                obfuscate true
+                optimizeCode true
+                proguardFiles getDefaultProguardFile('proguard-defaults.txt'),
+                    '../proguard/proguard-rules.pro',
+                    '../proguard/proguard-rules-butterknife.pro',
+                    '../proguard/proguard-rules-gson.pro',
+                    '../proguard/proguard-rules-rxjava.pro',
+                    '../proguard/proguard-rules-timber.pro'
+            }
             signingConfig signingConfigs.debug
         }
+
         debug {
-            minifyEnabled false
-            shrinkResources false
-            debuggable true
+            postprocessing {
+                removeUnusedCode false
+                removeUnusedResources false
+                obfuscate false
+                optimizeCode false
+            }
+            signingConfig signingConfigs.debug
+
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
-            signingConfig signingConfigs.debug
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    lintOptions {
-        abortOnError false
-    }
-
-    // Always show the result of every unit test, even if it passes.
-    testOptions.unitTests.all {
-        testLogging {
-            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+    sourceSets {
+        main {
+            // for merging res-folders together
+            res.srcDirs = ['src/main/res']
+//            file('src/main/res-modules')
+//                .eachDir { res.srcDirs += it.path }
         }
     }
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'androidx.preference:preference:1.0.0'
+    implementation Dependencies.KOTLIN_STDLIB
+    implementation Dependencies.KOTLIN_COROUTINES_ANDROID
 
-    implementation "com.hannesdorfmann.mosby:mvp:$rootProject.ext.MOSBY_VERSION"
+    implementation Dependencies.ANDROIDX_CORE_KTX
+    implementation Dependencies.ANDROIDX_FRAGMENT_KTX
+    implementation Dependencies.ANDROIDX_APPCOMPAT
+    implementation Dependencies.ANDROIDX_RECYCLERVIEW
+    implementation Dependencies.ANDROIDX_MATERIAL
+    implementation Dependencies.ANDROIDX_CONSTRAINTLAYOUT
+    implementation Dependencies.ANDROIDX_PREFERENCE
 
-    implementation "com.jakewharton:butterknife:$rootProject.ext.BUTTERKNIFE_VERSION"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.BUTTERKNIFE_VERSION"
+    implementation Dependencies.ANDROIDX_LIFECYCLE_EXTENSIONS
+    implementation Dependencies.ANDROIDX_LIFECYCLE_COMMON
+    implementation Dependencies.ANDROIDX_LIFECYCLE_LIVEDATA_KTX
+    implementation Dependencies.ANDROIDX_LIFECYCLE_VIEWMODEL_KTX
 
-    implementation "com.jakewharton.timber:timber:$rootProject.ext.TIMBER_VERSION"
+    implementation Dependencies.MOSBY
 
-    implementation "com.google.code.gson:gson:$rootProject.ext.GSON_VERSION"
+    implementation Dependencies.BUTTERKNIFE
+    kapt Dependencies.BUTTERKNIFE_COMPILER
 
-    implementation "io.reactivex:rxjava:$rootProject.ext.RX_JAVA_VERSION"
-    implementation "io.reactivex:rxandroid:$rootProject.ext.RX_ANDROID_VERSION"
+    implementation Dependencies.TIMBER
 
-    implementation "com.f2prateek.rx.preferences:rx-preferences:$rootProject.ext.RX_PREFERENCES_VERSION"
+    implementation Dependencies.GSON
 
-    implementation "com.afollestad.material-dialogs:core:$rootProject.ext.MATERIAL_DIALOGS_VERSION"
-    implementation "com.afollestad.material-dialogs:commons:$rootProject.ext.MATERIAL_DIALOGS_VERSION"
+    implementation Dependencies.RX_JAVA
+    implementation Dependencies.RX_ANDROID
 
-    implementation "com.bignerdranch.android:simple-item-decoration:$rootProject.ext.SIMPLE_ITEM_DECORATION_VERSION"
+    implementation Dependencies.RX_PREFERENCES
 
-    implementation "com.github.medyo:android-about-page:$rootProject.ext.ABOUT_PAGE_VERSION"
+    implementation Dependencies.MATERIAL_DIALOGS_CORE
+    implementation Dependencies.MATERIAL_DIALOGS_COMMONS
 
-    debugImplementation "com.facebook.stetho:stetho:$rootProject.ext.STETHO_VERSION"
+    implementation Dependencies.SIMPLE_ITEM_DECORATION
 
-    debugImplementation "io.palaima.debugdrawer:debugdrawer:$rootProject.ext.DEBUGDRAWER_VERSION"
-    debugImplementation "io.palaima.debugdrawer:debugdrawer-commons:$rootProject.ext.DEBUGDRAWER_VERSION"
-    debugImplementation "io.palaima.debugdrawer:debugdrawer-base:$rootProject.ext.DEBUGDRAWER_VERSION"
-    debugImplementation "io.palaima.debugdrawer:debugdrawer-actions:$rootProject.ext.DEBUGDRAWER_VERSION"
-    debugImplementation "io.palaima.debugdrawer:debugdrawer-scalpel:$rootProject.ext.DEBUGDRAWER_VERSION"
-    debugImplementation "io.palaima.debugdrawer:debugdrawer-fps:$rootProject.ext.DEBUGDRAWER_VERSION"
-    // Used by DebugDrawer
-    debugImplementation "com.jakewharton.scalpel:scalpel:$rootProject.ext.SCALPEL_VERSION"
-    debugImplementation "jp.wasabeef:takt:$rootProject.ext.TAKT_VERSION"
+    implementation Dependencies.ABOUT_PAGE
+
+    // Debug dependencies
+    debugImplementation DebugDependencies.STETHO
+
+    debugImplementation DebugDependencies.DEBUGDRAWER
+    debugImplementation DebugDependencies.DEBUGDRAWER_COMMONS
+    debugImplementation DebugDependencies.DEBUGDRAWER_BASE
+    debugImplementation DebugDependencies.DEBUGDRAWER_ACTIONS
+    debugImplementation DebugDependencies.DEBUGDRAWER_SCALPEL
+
+    debugImplementation DebugDependencies.SCALPEL
 }

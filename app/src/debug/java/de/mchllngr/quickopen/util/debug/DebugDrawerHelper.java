@@ -14,9 +14,7 @@ import io.palaima.debugdrawer.commons.BuildModule;
 import io.palaima.debugdrawer.commons.DeviceModule;
 import io.palaima.debugdrawer.commons.NetworkModule;
 import io.palaima.debugdrawer.commons.SettingsModule;
-import io.palaima.debugdrawer.fps.FpsModule;
 import io.palaima.debugdrawer.scalpel.ScalpelModule;
-import jp.wasabeef.takt.Takt;
 
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
@@ -77,7 +75,6 @@ public class DebugDrawerHelper {
                         new ActionsModule(getNightModeActionsModule()),
                         new NetworkModule(),
                         new ScalpelModule(activity),
-                        new FpsModule(Takt.stock(activity.getApplication())),
                         new BuildModule(),
                         new DeviceModule(),
                         new SettingsModule()
