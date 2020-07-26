@@ -61,7 +61,7 @@ jobs:
             exit 1
           fi
         env:
-          BRANCH: ${{ "${GITHUB_REF}" }}
+          BRANCH: ${{ echo $GITHUB_REF }}
           BUILD: $GITHUB_RUN_NUMBER
 
       - name: Upload outputs artifact
