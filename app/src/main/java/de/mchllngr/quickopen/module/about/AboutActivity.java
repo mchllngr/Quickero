@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import de.mchllngr.quickopen.BuildConfig;
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.base.BaseActivity;

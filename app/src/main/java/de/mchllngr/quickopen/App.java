@@ -1,7 +1,6 @@
 package de.mchllngr.quickopen;
 
 import androidx.appcompat.app.AppCompatDelegate;
-
 import de.mchllngr.quickopen.base.BaseApp;
 import de.mchllngr.quickopen.util.SplashScreenHelper;
 

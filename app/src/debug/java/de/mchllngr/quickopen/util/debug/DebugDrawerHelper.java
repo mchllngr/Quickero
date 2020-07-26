@@ -1,10 +1,9 @@
 package de.mchllngr.quickopen.util.debug;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.Arrays;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindString;
 import butterknife.ButterKnife;
 import de.mchllngr.quickopen.R;

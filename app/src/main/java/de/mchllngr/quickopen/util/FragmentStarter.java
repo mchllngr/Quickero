@@ -14,8 +14,8 @@ public class FragmentStarter {
     /**
      * Starts a {@link Fragment}.
      *
-     * @param fragmentManager   {@link FragmentManager} to use
-     * @param fragment          {@link Fragment} to start
+     * @param fragmentManager {@link FragmentManager} to use
+     * @param fragment {@link Fragment} to start
      * @param fragmentContainer {@link IdRes} of a container to load the {@link Fragment} into
      */
     public static void startFragment(@NonNull FragmentManager fragmentManager, Fragment fragment, @IdRes int fragmentContainer) {

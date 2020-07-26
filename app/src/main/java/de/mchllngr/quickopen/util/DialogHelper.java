@@ -3,12 +3,12 @@ package de.mchllngr.quickopen.util;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import de.mchllngr.quickopen.R;
 import timber.log.Timber;
 

@@ -5,7 +5,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import androidx.annotation.Nullable;
 import android.widget.Toast;
 
 import com.f2prateek.rx.preferences.Preference;
@@ -14,6 +13,7 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import de.mchllngr.quickopen.R;
 import de.mchllngr.quickopen.model.ApplicationModel;
 import de.mchllngr.quickopen.util.CustomNotificationHelper;
