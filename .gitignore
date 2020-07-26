@@ -179,5 +179,9 @@ Gemfile.lock
 fastlane/report.xml
 
 
+### Google Api Json ###
+api-*.json
+
+
 ### EXTRA ###
 /captures
