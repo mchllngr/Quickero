@@ -36,7 +36,5 @@ object Versions {
 }
 
 object DebugVersions {
-    const val STETHO = "1.5.1"
-    const val DEBUGDRAWER = "0.8.0"
-    const val SCALPEL = "1.1.2"
+    const val DEBUGDRAWER = "0.9.0"
 }
