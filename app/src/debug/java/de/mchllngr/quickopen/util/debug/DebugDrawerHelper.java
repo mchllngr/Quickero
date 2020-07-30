@@ -14,7 +14,6 @@ import io.palaima.debugdrawer.commons.BuildModule;
 import io.palaima.debugdrawer.commons.DeviceModule;
 import io.palaima.debugdrawer.commons.NetworkModule;
 import io.palaima.debugdrawer.commons.SettingsModule;
-import io.palaima.debugdrawer.scalpel.ScalpelModule;
 
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_AUTO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
@@ -74,7 +73,6 @@ public class DebugDrawerHelper {
                 .modules(
                         new ActionsModule(getNightModeActionsModule()),
                         new NetworkModule(),
-                        new ScalpelModule(activity),
                         new BuildModule(),
                         new DeviceModule(),
                         new SettingsModule()
