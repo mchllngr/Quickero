@@ -1,8 +1,7 @@
 package de.mchllngr.quickopen.base;
 
 import android.app.Application;
-
-import com.facebook.stetho.Stetho;
+import android.support.annotation.NonNull;
 
 import timber.log.Timber;
 
@@ -15,8 +14,6 @@ public abstract class BaseApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Stetho.initializeWithDefaults(this);
-
         initTimber();
     }
 
@@ -27,7 +24,7 @@ public abstract class BaseApp extends Application {
         Timber.plant(new Timber.DebugTree() {
             // Add the line number to the tag
             @Override
-            protected String createStackElementTag(StackTraceElement element) {
+            protected String createStackElementTag(@NonNull StackTraceElement element) {
                 return super.createStackElementTag(element) + '#' + element.getLineNumber();
             }
         });
