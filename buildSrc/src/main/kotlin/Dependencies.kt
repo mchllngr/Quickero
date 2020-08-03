@@ -48,14 +48,8 @@ object Dependencies {
 }
 
 object DebugDependencies {
-    const val STETHO = "com.facebook.stetho:stetho:${DebugVersions.STETHO}"
-
-    const val DEBUGDRAWER = "io.palaima.debugdrawer:debugdrawer:${DebugVersions.DEBUGDRAWER}"
-    const val DEBUGDRAWER_COMMONS = "io.palaima.debugdrawer:debugdrawer-commons:${DebugVersions.DEBUGDRAWER}"
-    const val DEBUGDRAWER_BASE = "io.palaima.debugdrawer:debugdrawer-base:${DebugVersions.DEBUGDRAWER}"
-    const val DEBUGDRAWER_ACTIONS = "io.palaima.debugdrawer:debugdrawer-actions:${DebugVersions.DEBUGDRAWER}"
-    const val DEBUGDRAWER_SCALPEL = "io.palaima.debugdrawer:debugdrawer-scalpel:${DebugVersions.DEBUGDRAWER}"
-
-    // Used by DebugDrawer
-    const val SCALPEL = "com.jakewharton.scalpel:scalpel:${DebugVersions.SCALPEL}"
+    const val DEBUGDRAWER = "com.github.lenguyenthanh.debugdrawer:debugdrawer:${DebugVersions.DEBUGDRAWER}"
+    const val DEBUGDRAWER_COMMONS = "com.github.lenguyenthanh.debugdrawer:debugdrawer-commons:${DebugVersions.DEBUGDRAWER}"
+    const val DEBUGDRAWER_BASE = "com.github.lenguyenthanh.debugdrawer:debugdrawer-base:${DebugVersions.DEBUGDRAWER}"
+    const val DEBUGDRAWER_ACTIONS = "com.github.lenguyenthanh.debugdrawer:debugdrawer-actions:${DebugVersions.DEBUGDRAWER}"
 }
