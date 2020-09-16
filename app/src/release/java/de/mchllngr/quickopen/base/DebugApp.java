@@ -7,5 +7,5 @@ import android.app.Application;
  *
  * Empty in Release-BuildVariant.
  */
-public abstract class BaseApp extends Application {
+public abstract class DebugApp extends Application {
 }
