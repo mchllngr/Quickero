@@ -1,5 +1,6 @@
 package de.mchllngr.quickopen.base;
 
+import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
@@ -14,7 +15,7 @@ import de.mchllngr.quickopen.R;
  * @param <V> view-interface for this activity
  * @param <P> presenter for this activity
  */
-public abstract class BaseActivity<V extends MvpView, P extends MvpBasePresenter<V>> extends DebugBaseActivity<V, P> {
+public abstract class BaseActivity<V extends MvpView, P extends MvpBasePresenter<V>> extends MvpActivity<V, P> {
 
     /**
      * Overrides {@link androidx.appcompat.app.AppCompatActivity#setSupportActionBar(Toolbar)} to

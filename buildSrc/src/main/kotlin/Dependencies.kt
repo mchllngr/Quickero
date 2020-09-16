@@ -48,8 +48,6 @@ object Dependencies {
 }
 
 object DebugDependencies {
-    const val DEBUGDRAWER = "com.github.lenguyenthanh.debugdrawer:debugdrawer:${DebugVersions.DEBUGDRAWER}"
-    const val DEBUGDRAWER_COMMONS = "com.github.lenguyenthanh.debugdrawer:debugdrawer-commons:${DebugVersions.DEBUGDRAWER}"
-    const val DEBUGDRAWER_BASE = "com.github.lenguyenthanh.debugdrawer:debugdrawer-base:${DebugVersions.DEBUGDRAWER}"
-    const val DEBUGDRAWER_ACTIONS = "com.github.lenguyenthanh.debugdrawer:debugdrawer-actions:${DebugVersions.DEBUGDRAWER}"
+    const val BEAGLE = "com.github.pandulapeter.beagle:ui-drawer:${DebugVersions.BEAGLE}"
+    const val BEAGLE_LOG = "com.github.pandulapeter.beagle:log:${DebugVersions.BEAGLE}"
 }
