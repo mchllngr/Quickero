@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import de.mchllngr.quickopen.R;
 import timber.log.Timber;
 
@@ -34,21 +35,21 @@ public class SplashScreenHelper implements Application.ActivityLifecycleCallback
     }
 
     @Override
-    public void onActivityStarted(Activity activity) { /* empty */ }
+    public void onActivityStarted(@NonNull Activity activity) { /* empty */ }
 
     @Override
-    public void onActivityResumed(Activity activity) { /* empty */ }
+    public void onActivityResumed(@NonNull Activity activity) { /* empty */ }
 
     @Override
-    public void onActivityPaused(Activity activity) { /* empty */ }
+    public void onActivityPaused(@NonNull Activity activity) { /* empty */ }
 
     @Override
-    public void onActivityStopped(Activity activity) { /* empty */ }
+    public void onActivityStopped(@NonNull Activity activity) { /* empty */ }
 
     @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle bundle) { /* empty */ }
+    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) { /* empty */ }
 
     @Override
-    public void onActivityDestroyed(Activity activity) { /* empty */ }
+    public void onActivityDestroyed(@NonNull Activity activity) { /* empty */ }
 }
 
