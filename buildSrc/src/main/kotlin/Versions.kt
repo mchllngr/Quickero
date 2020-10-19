@@ -7,7 +7,7 @@ object SdkVersions {
 }
 
 object BuildScriptVersions {
-    const val BUILD_TOOLS_GRADLE = "4.1.0-rc03"
+    const val BUILD_TOOLS_GRADLE = "4.1.0"
     const val DEXCOUNT_GRADLE = "2.0.0-RC1"
     const val VERSIONS_GRADLE = "0.33.0"
 }
