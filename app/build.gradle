@@ -22,6 +22,9 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+        freeCompilerArgs += [
+            "-Xjvm-default=compatibility"
+        ]
     }
 
     defaultConfig {
@@ -36,10 +39,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'] ?: "UNKNOWN")
+            storePassword keystoreProperties['storePassword'] ?: "UNKNOWN"
+            keyAlias keystoreProperties['keyAlias'] ?: "UNKNOWN"
+            keyPassword keystoreProperties['keyPassword'] ?: "UNKNOWN"
         }
     }
 
@@ -123,13 +126,6 @@ dependencies {
     implementation Dependencies.ABOUT_PAGE
 
     // Debug dependencies
-    debugImplementation DebugDependencies.STETHO
-
-    debugImplementation DebugDependencies.DEBUGDRAWER
-    debugImplementation DebugDependencies.DEBUGDRAWER_COMMONS
-    debugImplementation DebugDependencies.DEBUGDRAWER_BASE
-    debugImplementation DebugDependencies.DEBUGDRAWER_ACTIONS
-    debugImplementation DebugDependencies.DEBUGDRAWER_SCALPEL
-
-    debugImplementation DebugDependencies.SCALPEL
+    debugImplementation DebugDependencies.BEAGLE
+    debugImplementation DebugDependencies.BEAGLE_LOG
 }
