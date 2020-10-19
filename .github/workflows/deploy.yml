@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - master
+      - main
       - develop
 
 jobs:
@@ -54,7 +54,7 @@ jobs:
 
       - name: Deploy
         run: |
-          if [ "$BRANCH" == "refs/heads/master" ]; then
+          if [ "$BRANCH" == "refs/heads/main" ]; then
             bundle exec fastlane deploy_aab_alpha build:$BUILD --verbose
           elif [ "$BRANCH" == "refs/heads/develop" ]; then
             bundle exec fastlane deploy_aab_internal build:$BUILD --verbose
