@@ -1,33 +1,8 @@
-# QuickOpen [![Build Status](https://travis-ci.org/mchllngr/QuickOpen.svg?branch=master)](https://travis-ci.org/mchllngr/QuickOpen)
+# QuickOpen [![Build Status](https://github.com/mchllngr/QuickOpen/workflows/deploy/badge.svg)](https://github.com/mchllngr/QuickOpen/actions)
+
 An android app to quickly open your favorite apps through a notification.
 
-<a href='https://play.google.com/store/apps/details?id=de.mchllngr.quickopen&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width='300' alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
-
-# KNOWN BUGS
-- Enable-Switch layout is broken on Android-P
-- splashscreen is broken (only api 27?)
-- AboutPage "Rate us on the Play Store" seems to be non functional
-
-# TODO
-- new notification icon
-- other app-name
-- add responsive icon + new icon design
-- add licence to every file ?
-- improve proguard
-- add screenshots + real descriptions to google-play-page (and app-about-page)
-
-# TODO a little bit later
-- rebuild app completely in kotlin
-- redesign of en-/disabling-switch
-- show installed apps on another page
-- add tutorial?
-- add feedback
-- add "Donate a beer"
-- add search-bar to application-list ?
-
-# FEATURES-IDEAS (for later)
-- profiles (e.g. work/home)
-    - automatic change between profiles decided by time/location(/connected wifi?)
+<a href='https://play.google.com/store/apps/details?id=de.mchllngr.quickopen'><img width='300' alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
 # Debug-Builds
 To build the debug variant you need to create an empty `keystore.properties` file in the root project directory.
