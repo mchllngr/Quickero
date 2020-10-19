@@ -4,10 +4,12 @@ An android app to quickly open your favorite apps through a notification.
 
 <a href='https://play.google.com/store/apps/details?id=de.mchllngr.quickopen'><img width='300' alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
-# Debug-Builds
+## Building
+
+### Debug
 To build the debug variant you need to create an empty `keystore.properties` file in the root project directory.
 
-# Release-Builds
+### Release
 To build the release variant you need to create a `keystore.properties` file in the root project directory defining the following variables:
 ```
 storeFile=/path/to/keystore.jks
@@ -16,7 +18,7 @@ keyAlias=KEY_ALIAS
 keyPassword=KEY_PASSWORD
 ```
 
-# License
+## License
 
 ```
 Copyright 2016 Michael Langer (mchllngr)
