@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.pandulapeter.beagle.Beagle
 import com.pandulapeter.beagle.common.configuration.Behavior
+import com.pandulapeter.beagle.common.configuration.Text
 import com.pandulapeter.beagle.common.contracts.BeagleListItemContract
 import com.pandulapeter.beagle.log.BeagleLogger
 import com.pandulapeter.beagle.modules.AnimationDurationSwitchModule
@@ -21,7 +22,7 @@ import com.pandulapeter.beagle.modules.LifecycleLogListModule
 import com.pandulapeter.beagle.modules.LogListModule
 import com.pandulapeter.beagle.modules.PaddingModule
 import com.pandulapeter.beagle.modules.ScreenCaptureToolboxModule
-import com.pandulapeter.beagle.modules.SectionHeaderModule
+import com.pandulapeter.beagle.modules.TextModule
 import de.mchllngr.quickero.BuildConfig
 import de.mchllngr.quickero.R
 import java.lang.ref.WeakReference
@@ -77,7 +78,7 @@ class DebugDrawer(private val app: Application) {
             AppInfoButtonModule(),
             DeveloperOptionsButtonModule(),
             PaddingModule(),
-            SectionHeaderModule("General"),
+            TextModule("General", TextModule.Type.SECTION_HEADER),
             ItemListModule(
                 title = "App Night Mode",
                 items = AppNightModeItem.values().toList(),
@@ -92,11 +93,11 @@ class DebugDrawer(private val app: Application) {
             AnimationDurationSwitchModule(),
             ScreenCaptureToolboxModule(),
             DividerModule(),
-            SectionHeaderModule("Logs"),
+            TextModule("Logs", TextModule.Type.SECTION_HEADER),
             LogListModule(),
             LifecycleLogListModule(),
             DividerModule(),
-            SectionHeaderModule("Other"),
+            TextModule("Other", TextModule.Type.SECTION_HEADER),
             DeviceInfoModule()
         )
 
@@ -104,13 +105,13 @@ class DebugDrawer(private val app: Application) {
     }
 
     private enum class AppNightModeItem(
-        override val title: CharSequence,
+        override val title: Text,
         val value: Int
     ) : BeagleListItemContract {
-        MODE_NIGHT_UNSPECIFIED("UNSPECIFIED", AppCompatDelegate.MODE_NIGHT_UNSPECIFIED),
-        MODE_NIGHT_FOLLOW_SYSTEM("FOLLOW_SYSTEM", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM),
-        MODE_NIGHT_NO("NO", AppCompatDelegate.MODE_NIGHT_NO),
-        MODE_NIGHT_YES("YES", AppCompatDelegate.MODE_NIGHT_YES),
-        MODE_NIGHT_AUTO_BATTERY("AUTO_BATTERY", AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
+        MODE_NIGHT_UNSPECIFIED(Text.CharSequence("UNSPECIFIED"), AppCompatDelegate.MODE_NIGHT_UNSPECIFIED),
+        MODE_NIGHT_FOLLOW_SYSTEM(Text.CharSequence("FOLLOW_SYSTEM"), AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM),
+        MODE_NIGHT_NO(Text.CharSequence("NO"), AppCompatDelegate.MODE_NIGHT_NO),
+        MODE_NIGHT_YES(Text.CharSequence("YES"), AppCompatDelegate.MODE_NIGHT_YES),
+        MODE_NIGHT_AUTO_BATTERY(Text.CharSequence("AUTO_BATTERY"), AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
     }
 }
