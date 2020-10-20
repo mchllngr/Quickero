@@ -49,7 +49,7 @@ public class AboutActivity extends BaseActivity<BaseView, BasePresenter<BaseView
         versionElement.setTitle("Version " + BuildConfig.VERSION_NAME);
 
         return new AboutPage(this)
-                .setImage(R.mipmap.ic_launcher)
+                .setImage(R.drawable.ic_launcher_foreground)
                 .setDescription(DESCRIPTION)
                 .addItem(versionElement)
                 .addEmail(EMAIL)

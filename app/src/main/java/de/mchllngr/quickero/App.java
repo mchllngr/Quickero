@@ -4,7 +4,6 @@ import android.os.Build;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import de.mchllngr.quickero.base.DebugApp;
-import de.mchllngr.quickero.util.SplashScreenHelper;
 
 /**
  * {@link App} for the {@link android.app.Application}
@@ -15,12 +14,7 @@ public class App extends DebugApp {
     public void onCreate() {
         super.onCreate();
 
-        initSplashScreen();
         setDefaultNightMode();
-    }
-
-    private void initSplashScreen() {
-        registerActivityLifecycleCallbacks(new SplashScreenHelper());
     }
 
     private void setDefaultNightMode() {

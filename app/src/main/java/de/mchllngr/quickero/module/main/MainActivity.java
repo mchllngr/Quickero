@@ -11,11 +11,11 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -139,9 +139,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     private void getDeviceScreenWidthPixels() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        deviceScreenWidthPixels = metrics.widthPixels;
+        WindowManager windowManager = (WindowManager) createDisplayContext(getDisplay()).getSystemService(Context.WINDOW_SERVICE);
+        deviceScreenWidthPixels = windowManager.getCurrentWindowMetrics().getBounds().width();
     }
 
     /**
