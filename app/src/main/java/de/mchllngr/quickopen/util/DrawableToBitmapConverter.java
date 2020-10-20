@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.util;
+package de.mchllngr.quickero.util;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

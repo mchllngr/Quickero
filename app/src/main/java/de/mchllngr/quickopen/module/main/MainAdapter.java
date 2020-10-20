@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.module.main;
+package de.mchllngr.quickero.module.main;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;
@@ -22,9 +22,9 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.mchllngr.quickopen.R;
-import de.mchllngr.quickopen.model.ApplicationModel;
-import de.mchllngr.quickopen.util.CustomAnimatorListener;
+import de.mchllngr.quickero.R;
+import de.mchllngr.quickero.model.ApplicationModel;
+import de.mchllngr.quickero.util.CustomAnimatorListener;
 
 /**
  * {@link Adapter} for handling the shown items.

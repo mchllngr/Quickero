@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.model;
+package de.mchllngr.quickero.model;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -18,9 +18,9 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
-import de.mchllngr.quickopen.R;
-import de.mchllngr.quickopen.util.DrawableToBitmapConverter;
-import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
+import de.mchllngr.quickero.R;
+import de.mchllngr.quickero.util.DrawableToBitmapConverter;
+import de.mchllngr.quickero.util.GsonPreferenceAdapter;
 import timber.log.Timber;
 
 /**

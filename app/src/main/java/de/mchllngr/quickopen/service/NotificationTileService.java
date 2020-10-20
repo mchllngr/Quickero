@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.service;
+package de.mchllngr.quickero.service;
 
 import android.annotation.TargetApi;
 import android.app.Service;
@@ -13,7 +13,7 @@ import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 
 import androidx.preference.PreferenceManager;
-import de.mchllngr.quickopen.R;
+import de.mchllngr.quickero.R;
 import rx.Subscription;
 
 /**

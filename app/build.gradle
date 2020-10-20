@@ -28,7 +28,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "de.mchllngr.quickopen"
+        applicationId "de.mchllngr.quickero"
         minSdkVersion SdkVersions.MIN_SDK
         targetSdkVersion SdkVersions.TARGET_SDK
         versionCode rootProject.ext.VERSIONCODE

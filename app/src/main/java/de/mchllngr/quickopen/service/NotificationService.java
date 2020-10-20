@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.service;
+package de.mchllngr.quickero.service;
 
 import android.app.Notification;
 import android.app.Service;
@@ -14,10 +14,10 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
-import de.mchllngr.quickopen.R;
-import de.mchllngr.quickopen.model.ApplicationModel;
-import de.mchllngr.quickopen.util.CustomNotificationHelper;
-import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
+import de.mchllngr.quickero.R;
+import de.mchllngr.quickero.model.ApplicationModel;
+import de.mchllngr.quickero.util.CustomNotificationHelper;
+import de.mchllngr.quickero.util.GsonPreferenceAdapter;
 
 /**
  * Foreground-{@link Service} for handling the notification

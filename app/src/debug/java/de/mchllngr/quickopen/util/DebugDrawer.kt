@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.util
+package de.mchllngr.quickero.util
 
 import android.app.Activity
 import android.app.Application
@@ -22,8 +22,8 @@ import com.pandulapeter.beagle.modules.LogListModule
 import com.pandulapeter.beagle.modules.PaddingModule
 import com.pandulapeter.beagle.modules.ScreenCaptureToolboxModule
 import com.pandulapeter.beagle.modules.SectionHeaderModule
-import de.mchllngr.quickopen.BuildConfig
-import de.mchllngr.quickopen.R
+import de.mchllngr.quickero.BuildConfig
+import de.mchllngr.quickero.R
 import java.lang.ref.WeakReference
 
 class DebugDrawer(private val app: Application) {

@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.base;
+package de.mchllngr.quickero.base;
 
 import android.app.Application;
 

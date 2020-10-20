@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.module.main;
+package de.mchllngr.quickero.module.main;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -40,14 +40,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import de.mchllngr.quickopen.R;
-import de.mchllngr.quickopen.base.BaseActivity;
-import de.mchllngr.quickopen.model.ApplicationModel;
-import de.mchllngr.quickopen.module.about.AboutActivity;
-import de.mchllngr.quickopen.service.NotificationService;
-import de.mchllngr.quickopen.util.CustomNotificationHelper;
-import de.mchllngr.quickopen.util.dialog.ApplicationItem;
-import de.mchllngr.quickopen.util.dialog.DialogHelper;
+import de.mchllngr.quickero.R;
+import de.mchllngr.quickero.base.BaseActivity;
+import de.mchllngr.quickero.model.ApplicationModel;
+import de.mchllngr.quickero.module.about.AboutActivity;
+import de.mchllngr.quickero.service.NotificationService;
+import de.mchllngr.quickero.util.CustomNotificationHelper;
+import de.mchllngr.quickero.util.dialog.ApplicationItem;
+import de.mchllngr.quickero.util.dialog.DialogHelper;
 
 /**
  * {@link Activity} for handling the selection of applications.

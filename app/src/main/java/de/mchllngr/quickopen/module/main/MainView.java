@@ -1,12 +1,12 @@
-package de.mchllngr.quickopen.module.main;
+package de.mchllngr.quickero.module.main;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import de.mchllngr.quickopen.base.BaseView;
-import de.mchllngr.quickopen.model.ApplicationModel;
-import de.mchllngr.quickopen.util.dialog.ApplicationItem;
+import de.mchllngr.quickero.base.BaseView;
+import de.mchllngr.quickero.model.ApplicationModel;
+import de.mchllngr.quickero.util.dialog.ApplicationItem;
 
 /**
  * Interface for the {@link MainActivity}

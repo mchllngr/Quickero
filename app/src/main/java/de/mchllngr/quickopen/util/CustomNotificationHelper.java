@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.util;
+package de.mchllngr.quickero.util;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -16,10 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-import de.mchllngr.quickopen.R;
-import de.mchllngr.quickopen.model.ApplicationModel;
-import de.mchllngr.quickopen.module.main.MainActivity;
-import de.mchllngr.quickopen.service.StartApplicationService;
+import de.mchllngr.quickero.R;
+import de.mchllngr.quickero.model.ApplicationModel;
+import de.mchllngr.quickero.module.main.MainActivity;
+import de.mchllngr.quickero.service.StartApplicationService;
 import timber.log.Timber;
 
 import static android.os.Build.VERSION;

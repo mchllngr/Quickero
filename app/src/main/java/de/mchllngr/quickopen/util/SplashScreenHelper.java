@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.util;
+package de.mchllngr.quickero.util;
 
 import android.app.Activity;
 import android.app.Application;
@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import de.mchllngr.quickopen.R;
+import de.mchllngr.quickero.R;
 import timber.log.Timber;
 
 /**

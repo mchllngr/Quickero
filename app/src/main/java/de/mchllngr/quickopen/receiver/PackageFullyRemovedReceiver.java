@@ -1,12 +1,12 @@
-package de.mchllngr.quickopen.receiver;
+package de.mchllngr.quickero.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.Nullable;
-import de.mchllngr.quickopen.model.ApplicationModel;
-import de.mchllngr.quickopen.service.NotificationService;
+import de.mchllngr.quickero.model.ApplicationModel;
+import de.mchllngr.quickero.service.NotificationService;
 import timber.log.Timber;
 
 /**

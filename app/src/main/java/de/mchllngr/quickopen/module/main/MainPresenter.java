@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.module.main;
+package de.mchllngr.quickero.module.main;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -17,14 +17,14 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
-import de.mchllngr.quickopen.R;
-import de.mchllngr.quickopen.base.BasePresenter;
-import de.mchllngr.quickopen.model.ApplicationModel;
-import de.mchllngr.quickopen.model.RemovedApplicationModel;
-import de.mchllngr.quickopen.util.CustomNotificationHelper;
-import de.mchllngr.quickopen.util.FirebaseUtils;
-import de.mchllngr.quickopen.util.GsonPreferenceAdapter;
-import de.mchllngr.quickopen.util.dialog.ApplicationItem;
+import de.mchllngr.quickero.R;
+import de.mchllngr.quickero.base.BasePresenter;
+import de.mchllngr.quickero.model.ApplicationModel;
+import de.mchllngr.quickero.model.RemovedApplicationModel;
+import de.mchllngr.quickero.util.CustomNotificationHelper;
+import de.mchllngr.quickero.util.FirebaseUtils;
+import de.mchllngr.quickero.util.GsonPreferenceAdapter;
+import de.mchllngr.quickero.util.dialog.ApplicationItem;
 import kotlin.Unit;
 import rx.Observable;
 import rx.Subscription;

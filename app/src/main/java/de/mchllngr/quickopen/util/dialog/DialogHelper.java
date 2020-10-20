@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.util.dialog;
+package de.mchllngr.quickero.util.dialog;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import de.mchllngr.quickopen.R;
+import de.mchllngr.quickero.R;
 import kotlin.Unit;
 import timber.log.Timber;
 
@@ -27,7 +27,7 @@ public class DialogHelper {
     /**
      * Link to the Play Store listing.
      */
-    private static final String URL_PLAY_STORE_LISTING = "https://play.google.com/store/apps/details?id=de.mchllngr.quickopen";
+    private static final String URL_PLAY_STORE_LISTING = "https://play.google.com/store/apps/details?id=de.mchllngr.quickero";
 
     private final Activity activity;
     private final GoToNotificationSettingsListener goToNotificationSettingsListener;

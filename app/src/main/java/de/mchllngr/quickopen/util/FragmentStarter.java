@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.util;
+package de.mchllngr.quickero.util;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;

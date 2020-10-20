@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.model;
+package de.mchllngr.quickero.model;
 
 /**
  * Class for holding the needed data about an removed item for the remove to be undone.

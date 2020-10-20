@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.service;
+package de.mchllngr.quickero.service;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -8,9 +8,9 @@ import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 
 import androidx.preference.PreferenceManager;
-import de.mchllngr.quickopen.R;
-import de.mchllngr.quickopen.util.CustomNotificationHelper;
-import de.mchllngr.quickopen.util.FirebaseUtils;
+import de.mchllngr.quickero.R;
+import de.mchllngr.quickero.util.CustomNotificationHelper;
+import de.mchllngr.quickero.util.FirebaseUtils;
 
 /**
  * {@link IntentService} for starting the clicked application from the notification.

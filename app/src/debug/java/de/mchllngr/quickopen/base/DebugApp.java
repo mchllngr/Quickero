@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.base;
+package de.mchllngr.quickero.base;
 
 import android.app.Application;
 
@@ -7,7 +7,7 @@ import com.pandulapeter.beagle.Beagle;
 import org.jetbrains.annotations.NotNull;
 
 import androidx.annotation.NonNull;
-import de.mchllngr.quickopen.util.DebugDrawer;
+import de.mchllngr.quickero.util.DebugDrawer;
 import timber.log.Timber;
 
 /**

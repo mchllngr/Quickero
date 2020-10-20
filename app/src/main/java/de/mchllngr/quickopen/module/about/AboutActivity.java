@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.module.about;
+package de.mchllngr.quickero.module.about;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,11 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import de.mchllngr.quickopen.BuildConfig;
-import de.mchllngr.quickopen.R;
-import de.mchllngr.quickopen.base.BaseActivity;
-import de.mchllngr.quickopen.base.BasePresenter;
-import de.mchllngr.quickopen.base.BaseView;
+import de.mchllngr.quickero.BuildConfig;
+import de.mchllngr.quickero.R;
+import de.mchllngr.quickero.base.BaseActivity;
+import de.mchllngr.quickero.base.BasePresenter;
+import de.mchllngr.quickero.base.BaseView;
 import mehdi.sakout.aboutpage.AboutPage;
 import mehdi.sakout.aboutpage.Element;
 
@@ -21,8 +21,8 @@ import mehdi.sakout.aboutpage.Element;
 public class AboutActivity extends BaseActivity<BaseView, BasePresenter<BaseView>> implements BaseView {
 
     private static final String DESCRIPTION = "TODO description"; // TODO set description
-    private static final String EMAIL = "quickopen@michaellanger.me";
-    private static final String GITHUB = "mchllngr/quickopen";
+    private static final String EMAIL = "quickero@michaellanger.me";
+    private static final String GITHUB = "mchllngr/quickero";
 
     public static void start(Context context) {
         Intent starter = new Intent(context, AboutActivity.class);

@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.base;
+package de.mchllngr.quickero.base;
 
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
@@ -7,7 +7,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
-import de.mchllngr.quickopen.R;
+import de.mchllngr.quickero.R;
 
 /**
  * Base-class for work concerning every {@link android.app.Activity}.

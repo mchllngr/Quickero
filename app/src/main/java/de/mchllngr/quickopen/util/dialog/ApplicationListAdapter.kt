@@ -1,4 +1,4 @@
-package de.mchllngr.quickopen.util.dialog
+package de.mchllngr.quickero.util.dialog
 
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import de.mchllngr.quickopen.R
+import de.mchllngr.quickero.R
 
 data class ApplicationItem(
     val name: String,
