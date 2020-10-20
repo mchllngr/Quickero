@@ -1,6 +1,6 @@
-![Quickero](assets/logo_name.png)
+![Quickero](./assets/logo_name.svg)
+
 [![Build Status](https://github.com/mchllngr/Quickero/workflows/deploy/badge.svg)](https://github.com/mchllngr/Quickero/actions)
----
 
 An android app to quickly open your favorite apps through a notification.
 
