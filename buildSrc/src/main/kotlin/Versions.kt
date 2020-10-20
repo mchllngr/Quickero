@@ -8,7 +8,7 @@ object SdkVersions {
 
 object BuildScriptVersions {
     const val BUILD_TOOLS_GRADLE = "4.1.0"
-    const val DEXCOUNT_GRADLE = "2.0.0-RC1"
+    const val DEXCOUNT_GRADLE = "2.0.0"
     const val VERSIONS_GRADLE = "0.33.0"
 }
 
@@ -20,7 +20,7 @@ object Versions {
     const val APPCOMPAT = "1.2.0"
     const val RECYCLERVIEW = "1.1.0"
     const val MATERIAL = "1.2.1"
-    const val CONSTRAINT_LAYOUT = "2.0.1"
+    const val CONSTRAINT_LAYOUT = "2.0.2"
     const val PREFERENCE = "1.1.1"
     const val LIFECYCLE = "2.2.0"
     const val MOSBY = "3.1.1"
@@ -36,5 +36,5 @@ object Versions {
 }
 
 object DebugVersions {
-    const val BEAGLE = "2.0.4"
+    const val BEAGLE = "2.2.1"
 }
