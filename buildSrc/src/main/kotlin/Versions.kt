@@ -32,7 +32,7 @@ object Versions {
     const val RX_PREFERENCES = "1.0.2"
     const val MATERIAL_DIALOGS = "3.3.0"
     const val SIMPLE_ITEM_DECORATION = "1.0.0"
-    const val ABOUT_PAGE = "1.3.1"
+    const val ATTRIBOUTER = "0.1.8"
 }
 
 object DebugVersions {

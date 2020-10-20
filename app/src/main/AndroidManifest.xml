@@ -35,8 +35,7 @@
 
         <activity
             android:name=".module.about.AboutActivity"
-            android:label="@string/about_title"
-            android:parentActivityName=".module.main.MainActivity" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".service.NotificationService" />
 

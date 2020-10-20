@@ -4,7 +4,7 @@
     <item android:drawable="@color/colorPrimary" />
 
     <item
-        android:drawable="@drawable/ic_launcher_foreground"
+        android:drawable="@mipmap/ic_launcher"
         android:gravity="center" />
 
 </layer-list>

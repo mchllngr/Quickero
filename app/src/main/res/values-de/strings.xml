@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="privacy_policy">Datenschutzerklärung</string>
+
     <!-- Empty application list -->
     <string name="application_list_empty">Klicken Sie auf das \"+\" um\nApplikationen hinzuzufügen.</string>
 
@@ -29,9 +31,6 @@
     <string name="menu_reorder_accept">Sortierung akzeptieren</string>
     <string name="menu_reorder_cancel">Sortierung verwerfen</string>
     <string name="menu_about">Über</string>
-
-    <!-- Titles -->
-    <string name="about_title">Über</string>
 
     <!-- Notifications -->
     <string name="notification_service_loading_title">Bitte warten&#8230;</string>
