@@ -35,7 +35,7 @@ public class CustomNotificationHelper {
 
     private static final int NOTIFICATION_ERROR_ID = 56422;
 
-    private static final int NOTIFICATION_ICON_ID = R.drawable.ic_speaker_notes_white_24dp;
+    private static final int NOTIFICATION_ICON_ID = R.drawable.ic_logo_notification;
     private static final int NOTIFICATION_ERROR_ICON_ID = R.drawable.ic_error_outline_white_24dp;
 
     private static final String ERROR_MSG_COULD_NOT_SHOW_NOTIFICATION = "Could not show notification";
