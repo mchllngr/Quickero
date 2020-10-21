@@ -11,18 +11,19 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.dgreenhalgh.android.simpleitemdecoration.linear.DividerItemDecoration;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +83,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     /**
      * Represents the view for enabling/disabling the notification.
      */
-    @BindView(R.id.enable) Switch enableNotificationSwitch;
+    @BindView(R.id.enable) SwitchMaterial enableNotificationSwitch;
 
     /**
      * {@link MainAdapter} for updating shown items in {@code recyclerView}.
@@ -139,8 +140,15 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     private void getDeviceScreenWidthPixels() {
-        WindowManager windowManager = (WindowManager) createDisplayContext(getDisplay()).getSystemService(Context.WINDOW_SERVICE);
-        deviceScreenWidthPixels = windowManager.getCurrentWindowMetrics().getBounds().width();
+        if (VERSION.SDK_INT >= VERSION_CODES.R) {
+            WindowManager windowManager = (WindowManager) createDisplayContext(getDisplay()).getSystemService(Context.WINDOW_SERVICE);
+            deviceScreenWidthPixels = windowManager.getCurrentWindowMetrics().getBounds().width();
+        } else {
+            DisplayMetrics metrics = new DisplayMetrics();
+            //noinspection deprecation
+            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            deviceScreenWidthPixels = metrics.widthPixels;
+        }
     }
 
     /**
@@ -245,7 +253,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @OnClick(R.id.enable)
-    public void onEnableClick(Switch view) {
+    public void onEnableClick(SwitchMaterial view) {
         getPresenter().onEnableClick(view.isChecked());
     }
 

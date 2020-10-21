@@ -44,4 +44,7 @@
     <!-- Pref notification enabled -->
     <string name="pref_notification_enabled_title">Benachrichtigung anzeigen</string>
 
+    <!-- Content Description -->
+    <string name="content_description_add_app">Applikation hinzufügen</string>
+
 </resources>
