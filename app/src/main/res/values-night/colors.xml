@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#558b2f</color>
-    <color name="colorPrimaryLight">#85bb5c</color>
-    <color name="colorPrimaryDark">#255d00</color>
-    <color name="colorSecondary">#cc774c</color>
-    <color name="colorSecondaryLight">#ffa779</color>
-    <color name="colorSecondaryDark">#974a22</color>
+    <color name="green">#558b2f</color>
+    <color name="green_light">#85bb5c</color>
+    <color name="green_dark">#255d00</color>
+    <color name="orange">#cc774c</color>
+    <color name="orange_light">#ffa779</color>
+    <color name="orange_dark">#974a22</color>
 
     <!-- Background color for swipe delete -->
     <color name="swipe_delete_color">#7b0b0b</color>

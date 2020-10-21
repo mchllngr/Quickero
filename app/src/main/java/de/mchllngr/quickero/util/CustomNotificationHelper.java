@@ -12,10 +12,10 @@ import android.widget.RemoteViews;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 import de.mchllngr.quickero.R;
 import de.mchllngr.quickero.model.ApplicationModel;
 import de.mchllngr.quickero.module.main.MainActivity;
@@ -205,7 +205,7 @@ public class CustomNotificationHelper {
     @NonNull
     private Notification createNotification(RemoteViews customContentView) {
         return new NotificationCompat.Builder(context, CHANNEL_DEFAULT_ID)
-                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                .setColor(getColorPrimary(context))
                 .setSmallIcon(NOTIFICATION_ICON_ID)
                 .setAutoCancel(false)
                 .setOngoing(true)
@@ -243,7 +243,7 @@ public class CustomNotificationHelper {
     @NonNull
     private Notification createLoadingNotification() {
         return new NotificationCompat.Builder(context, CHANNEL_DEFAULT_ID)
-                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                .setColor(getColorPrimary(context))
                 .setSmallIcon(NOTIFICATION_ICON_ID)
                 .setAutoCancel(false)
                 .setOngoing(true)
@@ -279,7 +279,7 @@ public class CustomNotificationHelper {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, NOTIFICATION_ERROR_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         return new NotificationCompat.Builder(context, CHANNEL_ERROR_ID)
-                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                .setColor(getColorPrimary(context))
                 .setSmallIcon(NOTIFICATION_ERROR_ICON_ID)
                 .setAutoCancel(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -289,5 +289,10 @@ public class CustomNotificationHelper {
                 .setStyle(new NotificationCompat.BigTextStyle())
                 .setContentIntent(pendingIntent)
                 .build();
+    }
+
+    @ColorInt
+    private int getColorPrimary(@NonNull Context context) {
+        return ThemeColorExt.getThemeColor(context, R.attr.colorPrimary);
     }
 }
