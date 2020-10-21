@@ -11,14 +11,14 @@
         <item name="android:navigationBarColor">@color/colorPrimary</item>
     </style>
 
-    <style name="AppTheme.Splash" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="android:windowBackground">@drawable/background_splash</item>
-    </style>
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <style name="AppTheme.Splash">
+        <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
     <style name="AppTheme.About" parent="@style/AttribouterTheme.DayNight">
