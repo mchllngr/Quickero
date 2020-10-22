@@ -3,8 +3,8 @@ name: Deploy
 on:
   push:
     branches:
-      - main
-      - develop
+      - main-disabled
+      - develop-disabled
 
 jobs:
   deploy:
