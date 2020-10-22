@@ -1,6 +1,6 @@
 #!/bin/sh
 
-mkdir $HOME/secrets
+[ -d $HOME/secrets ] || mkdir $HOME/secrets
 
 # Create the encrypted keystore
 echo $KEYSTORE | base64 -di > keystore.jks.gpg

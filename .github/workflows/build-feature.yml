@@ -29,6 +29,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.7.2
+
       - name: Install dependencies
         run: |
           gem install bundler
