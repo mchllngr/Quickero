@@ -16,7 +16,6 @@ jobs:
       - name: Lint Code Base
         uses: docker://github/super-linter:v3
         env:
-          VALIDATE_JAVA: true
           VALIDATE_KOTLIN: true
           VALIDATE_YAML: true
           VALIDATE_XML: true
