@@ -63,6 +63,10 @@ android {
             signingConfig signingConfigs.release
         }
 
+        buildFeatures {
+            dataBinding true
+        }
+
         debug {
             postprocessing {
                 removeUnusedCode false
@@ -105,7 +109,6 @@ dependencies {
 
     implementation Dependencies.MOSBY
 
-    implementation Dependencies.BUTTERKNIFE
     kapt Dependencies.BUTTERKNIFE_COMPILER
 
     implementation Dependencies.TIMBER
