@@ -18,3 +18,5 @@ gpg \
 
 # Add api.json to Appfile
 echo "json_key_file(\"$(realpath $HOME/secrets/api.json)\")" >> fastlane/Appfile
+
+cat fastlane/Appfile
