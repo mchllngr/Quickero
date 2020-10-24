@@ -17,11 +17,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.dgreenhalgh.android.simpleitemdecoration.linear.DividerItemDecoration;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -31,18 +28,15 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.mchllngr.quickero.R;
 import de.mchllngr.quickero.base.BaseActivity;
+import de.mchllngr.quickero.databinding.ActivityMainBinding;
 import de.mchllngr.quickero.model.ApplicationModel;
 import de.mchllngr.quickero.module.about.AboutActivity;
 import de.mchllngr.quickero.service.NotificationService;
@@ -56,34 +50,7 @@ import de.mchllngr.quickero.util.dialog.DialogHelper;
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView,
         MainAdapter.StartDragListener, DialogHelper.GoToNotificationSettingsListener {
 
-    /**
-     * {@link CoordinatorLayout} from the layout for showing the {@link Snackbar}.
-     */
-    @BindView(R.id.coordinator_layout) CoordinatorLayout coordinatorLayout;
-    /**
-     * {@link Toolbar} for this {@link Activity}.
-     */
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    /**
-     * {@link RecyclerView} for showing list of items.
-     */
-    @BindView(R.id.recycler_view) RecyclerView recyclerView;
-    /**
-     * {@link FloatingActionButton} for adding items.
-     */
-    @BindView(R.id.fab) FloatingActionButton fab;
-    /**
-     * Represents the red background behind a swipeable item.
-     */
-    @BindView(R.id.swipe_background) FrameLayout swipeBackground;
-    /**
-     * Represents the empty view that is shown when the list is empty.
-     */
-    @BindView(R.id.empty_view) TextView emptyView;
-    /**
-     * Represents the view for enabling/disabling the notification.
-     */
-    @BindView(R.id.enable) SwitchMaterial enableNotificationSwitch;
+    private ActivityMainBinding binding;
 
     /**
      * {@link MainAdapter} for updating shown items in {@code recyclerView}.
@@ -121,9 +88,9 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        setSupportActionBar(binding.toolbar);
 
         getDeviceScreenWidthPixels();
 
@@ -131,10 +98,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
         ApplicationModel.removeNotLaunchableAppsFromList(this);
 
-        fab.setOnClickListener(view -> getPresenter().openApplicationList());
+        binding.fab.setOnClickListener(view -> getPresenter().openApplicationList());
 
         // consume move actions to only allow clicking
-        enableNotificationSwitch.setOnTouchListener((v, event) -> event.getActionMasked() == MotionEvent.ACTION_MOVE);
+        binding.enable.setOnTouchListener((v, event) -> event.getActionMasked() == MotionEvent.ACTION_MOVE);
+        binding.enable.setOnClickListener(this::onEnableClick);
 
         getPresenter().checkIfVersionIsSupportedOnCreate();
     }
@@ -155,13 +123,13 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      * Initialises the {@code recyclerView}.
      */
     private void initRecyclerView() {
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.mainContent.recyclerView.setHasFixedSize(true);
+        binding.mainContent.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new MainAdapter(this, new ArrayList<>(), this);
-        recyclerView.setAdapter(adapter);
+        binding.mainContent.recyclerView.setAdapter(adapter);
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(
+        binding.mainContent.recyclerView.addItemDecoration(new DividerItemDecoration(
                 ContextCompat.getDrawable(this, R.drawable.recycler_view_item_divider)
         ));
 
@@ -193,7 +161,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                     @Override
                     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                         if (!reorderMode) {
-                            swipeBackground.setY(viewHolder.itemView.getTop());
+                            binding.mainContent.swipeBackground.setY(viewHolder.itemView.getTop());
 
                             float halfDeviceScreenWidthPixels = deviceScreenWidthPixels / 2f;
                             float absDX = Math.abs(dX);
@@ -204,15 +172,15 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                             else
                                 calculatedDX = halfDeviceScreenWidthPixels - (absDX - halfDeviceScreenWidthPixels);
 
-                            swipeBackground.setAlpha(calculatedDX / halfDeviceScreenWidthPixels);
+                            binding.mainContent.swipeBackground.setAlpha(calculatedDX / halfDeviceScreenWidthPixels);
                         } else {
-                            swipeBackground.setAlpha(0f);
+                            binding.mainContent.swipeBackground.setAlpha(0f);
                         }
 
                         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                     }
                 });
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        itemTouchHelper.attachToRecyclerView(binding.mainContent.recyclerView);
     }
 
     @Override
@@ -252,8 +220,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         return super.onPrepareOptionsMenu(menu);
     }
 
-    @OnClick(R.id.enable)
-    public void onEnableClick(SwitchMaterial view) {
+    public void onEnableClick(View v) {
+        SwitchMaterial view = (SwitchMaterial) v;
         getPresenter().onEnableClick(view.isChecked());
     }
 
@@ -338,7 +306,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void setEnableState(boolean stateEnabled) {
-        if (enableNotificationSwitch != null) enableNotificationSwitch.setChecked(stateEnabled);
+        if (binding != null) binding.enable.setChecked(stateEnabled);
         if (stateEnabled) startNotificationService();
     }
 
@@ -359,7 +327,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void setEmptyListViewVisibility(boolean visible) {
-        emptyView.setVisibility(visible ? View.VISIBLE : View.GONE);
+        binding.mainContent.emptyView.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -400,12 +368,12 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void showAddItemsButton() {
-        fab.setVisibility(View.VISIBLE);
+        binding.fab.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideAddItemsButton() {
-        fab.setVisibility(View.GONE);
+        binding.fab.setVisibility(View.GONE);
     }
 
     @Override
@@ -438,7 +406,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     private void showSnackbar(@StringRes int textId, @StringRes int actionTextId, @Nullable View.OnClickListener listener) {
         dismissSnackbar();
 
-        snackbar = Snackbar.make(coordinatorLayout, textId, Snackbar.LENGTH_LONG);
+        snackbar = Snackbar.make(binding.coordinatorLayout, textId, Snackbar.LENGTH_LONG);
 
         if (actionTextId != 0 && listener != null)
             snackbar.setAction(actionTextId, listener);

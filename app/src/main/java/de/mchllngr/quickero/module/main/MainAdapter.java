@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,12 +15,12 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import de.mchllngr.quickero.R;
+import de.mchllngr.quickero.databinding.RecyclerViewItemBinding;
 import de.mchllngr.quickero.model.ApplicationModel;
 import de.mchllngr.quickero.util.CustomAnimatorListener;
 
@@ -60,8 +58,8 @@ class MainAdapter extends Adapter<MainAdapter.MainViewHolder> {
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
-        return new MainViewHolder(view);
+        RecyclerViewItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.recycler_view_item, parent, false);
+        return new MainViewHolder(binding);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -69,58 +67,58 @@ class MainAdapter extends Adapter<MainAdapter.MainViewHolder> {
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
         ApplicationModel applicationModel = items.get(position);
 
-        holder.icon.setImageDrawable(applicationModel.iconDrawable);
-        holder.name.setText(applicationModel.name);
+        holder.getBinding().icon.setImageDrawable(applicationModel.iconDrawable);
+        holder.getBinding().name.setText(applicationModel.name);
 
         if (reorderMode) {
             Drawable drawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_reorder_black_24dp, null);
             if (drawable != null) {
                 drawable = DrawableCompat.wrap(drawable);
                 DrawableCompat.setTint(drawable, ContextCompat.getColor(context, R.color.reorder_icon_color));
-                holder.handle.setImageDrawable(drawable);
+                holder.getBinding().handle.setImageDrawable(drawable);
             }
 
-            holder.handle.setOnTouchListener((v, event) -> {
+            holder.getBinding().handle.setOnTouchListener((v, event) -> {
                 if (event.getAction() == MotionEvent.ACTION_DOWN && startDragListener != null)
                     startDragListener.onStartDrag(holder);
 
                 return false;
             });
 
-            if (holder.handle.getVisibility() != View.VISIBLE) {
-                holder.handle.animate()
+            if (holder.getBinding().handle.getVisibility() != View.VISIBLE) {
+                holder.getBinding().handle.animate()
                         .alpha(1f)
                         .setDuration(100)
                         .setListener(new CustomAnimatorListener() {
                             @Override
                             public void onAnimationStart(Animator animation) {
-                                holder.handle.setAlpha(0f);
-                                holder.handle.setVisibility(View.VISIBLE);
+                                holder.getBinding().handle.setAlpha(0f);
+                                holder.getBinding().handle.setVisibility(View.VISIBLE);
                             }
                         })
                         .start();
             } else
-                holder.handle.setAlpha(1f);
+                holder.getBinding().handle.setAlpha(1f);
 
         } else {
-            if (holder.handle.getVisibility() == View.VISIBLE) {
-                holder.handle.animate()
+            if (holder.getBinding().handle.getVisibility() == View.VISIBLE) {
+                holder.getBinding().handle.animate()
                         .alpha(0f)
                         .setDuration(100)
                         .setListener(new CustomAnimatorListener() {
                             @Override
                             public void onAnimationStart(Animator animation) {
-                                holder.handle.setAlpha(1f);
+                                holder.getBinding().handle.setAlpha(1f);
                             }
 
                             @Override
                             public void onAnimationEnd(Animator animation) {
-                                holder.handle.setVisibility(View.GONE);
+                                holder.getBinding().handle.setVisibility(View.GONE);
                             }
                         })
                         .start();
             } else
-                holder.handle.setAlpha(0f);
+                holder.getBinding().handle.setAlpha(0f);
         }
     }
 
@@ -202,13 +200,15 @@ class MainAdapter extends Adapter<MainAdapter.MainViewHolder> {
      * {@link RecyclerView.ViewHolder} for holding all the {@link View}s.
      */
     class MainViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.icon) ImageView icon;
-        @BindView(R.id.name) TextView name;
-        @BindView(R.id.handle) ImageView handle;
+        private RecyclerViewItemBinding binding;
 
-        MainViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
+        MainViewHolder(RecyclerViewItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        public RecyclerViewItemBinding getBinding() {
+            return binding;
         }
     }
 
