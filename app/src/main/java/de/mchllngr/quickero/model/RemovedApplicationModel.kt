@@ -1,24 +1,19 @@
-package de.mchllngr.quickero.model;
+package de.mchllngr.quickero.model
 
 /**
  * Class for holding the needed data about an removed item for the remove to be undone.
  */
-public class RemovedApplicationModel {
-
+/**
+ * Constructor for creating the [RemovedApplicationModel].
+ */
+class RemovedApplicationModel(
     /**
      * Last position of removed item.
      */
-    public int position;
+    val position: Int,
     /**
      * The removed item.
      */
-    public ApplicationModel applicationModel;
+    val applicationModel: ApplicationModel
+)
 
-    /**
-     * Constructor for creating the {@link RemovedApplicationModel}.
-     */
-    public RemovedApplicationModel(int position, ApplicationModel applicationModel) {
-        this.position = position;
-        this.applicationModel = applicationModel;
-    }
-}

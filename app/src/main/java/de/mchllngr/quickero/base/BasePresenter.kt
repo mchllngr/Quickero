@@ -1,12 +1,10 @@
-package de.mchllngr.quickero.base;
+package de.mchllngr.quickero.base
 
-import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
-import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 
 /**
- * Base-class for work concerning every {@link MvpPresenter}.
+ * Base-class for work concerning every [MvpPresenter].
  *
  * @param <V> view-interface for this fragment
  */
-public class BasePresenter<V extends BaseView> extends MvpBasePresenter<V> {
-}
+open class BasePresenter<V : BaseView> : MvpBasePresenter<V>()

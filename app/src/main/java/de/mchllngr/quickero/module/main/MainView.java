@@ -11,7 +11,7 @@ import de.mchllngr.quickero.util.dialog.ApplicationItem;
 /**
  * Interface for the {@link MainActivity}
  */
-interface MainView extends BaseView {
+public interface MainView extends BaseView {
 
     /**
      * Will check if the notification for the given {@code channelId} is enabled.

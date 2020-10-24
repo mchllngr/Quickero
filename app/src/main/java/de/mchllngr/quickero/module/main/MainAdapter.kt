@@ -1,214 +1,195 @@
-package de.mchllngr.quickero.module.main;
+package de.mchllngr.quickero.module.main
 
-import android.animation.Animator;
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import java.util.Collections;
-import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.Adapter;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import de.mchllngr.quickero.R;
-import de.mchllngr.quickero.model.ApplicationModel;
-import de.mchllngr.quickero.util.CustomAnimatorListener;
+import android.animation.Animator
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.drawable.Drawable
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.recyclerview.widget.RecyclerView
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
+import butterknife.BindView
+import butterknife.ButterKnife
+import de.mchllngr.quickero.R
+import de.mchllngr.quickero.model.ApplicationModel
+import de.mchllngr.quickero.module.main.MainAdapter.MainViewHolder
+import de.mchllngr.quickero.util.CustomAnimatorListener
+import java.util.*
 
 /**
- * {@link Adapter} for handling the shown items.
+ * [Adapter] for handling the shown items.
  */
-class MainAdapter extends Adapter<MainAdapter.MainViewHolder> {
-
+class MainAdapter
+/**
+ * Constructor for initialising the [MainAdapter].
+ */(
     /**
-     * Current {@link Context}.
+     * Current [Context].
      */
-    private final Context context;
+    private val context: Context,
     /**
-     * {@link List} of shown items.
+     * [List] of shown items.
      */
-    private List<ApplicationModel> items;
+    var items: MutableList<ApplicationModel>,
     /**
      * Listener for notifying a drag-start.
      */
-    private StartDragListener startDragListener;
+    private val startDragListener: StartDragListener
+) : RecyclerView.Adapter<MainViewHolder>() {
+    /**
+     * Returns the `items`.
+     */
     /**
      * Indicates whether the Reorder-Mode is enabled or disabled.
      */
-    private boolean reorderMode;
-
-    /**
-     * Constructor for initialising the {@link MainAdapter}.
-     */
-    MainAdapter(Context context, List<ApplicationModel> items, StartDragListener startDragListener) {
-        this.context = context;
-        this.items = items;
-        this.startDragListener = startDragListener;
-    }
-
-    @NonNull
-    @Override
-    public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
-        return new MainViewHolder(view);
+    private var reorderMode = false
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): MainViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_item, parent, false)
+        return MainViewHolder(view)
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
-        ApplicationModel applicationModel = items.get(position);
-
-        holder.icon.setImageDrawable(applicationModel.iconDrawable);
-        holder.name.setText(applicationModel.name);
-
+    override fun onBindViewHolder(
+        holder: MainViewHolder,
+        position: Int
+    ) {
+        val applicationModel = items[position]
+        holder.icon?.setImageDrawable(applicationModel.iconDrawable)
+        holder.name?.text = applicationModel.name
         if (reorderMode) {
-            Drawable drawable = VectorDrawableCompat.create(context.getResources(), R.drawable.ic_reorder_black_24dp, null);
+            var drawable: Drawable? = VectorDrawableCompat.create(context.resources, R.drawable.ic_reorder_black_24dp, null)
             if (drawable != null) {
-                drawable = DrawableCompat.wrap(drawable);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(context, R.color.reorder_icon_color));
-                holder.handle.setImageDrawable(drawable);
+                drawable = DrawableCompat.wrap(drawable)
+                DrawableCompat.setTint(drawable, ContextCompat.getColor(context, R.color.reorder_icon_color))
+                holder.handle!!.setImageDrawable(drawable)
             }
-
-            holder.handle.setOnTouchListener((v, event) -> {
-                if (event.getAction() == MotionEvent.ACTION_DOWN && startDragListener != null)
-                    startDragListener.onStartDrag(holder);
-
-                return false;
-            });
-
-            if (holder.handle.getVisibility() != View.VISIBLE) {
-                holder.handle.animate()
+            holder.handle?.setOnTouchListener { v: View?, event: MotionEvent ->
+                if (event.action == MotionEvent.ACTION_DOWN) startDragListener.onStartDrag(holder)
+                false
+            }
+            if (holder.handle?.visibility != View.VISIBLE) {
+                holder.handle?.apply {
+                    animate()
                         .alpha(1f)
                         .setDuration(100)
-                        .setListener(new CustomAnimatorListener() {
-                            @Override
-                            public void onAnimationStart(Animator animation) {
-                                holder.handle.setAlpha(0f);
-                                holder.handle.setVisibility(View.VISIBLE);
+                        .setListener(object : CustomAnimatorListener {
+                            override fun onAnimationStart(animation: Animator) {
+                                alpha = 0f
+                                visibility = View.VISIBLE
                             }
                         })
-                        .start();
-            } else
-                holder.handle.setAlpha(1f);
-
+                        .start()
+                }
+            } else holder.handle?.alpha = 1f
         } else {
-            if (holder.handle.getVisibility() == View.VISIBLE) {
-                holder.handle.animate()
+            if (holder.handle?.visibility == View.VISIBLE) {
+                holder.handle?.apply {
+                    animate()
                         .alpha(0f)
                         .setDuration(100)
-                        .setListener(new CustomAnimatorListener() {
-                            @Override
-                            public void onAnimationStart(Animator animation) {
-                                holder.handle.setAlpha(1f);
+                        .setListener(object : CustomAnimatorListener {
+                            override fun onAnimationStart(animation: Animator) {
+                                alpha = 1f
                             }
 
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                holder.handle.setVisibility(View.GONE);
+                            override fun onAnimationEnd(animation: Animator) {
+                                visibility = View.GONE
                             }
                         })
-                        .start();
-            } else
-                holder.handle.setAlpha(0f);
+                        .start()
+                }
+            } else holder.handle?.alpha = 0f
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return items.size();
+    override fun getItemCount(): Int {
+        return items.size
     }
 
     /**
-     * Returns the {@code items}.
+     * Updates the `items`.
      */
-    List<ApplicationModel> getItems() {
-        return items;
+    fun updateItems(items: MutableList<ApplicationModel>) {
+        this.items = items
+        notifyDataSetChanged()
     }
 
     /**
-     * Updates the {@code items}.
+     * Adds an `item` at `position`.
      */
-    void updateItems(List<ApplicationModel> items) {
-        this.items = items;
-        notifyDataSetChanged();
+    fun add(
+        position: Int,
+        item: ApplicationModel
+    ) {
+        var position = position
+        if (position < 0) position = 0
+        if (position > itemCount) position = itemCount
+        this.items.add(position, item)
+        notifyItemInserted(position)
     }
 
     /**
-     * Adds an {@code item} at {@code position}.
+     * Removes the `item`.
      */
-    void add(int position, ApplicationModel item) {
-        if (position < 0) position = 0;
-        if (position > getItemCount()) position = getItemCount();
-
-        items.add(position, item);
-        notifyItemInserted(position);
+    fun remove(item: ApplicationModel) {
+        val position = items.indexOf(item)
+        if (position < 0) return
+        items.removeAt(position)
+        notifyItemRemoved(position)
     }
 
     /**
-     * Removes the {@code item}.
+     * Moves an item from `fromPosition` to `toPosition`.
      */
-    void remove(ApplicationModel item) {
-        int position = items.indexOf(item);
-
-        if (position < 0) return;
-
-        items.remove(position);
-        notifyItemRemoved(position);
+    fun move(
+        fromPosition: Int,
+        toPosition: Int
+    ) {
+        if (fromPosition < toPosition) for (i in fromPosition until toPosition) Collections.swap(items, i, i + 1) else for (i in fromPosition downTo toPosition + 1) Collections.swap(
+            items, i, i - 1
+        )
+        notifyItemMoved(fromPosition, toPosition)
     }
 
     /**
-     * Moves an item from {@code fromPosition} to {@code toPosition}.
+     * Returns the [ApplicationModel] at `position`.
      */
-    void move(int fromPosition, int toPosition) {
-        if (fromPosition < toPosition)
-            for (int i = fromPosition; i < toPosition; i++)
-                Collections.swap(items, i, i + 1);
-        else
-            for (int i = fromPosition; i > toPosition; i--)
-                Collections.swap(items, i, i - 1);
-
-        notifyItemMoved(fromPosition, toPosition);
-    }
-
-    /**
-     * Returns the {@link ApplicationModel} at {@code position}.
-     */
-    ApplicationModel get(int position) {
-        if (position < 0 || position >= getItemCount()) return null;
-
-        return items.get(position);
+    operator fun get(position: Int): ApplicationModel? {
+        return if (position < 0 || position >= itemCount) null else items[position]
     }
 
     /**
      * Sets the Reorder-Mode.
      */
-    void setReorderMode(boolean enable) {
-        reorderMode = enable;
-        notifyDataSetChanged();
+    fun setReorderMode(enable: Boolean) {
+        reorderMode = enable
+        notifyDataSetChanged()
     }
 
     /**
-     * {@link RecyclerView.ViewHolder} for holding all the {@link View}s.
+     * [RecyclerView.ViewHolder] for holding all the [View]s.
      */
-    class MainViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.icon) ImageView icon;
-        @BindView(R.id.name) TextView name;
-        @BindView(R.id.handle) ImageView handle;
+    class MainViewHolder constructor(view: View?) : RecyclerView.ViewHolder(view!!) {
+        @BindView(R.id.icon)
+        var icon: ImageView? = null
 
-        MainViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
+        @BindView(R.id.name)
+        var name: TextView? = null
+
+        @BindView(R.id.handle)
+        var handle: ImageView? = null
+
+        init {
+            ButterKnife.bind(this, view!!)
         }
     }
 
@@ -219,6 +200,6 @@ class MainAdapter extends Adapter<MainAdapter.MainViewHolder> {
         /**
          * Gets called when a drag starts.
          */
-        void onStartDrag(MainViewHolder viewHolder);
+        fun onStartDrag(viewHolder: MainViewHolder)
     }
 }

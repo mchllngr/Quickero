@@ -225,11 +225,11 @@ public class MainPresenter extends BasePresenter<MainView> {
                 .map(packageInfo -> packageInfo.applicationInfo)
                 .map(applicationInfo -> ApplicationModel.getApplicationModelForPackageName(context, applicationInfo.packageName))
                 .filter(applicationModel -> applicationModel != null &&
-                        !TextUtils.isEmpty(applicationModel.packageName) &&
-                        !TextUtils.isEmpty(applicationModel.name) &&
-                        applicationModel.iconDrawable != null &&
-                        applicationModel.iconBitmap != null)
-                .toSortedList((applicationModel, applicationModel2) -> applicationModel.name.toLowerCase(Locale.getDefault()).compareTo(applicationModel2.name.toLowerCase(Locale.getDefault())))
+                        !TextUtils.isEmpty(applicationModel.getPackageName()) &&
+                        !TextUtils.isEmpty(applicationModel.getName()) &&
+                        applicationModel.getIconDrawable() != null &&
+                        applicationModel.getIconBitmap() != null)
+                .toSortedList((applicationModel, applicationModel2) -> applicationModel.getName().toLowerCase(Locale.getDefault()).compareTo(applicationModel2.getName().toLowerCase(Locale.getDefault())))
                 .toSingle()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(applicationList -> {
@@ -248,8 +248,8 @@ public class MainPresenter extends BasePresenter<MainView> {
                         int finalI = i;
                         ApplicationModel applicationModel = applicationList.get(i);
                         items.add(new ApplicationItem(
-                                applicationModel.name,
-                                applicationModel.iconDrawable,
+                                applicationModel.getName(),
+                                applicationModel.getIconDrawable(),
                                 () -> {
                                     onApplicationSelected(finalI);
                                     ifViewAttached(MainView::hideDialog);
@@ -274,7 +274,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private boolean isAppAlreadyInList(List<ApplicationModel> savedApplicationModels, PackageInfo packageInfo) {
         boolean isAlreadyInList = false;
         for (ApplicationModel savedApplicationModel : savedApplicationModels)
-            if (packageInfo.packageName.equals(savedApplicationModel.packageName)) {
+            if (packageInfo.packageName.equals(savedApplicationModel.getPackageName())) {
                 isAlreadyInList = true;
                 break;
             }
@@ -321,8 +321,8 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         List<String> newStateToSave = new ArrayList<>();
         for (ApplicationModel applicationModel : newState)
-            if (applicationModel != null && !TextUtils.isEmpty(applicationModel.packageName))
-                newStateToSave.add(applicationModel.packageName);
+            if (applicationModel != null && !TextUtils.isEmpty(applicationModel.getPackageName()))
+                newStateToSave.add(applicationModel.getPackageName());
 
         packageNamesPref.set(newStateToSave);
 
@@ -402,9 +402,9 @@ public class MainPresenter extends BasePresenter<MainView> {
         }
 
         if (position >= applicationModels.size())
-            applicationModels.add(applicationModel.packageName);
+            applicationModels.add(applicationModel.getPackageName());
         else
-            applicationModels.add(position, applicationModel.packageName);
+            applicationModels.add(position, applicationModel.getPackageName());
 
         packageNamesPref.set(applicationModels);
 
@@ -449,7 +449,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     void undoRemove() {
         if (lastRemovedItem == null) return;
 
-        addItem(lastRemovedItem.position, lastRemovedItem.applicationModel);
+        addItem(lastRemovedItem.getPosition(), lastRemovedItem.getApplicationModel());
 
         if (isViewAttached())
             getView().dismissSnackbar();

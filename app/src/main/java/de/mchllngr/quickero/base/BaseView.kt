@@ -1,9 +1,8 @@
-package de.mchllngr.quickero.base;
+package de.mchllngr.quickero.base
 
-import com.hannesdorfmann.mosby3.mvp.MvpView;
+import com.hannesdorfmann.mosby3.mvp.MvpView
 
 /**
  * Base-interface for every view.
  */
-public interface BaseView extends MvpView {
-}
+interface BaseView : MvpView
