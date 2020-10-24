@@ -16,6 +16,7 @@ jobs:
       - name: Lint Code Base
         uses: docker://github/super-linter:v3
         env:
+          VALIDATE_JAVA: true
           VALIDATE_KOTLIN: true
           VALIDATE_YAML: true
           VALIDATE_XML: true
@@ -36,17 +37,11 @@ jobs:
           bundle install --jobs 4 --retry 3
 
       - name: Prepare keystore.properties
-        run: ./.github/scripts/prepare-keystore-properties.sh
-        env:
-          KEYSTORE: ${{ secrets.DEBUG_KEYSTORE }}
-          KEYSTORE_ENCRYPTION_PASSPHRASE: ${{ secrets.DEBUG_KEYSTORE_ENCRYPTION_PASSPHRASE }}
-          KEYSTORE_STORE_PASSPHRASE: ${{ secrets.DEBUG_KEYSTORE_STORE_PASSPHRASE }}
-          KEYSTORE_ALIAS: ${{ secrets.DEBUG_KEYSTORE_ALIAS }}
-          KEYSTORE_ALIAS_PASSPHRASE: ${{ secrets.DEBUG_KEYSTORE_ALIAS_PASSPHRASE }}
+        run: ./.github/scripts/prepare-debug-keystore-properties.sh
 
       - name: Build feature
         run: |
-          bundle exec fastlane bundleRelease build:$BUILD --verbose
+          bundle exec fastlane bundleDebug build:$BUILD --verbose
         env:
           BUILD: ${{ github.run_number }}
 
