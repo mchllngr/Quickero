@@ -50,43 +50,43 @@ class MainActivity : BaseActivity<MainView, MainPresenter>(), MainView, StartDra
      * [CoordinatorLayout] from the layout for showing the [Snackbar].
      */
     @BindView(R.id.coordinator_layout)
-    var coordinatorLayout: CoordinatorLayout? = null
+    lateinit var coordinatorLayout: CoordinatorLayout
 
     /**
      * [Toolbar] for this [Activity].
      */
     @BindView(R.id.toolbar)
-    var toolbar: Toolbar? = null
+    lateinit var toolbar: Toolbar
 
     /**
      * [RecyclerView] for showing list of items.
      */
     @BindView(R.id.recycler_view)
-    var recyclerView: RecyclerView? = null
+    lateinit var recyclerView: RecyclerView
 
     /**
      * [FloatingActionButton] for adding items.
      */
     @BindView(R.id.fab)
-    var fab: FloatingActionButton? = null
+    lateinit var fab: FloatingActionButton
 
     /**
      * Represents the red background behind a swipeable item.
      */
     @BindView(R.id.swipe_background)
-    var swipeBackground: FrameLayout? = null
+    lateinit var swipeBackground: FrameLayout
 
     /**
      * Represents the empty view that is shown when the list is empty.
      */
     @BindView(R.id.empty_view)
-    var emptyView: TextView? = null
+    lateinit var emptyView: TextView
 
     /**
      * Represents the view for enabling/disabling the notification.
      */
     @BindView(R.id.enable)
-    var enableNotificationSwitch: SwitchMaterial? = null
+    lateinit var enableNotificationSwitch: SwitchMaterial
 
     /**
      * [MainAdapter] for updating shown items in `recyclerView`.

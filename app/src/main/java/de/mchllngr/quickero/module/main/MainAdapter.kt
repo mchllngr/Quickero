@@ -180,13 +180,13 @@ class MainAdapter
      */
     class MainViewHolder constructor(view: View?) : RecyclerView.ViewHolder(view!!) {
         @BindView(R.id.icon)
-        var icon: ImageView? = null
+        lateinit var icon: ImageView
 
         @BindView(R.id.name)
-        var name: TextView? = null
+        lateinit var name: TextView
 
         @BindView(R.id.handle)
-        var handle: ImageView? = null
+        lateinit var handle: ImageView
 
         init {
             ButterKnife.bind(this, view!!)

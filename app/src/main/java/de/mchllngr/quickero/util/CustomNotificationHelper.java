@@ -120,14 +120,14 @@ public class CustomNotificationHelper {
             // set iconBitmap
             customContentView.setImageViewBitmap(
                     ICON_IDS_CUSTOM_CONTENT[i],
-                    applicationModels[i].iconBitmap
+                    applicationModels[i].getIconBitmap()
             );
 
             // set PendingIntent
             Intent resultIntent = new Intent(context, StartApplicationService.class);
             resultIntent.putExtra(
                     context.getString(R.string.key_package_name),
-                    applicationModels[i].packageName
+                    applicationModels[i].getPackageName()
             );
             // needed to make the PendingIntent 'unique' so multiple PendingIntents can be active at the same time
             long uniqueId = Long.MAX_VALUE - currentTimeMillis - (i * 1000);
@@ -154,7 +154,7 @@ public class CustomNotificationHelper {
         // remove items with empty packageName or iconBitmap from array
         List<ApplicationModel> tempApplicationModels = new ArrayList<>();
         for (ApplicationModel applicationModel : applicationModels)
-            if (!TextUtils.isEmpty(applicationModel.packageName) && applicationModel.iconBitmap != null)
+            if (!TextUtils.isEmpty(applicationModel.getPackageName()) && applicationModel.getIconBitmap() != null)
                 tempApplicationModels.add(applicationModel);
 
         return tempApplicationModels.toArray(new ApplicationModel[0]);
