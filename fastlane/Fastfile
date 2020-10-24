@@ -45,6 +45,62 @@ platform :android do
   end
 
   ################## BUILD ##################
+  desc "Assemble a new debug apk version"
+  lane :assembleDebug do |options|
+    # check if gradle build-flags are necessary
+    flags = "--refresh-dependencies"
+
+    # for version
+    if options[:major]
+      flags += " -Pmajor=" + options[:major]
+    end
+    if options[:minor]
+      flags += " -Pminor=" + options[:minor]
+    end
+    if options[:hotfix]
+      flags += " -Photfix=" + options[:hotfix]
+    end
+    if options[:build]
+      flags += " -Pbuild=" + options[:build]
+    end
+
+    # always clean before building
+    task = "clean assembleDebug"
+
+    gradle(
+      task: task,
+      flags: flags
+    )
+  end
+
+  desc "Assemble a new debug aab version"
+  lane :bundleDebug do |options|
+    # check if gradle build-flags are necessary
+    flags = "--refresh-dependencies"
+
+    # for version
+    if options[:major]
+      flags += " -Pmajor=" + options[:major]
+    end
+    if options[:minor]
+      flags += " -Pminor=" + options[:minor]
+    end
+    if options[:hotfix]
+      flags += " -Photfix=" + options[:hotfix]
+    end
+    if options[:build]
+      flags += " -Pbuild=" + options[:build]
+    end
+
+    # always clean before building
+    task = "clean bundleDebug"
+
+    gradle(
+      task: task,
+      flags: flags
+    )
+  end
+
   desc "Assemble a new release apk version"
   lane :assembleRelease do |options|
     # check if gradle build-flags are necessary
