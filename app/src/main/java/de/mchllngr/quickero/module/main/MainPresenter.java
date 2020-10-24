@@ -63,10 +63,6 @@ public class MainPresenter extends BasePresenter<MainView> {
      */
     private RemovedApplicationModel lastRemovedItem;
     /**
-     * Represents the state of the item-list before reordering.
-     */
-    private List<ApplicationModel> listStateBeforeReorder;
-    /**
      * {@link Subscription} for observing updates from notificationEnabledPref.
      */
     private Subscription notificationEnabledSubscription;
@@ -291,32 +287,14 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     /**
-     * Gets called when the Reorder-Icon is clicked and enables the Reorder-Mode.
-     *
-     * @param currentState Current state of the list
-     */
-    void onReorderIconClick(@NonNull List<ApplicationModel> currentState) {
-        if (currentState.size() < 2) return;
-
-        listStateBeforeReorder = new ArrayList<>();
-        listStateBeforeReorder.addAll(currentState);
-
-        if (isViewAttached()) {
-            getView().hideAddItemsButton();
-            getView().setReorderMode(true);
-        }
-    }
-
-    /**
      * Gets called when the Reorder-Accept-Icon is clicked.
      *
      * @param newState New state of the list
      */
-    void onReorderAcceptIconClick(List<ApplicationModel> newState) {
+    void onOrderHasChanged(List<ApplicationModel> newState) {
         if (isViewAttached()) {
             getView().showProgressDialog();
             getView().showAddItemsButton();
-            getView().setReorderMode(false);
         }
 
         List<String> newStateToSave = new ArrayList<>();
@@ -328,19 +306,6 @@ public class MainPresenter extends BasePresenter<MainView> {
 
         if (isViewAttached())
             getView().hideDialog();
-    }
-
-    /**
-     * Gets called when the Reorder-Cancel-Icon is clicked.
-     */
-    void onReorderCancelIconClick() {
-        if (isViewAttached()) {
-            getView().showProgressDialog();
-            getView().showAddItemsButton();
-            getView().setReorderMode(false);
-            getView().updateItems(listStateBeforeReorder);
-            getView().hideDialog();
-        }
     }
 
     /**

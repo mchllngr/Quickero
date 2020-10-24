@@ -56,11 +56,6 @@ interface MainView extends BaseView {
     void setEmptyListViewVisibility(boolean visible);
 
     /**
-     * Enables/disables the Reorder-Mode.
-     */
-    void setReorderMode(boolean enable);
-
-    /**
      * Updates the shown items.
      */
     void updateItems(List<ApplicationModel> items);

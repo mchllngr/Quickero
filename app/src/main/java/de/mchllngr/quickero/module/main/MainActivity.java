@@ -47,6 +47,7 @@ import de.mchllngr.quickero.model.ApplicationModel;
 import de.mchllngr.quickero.module.about.AboutActivity;
 import de.mchllngr.quickero.service.NotificationService;
 import de.mchllngr.quickero.util.CustomNotificationHelper;
+import de.mchllngr.quickero.util.ThemeColorExt;
 import de.mchllngr.quickero.util.dialog.ApplicationItem;
 import de.mchllngr.quickero.util.dialog.DialogHelper;
 
@@ -98,10 +99,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      * {@link ItemTouchHelper} for moving and swiping in {@link RecyclerView}.
      */
     private ItemTouchHelper itemTouchHelper;
-    /**
-     * Indicates whether the Reorder-Mode is enabled or disabled.
-     */
-    private boolean reorderMode;
     /**
      * Current device screen width in pixels.
      */
@@ -169,19 +166,32 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 new ItemTouchHelper.SimpleCallback(
                         ItemTouchHelper.UP | ItemTouchHelper.DOWN,
                         ItemTouchHelper.START | ItemTouchHelper.END) {
-                    @Override
-                    public boolean isLongPressDragEnabled() {
-                        return false;
-                    }
+
+                    @Nullable
+                    private RecyclerView.ViewHolder selected = null;
 
                     @Override
-                    public boolean isItemViewSwipeEnabled() {
-                        return !reorderMode;
+                    public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
+                        if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+                            if (viewHolder != null) {
+                                viewHolder.itemView.setBackgroundColor(ThemeColorExt.getThemeColor(viewHolder.itemView.getContext(), R.attr.colorAccent));
+                                selected = viewHolder;
+                            }
+                        }
+                        if (actionState == ItemTouchHelper.ACTION_STATE_IDLE) {
+                            if (selected != null) {
+                                selected.itemView.setBackground(null);
+                                selected = null;
+                            }
+                        }
+
+                        super.onSelectedChanged(viewHolder, actionState);
                     }
 
                     @Override
                     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                         moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                        getPresenter().onOrderHasChanged(adapter.getItems());
                         return true;
                     }
 
@@ -192,22 +202,19 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
                     @Override
                     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                        if (!reorderMode) {
-                            swipeBackground.setY(viewHolder.itemView.getTop());
 
-                            float halfDeviceScreenWidthPixels = deviceScreenWidthPixels / 2f;
-                            float absDX = Math.abs(dX);
-                            float calculatedDX;
+                        swipeBackground.setY(viewHolder.itemView.getTop());
 
-                            if (absDX <= halfDeviceScreenWidthPixels)
-                                calculatedDX = absDX;
-                            else
-                                calculatedDX = halfDeviceScreenWidthPixels - (absDX - halfDeviceScreenWidthPixels);
+                        float halfDeviceScreenWidthPixels = deviceScreenWidthPixels / 2f;
+                        float absDX = Math.abs(dX);
+                        float calculatedDX;
 
-                            swipeBackground.setAlpha(calculatedDX / halfDeviceScreenWidthPixels);
-                        } else {
-                            swipeBackground.setAlpha(0f);
-                        }
+                        if (absDX <= halfDeviceScreenWidthPixels)
+                            calculatedDX = absDX;
+                        else
+                            calculatedDX = halfDeviceScreenWidthPixels - (absDX - halfDeviceScreenWidthPixels);
+
+                        swipeBackground.setAlpha(calculatedDX / halfDeviceScreenWidthPixels);
 
                         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                     }
@@ -241,17 +248,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         return true;
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(0).setVisible(!reorderMode && (adapter == null || adapter.getItems().size() > 1)); // reorder
-        menu.getItem(1).setVisible(!reorderMode); // about
-        menu.getItem(2).setVisible(!reorderMode); // settings
-        menu.getItem(3).setVisible(reorderMode); // reorder_cancel
-        menu.getItem(4).setVisible(reorderMode); // reorder_accept
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
     @OnClick(R.id.enable)
     public void onEnableClick(SwitchMaterial view) {
         getPresenter().onEnableClick(view.isChecked());
@@ -260,22 +256,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.reorder:
-                if (adapter != null)
-                    getPresenter().onReorderIconClick(adapter.getItems());
-                return true;
             case R.id.about:
                 AboutActivity.start(this);
                 return true;
             case R.id.settings:
                 goToNotificationSettings(CustomNotificationHelper.CHANNEL_DEFAULT_ID);
-                return true;
-            case R.id.reorder_cancel:
-                getPresenter().onReorderCancelIconClick();
-                return true;
-            case R.id.reorder_accept:
-                if (adapter != null)
-                    getPresenter().onReorderAcceptIconClick(adapter.getItems());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -360,15 +345,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     public void setEmptyListViewVisibility(boolean visible) {
         emptyView.setVisibility(visible ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void setReorderMode(boolean enable) {
-        reorderMode = enable;
-        invalidateOptionsMenu();
-
-        if (adapter != null)
-            adapter.setReorderMode(enable);
     }
 
     @Override
