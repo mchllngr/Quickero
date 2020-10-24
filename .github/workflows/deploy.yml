@@ -47,7 +47,7 @@ jobs:
       - name: Deploy
         run: |
           if [ "$BRANCH" == "refs/heads/main" ]; then
-            bundle exec fastlane deploy_aab_alpha build:$BUILD --verbose
+            bundle exec fastlane deploy_aab_beta build:$BUILD --verbose
           elif [ "$BRANCH" == "refs/heads/develop" ]; then
             bundle exec fastlane deploy_aab_internal build:$BUILD --verbose
           else

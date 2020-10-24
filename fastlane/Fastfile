@@ -19,60 +19,7 @@ default_platform(:android)
 
 platform :android do
 
-  ################## DEPLOY #################
-  desc "Deploy a new internal apk version to the Google Play"
-  lane :deploy_apk_internal do |options|
-    assembleRelease(options)
-    upload_apk_to_play_store_internal_track(options)
-  end
-
-  desc "Deploy a new alpha apk version to the Google Play"
-  lane :deploy_apk_alpha do |options|
-    assembleRelease(options)
-    upload_apk_to_play_store_alpha_track(options)
-  end
-
-  desc "Deploy a new internal aab version to the Google Play"
-  lane :deploy_aab_internal do |options|
-    bundleRelease(options)
-    upload_aab_to_play_store_internal_track(options)
-  end
-
-  desc "Deploy a new alpha aab version to the Google Play"
-  lane :deploy_aab_alpha do |options|
-    bundleRelease(options)
-    upload_aab_to_play_store_alpha_track(options)
-  end
-
   ################## BUILD ##################
-  desc "Assemble a new debug apk version"
-  lane :assembleDebug do |options|
-    # check if gradle build-flags are necessary
-    flags = "--refresh-dependencies"
-
-    # for version
-    if options[:major]
-      flags += " -Pmajor=" + options[:major]
-    end
-    if options[:minor]
-      flags += " -Pminor=" + options[:minor]
-    end
-    if options[:hotfix]
-      flags += " -Photfix=" + options[:hotfix]
-    end
-    if options[:build]
-      flags += " -Pbuild=" + options[:build]
-    end
-
-    # always clean before building
-    task = "clean assembleDebug"
-
-    gradle(
-      task: task,
-      flags: flags
-    )
-  end
-
   desc "Assemble a new debug aab version"
   lane :bundleDebug do |options|
     # check if gradle build-flags are necessary
@@ -94,34 +41,6 @@ platform :android do
 
     # always clean before building
     task = "clean bundleDebug"
-
-    gradle(
-      task: task,
-      flags: flags
-    )
-  end
-
-  desc "Assemble a new release apk version"
-  lane :assembleRelease do |options|
-    # check if gradle build-flags are necessary
-    flags = "--refresh-dependencies"
-
-    # for version
-    if options[:major]
-      flags += " -Pmajor=" + options[:major]
-    end
-    if options[:minor]
-      flags += " -Pminor=" + options[:minor]
-    end
-    if options[:hotfix]
-      flags += " -Photfix=" + options[:hotfix]
-    end
-    if options[:build]
-      flags += " -Pbuild=" + options[:build]
-    end
-
-    # always clean before building
-    task = "clean assembleRelease"
 
     gradle(
       task: task,
@@ -157,30 +76,32 @@ platform :android do
     )
   end
 
+  ################## DEPLOY #################
+  desc "Deploy a new internal aab version to the Google Play"
+  lane :deploy_aab_internal do |options|
+    bundleRelease(options)
+    upload_aab_to_play_store_internal_track(options)
+  end
+
+  desc "Deploy a new alpha aab version to the Google Play"
+  lane :deploy_aab_alpha do |options|
+    bundleRelease(options)
+    upload_aab_to_play_store_alpha_track(options)
+  end
+
+  desc "Deploy a new beta aab version to the Google Play"
+  lane :deploy_aab_beta do |options|
+    bundleRelease(options)
+    upload_aab_to_play_store_beta_track(options)
+  end
+
+  desc "Deploy a new production aab version to the Google Play"
+  lane :deploy_aab_production do |options|
+    bundleRelease(options)
+    upload_aab_to_play_store_production_track(options)
+  end
+
   ################## UPLOAD #################
-  private_lane :upload_apk_to_play_store_internal_track do |options|
-    options[:track] = "internal"
-    upload_apk_to_play_store(options)
-  end
-
-  private_lane :upload_apk_to_play_store_alpha_track do |options|
-    options[:track] = "alpha"
-    upload_apk_to_play_store(options)
-  end
-
-  private_lane :upload_apk_to_play_store do |options|
-    uploadOptions = {
-      :track => options[:track],
-      :skip_upload_apk => false,
-      :skip_upload_aab => true,
-      :apk => lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
-    }
-    if !options[:ignoreMapping]
-      uploadOptions[:mapping] = File.absolute_path "../app/build/outputs/mapping/release/mapping.txt"
-    end
-    upload_to_play_store(uploadOptions)
-  end
-
   private_lane :upload_aab_to_play_store_internal_track do |options|
     options[:track] = "internal"
     upload_aab_to_play_store(options)
@@ -188,6 +109,16 @@ platform :android do
 
   private_lane :upload_aab_to_play_store_alpha_track do |options|
     options[:track] = "alpha"
+    upload_aab_to_play_store(options)
+  end
+
+  private_lane :upload_aab_to_play_store_beta_track do |options|
+    options[:track] = "beta"
+    upload_aab_to_play_store(options)
+  end
+
+  private_lane :upload_aab_to_play_store_production_track do |options|
+    options[:track] = "production"
     upload_aab_to_play_store(options)
   end
 
