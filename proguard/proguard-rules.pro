@@ -23,6 +23,6 @@
 -repackageclasses
 
 ##### Keep all models #####
--keepclassmembers class de.mchllngr.quickopen.model.** {
+-keepclassmembers class de.mchllngr.quickero.model.** {
   *;
 }

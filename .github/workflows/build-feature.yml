@@ -28,30 +28,19 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.1
+          ruby-version: 2.7.2
+
       - name: Install dependencies
         run: |
           gem install bundler
           bundle install --jobs 4 --retry 3
 
       - name: Prepare keystore.properties
-        run: |
-          echo $KEYSTORE | base64 -di > debug.jks.gpg
-          gpg --quiet --batch --yes --decrypt --passphrase="$KEYSTORE_ENCRYPTION_PASSPHRASE" --output debug.jks debug.jks.gpg
-          echo "storeFile=$(realpath debug.jks)" >> keystore.properties
-          echo "storePassword=$KEYSTORE_STORE_PASSPHRASE" >> keystore.properties
-          echo "keyAlias=$KEYSTORE_ALIAS" >> keystore.properties
-          echo "keyPassword=$KEYSTORE_ALIAS_PASSPHRASE" >> keystore.properties
-        env:
-          KEYSTORE: ${{ secrets.DEBUG_KEYSTORE }}
-          KEYSTORE_ENCRYPTION_PASSPHRASE: ${{ secrets.DEBUG_KEYSTORE_ENCRYPTION_PASSPHRASE }}
-          KEYSTORE_STORE_PASSPHRASE: ${{ secrets.DEBUG_KEYSTORE_STORE_PASSPHRASE }}
-          KEYSTORE_ALIAS: ${{ secrets.DEBUG_KEYSTORE_ALIAS }}
-          KEYSTORE_ALIAS_PASSPHRASE: ${{ secrets.DEBUG_KEYSTORE_ALIAS_PASSPHRASE }}
+        run: ./.github/scripts/prepare-debug-keystore-properties.sh
 
       - name: Build feature
         run: |
-          bundle exec fastlane bundleRelease build:$BUILD --verbose
+          bundle exec fastlane bundleDebug build:$BUILD --verbose
         env:
           BUILD: ${{ github.run_number }}
 

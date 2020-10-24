@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="privacy_policy">Datenschutzerklärung</string>
+
     <!-- Empty application list -->
     <string name="application_list_empty">Klicken Sie auf das \"+\" um\nApplikationen hinzuzufügen.</string>
 
@@ -30,9 +32,6 @@
     <string name="menu_reorder_cancel">Sortierung verwerfen</string>
     <string name="menu_about">Über</string>
 
-    <!-- Titles -->
-    <string name="about_title">Über</string>
-
     <!-- Notifications -->
     <string name="notification_service_loading_title">Bitte warten&#8230;</string>
     <string name="notification_service_loading_text">Benachrichtigung wird vorbereitet&#8230;</string>
@@ -44,5 +43,8 @@
 
     <!-- Pref notification enabled -->
     <string name="pref_notification_enabled_title">Benachrichtigung anzeigen</string>
+
+    <!-- Content Description -->
+    <string name="content_description_add_app">Applikation hinzufügen</string>
 
 </resources>

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#388E3C</color> <!-- Green 700 -->
-    <color name="colorPrimaryDark">#2E7D32</color> <!-- Green 800 -->
-    <color name="colorAccent">#FF9100</color> <!-- Orange accent 400 -->
+    <color name="green">#8bc34a</color>
+    <color name="green_light">#bef67a</color>
+    <color name="green_dark">#5a9216</color>
+    <color name="orange">#f6905e</color>
+    <color name="orange_light">#ffc18c</color>
+    <color name="orange_dark">#bf6132</color>
 
     <color name="transparent">#00000000</color>
 

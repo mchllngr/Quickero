@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" translatable="false">QuickOpen</string>
+    <string name="privacy_policy">Privacy Policy</string>
 
     <!-- Empty application list -->
     <string name="application_list_empty">Click \"+\" to add applications.</string>
@@ -31,9 +31,6 @@
     <string name="menu_reorder_accept">Accept reorder</string>
     <string name="menu_reorder_cancel">Cancel reorder</string>
     <string name="menu_about">About</string>
-
-    <!-- Titles -->
-    <string name="about_title">About</string>
 
     <!-- Notifications -->
     <string name="notification_service_loading_title">Loading&#8230;</string>
@@ -81,5 +78,8 @@
         <item>com.amazon.kindle</item>
         <item>com.google.android.apps.books</item>
     </string-array>
+
+    <!-- Content Description -->
+    <string name="content_description_add_app">Add application</string>
 
 </resources>
