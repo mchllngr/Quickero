@@ -18,16 +18,21 @@ object Dependencies {
     const val ANDROIDX_MATERIAL = "com.google.android.material:material:${Versions.MATERIAL}"
     const val ANDROIDX_CONSTRAINTLAYOUT = "androidx.constraintlayout:constraintlayout:${Versions.CONSTRAINT_LAYOUT}"
     const val ANDROIDX_PREFERENCE = "androidx.preference:preference:${Versions.PREFERENCE}"
+    const val ANDROIDX_DATASTORE = "androidx.datastore:datastore-preferences:${Versions.DATASTORE}"
 
     const val ANDROIDX_LIFECYCLE_EXTENSIONS = "androidx.lifecycle:lifecycle-extensions:${Versions.LIFECYCLE}"
     const val ANDROIDX_LIFECYCLE_COMMON = "androidx.lifecycle:lifecycle-common-java8:${Versions.LIFECYCLE}"
     const val ANDROIDX_LIFECYCLE_LIVEDATA_KTX = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.LIFECYCLE}"
     const val ANDROIDX_LIFECYCLE_VIEWMODEL_KTX = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.LIFECYCLE}"
 
-    const val MOSBY = "com.hannesdorfmann.mosby3:mvp:${Versions.MOSBY}"
+    const val DAGGER = "com.google.dagger:dagger:${Versions.DAGGER}"
+    const val DAGGER_COMPILER = "com.google.dagger:dagger-compiler:${Versions.DAGGER}"
+    const val DAGGER_HILT = "com.google.dagger:hilt-android:${Versions.DAGGER_HILT}"
+    const val DAGGER_HILT_COMPILER = "com.google.dagger:hilt-android-compiler:${Versions.DAGGER_HILT}"
+    const val DAGGER_HILT_VIEWMODEL = "androidx.hilt:hilt-lifecycle-viewmodel:${Versions.DAGGER_HILT_VIEWMODEL}"
+    const val DAGGER_HILT_VIEWMODEL_COMPILER = "androidx.hilt:hilt-compiler:${Versions.DAGGER_HILT_VIEWMODEL}"
 
-    const val BUTTERKNIFE = "com.jakewharton:butterknife:${Versions.BUTTERKNIFE}"
-    const val BUTTERKNIFE_COMPILER = "com.jakewharton:butterknife-compiler:${Versions.BUTTERKNIFE}"
+    const val MOSBY = "com.hannesdorfmann.mosby3:mvp:${Versions.MOSBY}"
 
     const val TIMBER = "com.jakewharton.timber:timber:${Versions.TIMBER}"
 

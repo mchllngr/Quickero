@@ -126,7 +126,7 @@ public class CustomNotificationHelper {
             // set PendingIntent
             Intent resultIntent = new Intent(context, StartApplicationService.class);
             resultIntent.putExtra(
-                    context.getString(R.string.key_package_name),
+                    StartApplicationService.KEY_PACKAGE_NAME,
                     applicationModels[i].packageName
             );
             // needed to make the PendingIntent 'unique' so multiple PendingIntents can be active at the same time

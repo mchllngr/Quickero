@@ -19,7 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 import de.mchllngr.quickero.R;
-import de.mchllngr.quickero.util.DrawableToBitmapConverter;
+import de.mchllngr.quickero.extension.BitmapExtKt;
 import de.mchllngr.quickero.util.GsonPreferenceAdapter;
 import timber.log.Timber;
 
@@ -44,7 +44,7 @@ public class ApplicationModel {
     private ApplicationModel(String packageName, Drawable icon, String name) {
         this.packageName = packageName;
         this.iconDrawable = icon;
-        this.iconBitmap = DrawableToBitmapConverter.convertDrawableToBitmap(icon);
+        this.iconBitmap = BitmapExtKt.toBitmap(icon);
         this.name = name;
     }
 

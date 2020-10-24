@@ -55,7 +55,6 @@ android {
                 optimizeCode true
                 proguardFiles getDefaultProguardFile('proguard-defaults.txt'),
                     '../proguard/proguard-rules.pro',
-                    '../proguard/proguard-rules-butterknife.pro',
                     '../proguard/proguard-rules-gson.pro',
                     '../proguard/proguard-rules-rxjava.pro',
                     '../proguard/proguard-rules-timber.pro'
@@ -101,15 +100,21 @@ dependencies {
     implementation Dependencies.ANDROIDX_MATERIAL
     implementation Dependencies.ANDROIDX_CONSTRAINTLAYOUT
     implementation Dependencies.ANDROIDX_PREFERENCE
+    implementation Dependencies.ANDROIDX_DATASTORE
 
     implementation Dependencies.ANDROIDX_LIFECYCLE_EXTENSIONS
     implementation Dependencies.ANDROIDX_LIFECYCLE_COMMON
     implementation Dependencies.ANDROIDX_LIFECYCLE_LIVEDATA_KTX
     implementation Dependencies.ANDROIDX_LIFECYCLE_VIEWMODEL_KTX
 
-    implementation Dependencies.MOSBY
+    implementation Dependencies.DAGGER
+    kapt Dependencies.DAGGER_COMPILER
+    implementation Dependencies.DAGGER_HILT
+    kapt Dependencies.DAGGER_HILT_COMPILER
+    implementation Dependencies.DAGGER_HILT_VIEWMODEL
+    kapt Dependencies.DAGGER_HILT_VIEWMODEL_COMPILER
 
-    kapt Dependencies.BUTTERKNIFE_COMPILER
+    implementation Dependencies.MOSBY
 
     implementation Dependencies.TIMBER
 

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
  * {@link com.f2prateek.rx.preferences.Preference.Adapter} to allow automatic conversion between
  * a class T and a JSON-{@link String} via {@link Gson}.
  */
+@Deprecated // TODO remove after #7
 public class GsonPreferenceAdapter<T> implements Preference.Adapter<T> {
     private final Gson gson;
     private Class<T> clazz;

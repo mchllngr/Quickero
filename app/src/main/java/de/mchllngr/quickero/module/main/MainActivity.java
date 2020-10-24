@@ -34,6 +34,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import dagger.hilt.android.AndroidEntryPoint;
 import de.mchllngr.quickero.R;
 import de.mchllngr.quickero.base.BaseActivity;
 import de.mchllngr.quickero.databinding.ActivityMainBinding;
@@ -47,6 +48,7 @@ import de.mchllngr.quickero.util.dialog.DialogHelper;
 /**
  * {@link Activity} for handling the selection of applications.
  */
+@AndroidEntryPoint
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView,
         MainAdapter.StartDragListener, DialogHelper.GoToNotificationSettingsListener {
 
