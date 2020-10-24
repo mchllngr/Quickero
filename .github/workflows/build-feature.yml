@@ -38,11 +38,11 @@ jobs:
       - name: Prepare keystore.properties
         run: ./.github/scripts/prepare-keystore-properties.sh
         env:
-          KEYSTORE: ${{ secrets.DEBUG_KEYSTORE }}
-          KEYSTORE_ENCRYPTION_PASSPHRASE: ${{ secrets.DEBUG_KEYSTORE_ENCRYPTION_PASSPHRASE }}
-          KEYSTORE_STORE_PASSPHRASE: ${{ secrets.DEBUG_KEYSTORE_STORE_PASSPHRASE }}
-          KEYSTORE_ALIAS: ${{ secrets.DEBUG_KEYSTORE_ALIAS }}
-          KEYSTORE_ALIAS_PASSPHRASE: ${{ secrets.DEBUG_KEYSTORE_ALIAS_PASSPHRASE }}
+          KEYSTORE: ${{ secrets.RELEASE_KEYSTORE }}
+          KEYSTORE_ENCRYPTION_PASSPHRASE: ${{ secrets.RELEASE_KEYSTORE_ENCRYPTION_PASSPHRASE }}
+          KEYSTORE_STORE_PASSPHRASE: ${{ secrets.RELEASE_KEYSTORE_STORE_PASSPHRASE }}
+          KEYSTORE_ALIAS: ${{ secrets.RELEASE_KEYSTORE_ALIAS }}
+          KEYSTORE_ALIAS_PASSPHRASE: ${{ secrets.RELEASE_KEYSTORE_ALIAS_PASSPHRASE }}
 
       - name: Build feature
         run: |
