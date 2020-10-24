@@ -1,34 +1,26 @@
-package de.mchllngr.quickero;
+package de.mchllngr.quickero
 
-import android.os.Build;
-
-import androidx.appcompat.app.AppCompatDelegate;
-import de.mchllngr.quickero.base.DebugApp;
-import de.mchllngr.quickero.util.SplashScreenHelper;
+import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
+import de.mchllngr.quickero.base.DebugApp
+import de.mchllngr.quickero.util.SplashScreenHelper
 
 /**
- * {@link App} for the {@link android.app.Application}
+ * [App] for the [android.app.Application]
  */
-public class App extends DebugApp {
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        initSplashScreen();
-        setDefaultNightMode();
+class App : DebugApp() {
+    override fun onCreate() {
+        super.onCreate()
+        initSplashScreen()
+        setDefaultNightMode()
     }
 
-    private void initSplashScreen() {
-        registerActivityLifecycleCallbacks(new SplashScreenHelper());
+    private fun initSplashScreen() {
+        registerActivityLifecycleCallbacks(SplashScreenHelper())
     }
 
-    private void setDefaultNightMode() {
-        int nightMode;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-            nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
-        else
-            nightMode = AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY;
-        AppCompatDelegate.setDefaultNightMode(nightMode);
+    private fun setDefaultNightMode() {
+        val nightMode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM else AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+        AppCompatDelegate.setDefaultNightMode(nightMode)
     }
 }

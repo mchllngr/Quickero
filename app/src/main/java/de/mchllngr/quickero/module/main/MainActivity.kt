@@ -366,7 +366,10 @@ class MainActivity : BaseActivity<MainView, MainPresenter>(), MainView, StartDra
     }
 
     override fun removeItem(position: Int) {
-        adapter?.apply { remove(this[position]) }
+        adapter?.apply {
+            val appModel = this[position]
+            if (appModel != null) remove(appModel)
+        }
         invalidateOptionsMenu()
     }
 
