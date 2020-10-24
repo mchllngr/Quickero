@@ -1,8 +1,10 @@
-# QuickOpen [![Build Status](https://github.com/mchllngr/QuickOpen/workflows/deploy/badge.svg)](https://github.com/mchllngr/QuickOpen/actions)
+![Quickero](./assets/logo_name.svg)
+
+[![Build Status](https://github.com/mchllngr/Quickero/workflows/deploy/badge.svg)](https://github.com/mchllngr/Quickero/actions)
 
 An android app to quickly open your favorite apps through a notification.
 
-<a href='https://play.google.com/store/apps/details?id=de.mchllngr.quickopen'><img width='300' alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+<a href='https://play.google.com/store/apps/details?id=de.mchllngr.quickero'><img width='300' alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
 ## Building
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="AppTheme.Base">
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryDark">@color/green_dark</item>
+        <item name="colorPrimaryVariant">@color/green_dark</item>
+        <item name="colorSecondary">@color/orange</item>
+        <item name="colorSecondaryVariant">@color/orange_light</item>
+        <item name="colorAccent">@color/orange</item>
+        <item name="android:navigationBarColor">@color/green</item>
+    </style>
+
+    <style name="AppTheme.About" parent="AppTheme.About.Base">
+        <item name="attribouter_textColorAccent">#FFFFFF</item>
+    </style>
+
+</resources>

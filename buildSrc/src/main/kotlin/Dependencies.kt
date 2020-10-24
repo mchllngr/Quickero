@@ -44,7 +44,7 @@ object Dependencies {
 
     const val SIMPLE_ITEM_DECORATION = "com.bignerdranch.android:simple-item-decoration:${Versions.SIMPLE_ITEM_DECORATION}"
 
-    const val ABOUT_PAGE = "com.github.medyo:android-about-page:${Versions.ABOUT_PAGE}"
+    const val ATTRIBOUTER = "me.jfenn:attribouter:${Versions.ATTRIBOUTER}"
 }
 
 object DebugDependencies {

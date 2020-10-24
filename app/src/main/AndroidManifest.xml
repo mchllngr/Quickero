@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="de.mchllngr.quickopen">
+    package="de.mchllngr.quickero">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -23,7 +23,6 @@
         <activity android:name=".module.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <meta-data
@@ -31,13 +30,10 @@
                 android:resource="@style/AppTheme.NoActionBar" />
         </activity>
 
-        <activity
-            android:name=".module.about.AboutActivity"
-            android:label="@string/about_title"
-            android:parentActivityName=".module.main.MainActivity">
+        <activity android:name=".module.about.AboutActivity">
             <meta-data
                 android:name="theme"
-                android:resource="@style/AppTheme" />
+                android:resource="@style/AppTheme.NoActionBar" />
         </activity>
 
         <service android:name=".service.NotificationService" />
@@ -46,7 +42,7 @@
 
         <service
             android:name=".service.NotificationTileService"
-            android:icon="@drawable/ic_speaker_notes_white_24dp"
+            android:icon="@drawable/ic_logo_notification"
             android:label="@string/pref_notification_enabled_title"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
