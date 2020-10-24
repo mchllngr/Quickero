@@ -3,7 +3,7 @@
 [ -d $HOME/secrets ] || mkdir $HOME/secrets
 
 # Create the encrypted api.json
-echo $KEYSTORE | base64 -di > api.json.gpg
+echo $API_JSON | base64 -di > api.json.gpg
 
 # Decrypt the api.json
 # --batch to prevent interactive command
@@ -17,4 +17,4 @@ gpg \
   --output $HOME/secrets/api.json api.json.gpg
 
 # Add api.json to Appfile
-echo "json_key_file(\"secrets/api.json\")" >> fastlane/Appfile
+echo "json_key_file(\"$(realpath $HOME/secrets/api.json)\")" >> fastlane/Appfile
