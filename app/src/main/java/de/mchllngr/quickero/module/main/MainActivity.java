@@ -123,13 +123,13 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
      * Initialises the {@code recyclerView}.
      */
     private void initRecyclerView() {
-        binding.mainContent.recyclerView.setHasFixedSize(true);
-        binding.mainContent.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.content.recyclerView.setHasFixedSize(true);
+        binding.content.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new MainAdapter(this, new ArrayList<>(), this);
-        binding.mainContent.recyclerView.setAdapter(adapter);
+        binding.content.recyclerView.setAdapter(adapter);
 
-        binding.mainContent.recyclerView.addItemDecoration(new DividerItemDecoration(
+        binding.content.recyclerView.addItemDecoration(new DividerItemDecoration(
                 ContextCompat.getDrawable(this, R.drawable.recycler_view_item_divider)
         ));
 
@@ -161,7 +161,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                     @Override
                     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                         if (!reorderMode) {
-                            binding.mainContent.swipeBackground.setY(viewHolder.itemView.getTop());
+                            binding.content.swipeBackground.setY(viewHolder.itemView.getTop());
 
                             float halfDeviceScreenWidthPixels = deviceScreenWidthPixels / 2f;
                             float absDX = Math.abs(dX);
@@ -172,15 +172,15 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                             else
                                 calculatedDX = halfDeviceScreenWidthPixels - (absDX - halfDeviceScreenWidthPixels);
 
-                            binding.mainContent.swipeBackground.setAlpha(calculatedDX / halfDeviceScreenWidthPixels);
+                            binding.content.swipeBackground.setAlpha(calculatedDX / halfDeviceScreenWidthPixels);
                         } else {
-                            binding.mainContent.swipeBackground.setAlpha(0f);
+                            binding.content.swipeBackground.setAlpha(0f);
                         }
 
                         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                     }
                 });
-        itemTouchHelper.attachToRecyclerView(binding.mainContent.recyclerView);
+        itemTouchHelper.attachToRecyclerView(binding.content.recyclerView);
     }
 
     @Override
@@ -327,7 +327,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void setEmptyListViewVisibility(boolean visible) {
-        binding.mainContent.emptyView.setVisibility(visible ? View.VISIBLE : View.GONE);
+        binding.content.emptyView.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     @Override
