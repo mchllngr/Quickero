@@ -1,1 +1,8 @@
-TODO - volle Beschreibung
+Quickero macht Ihre Lieblingsapps direkt in der Benachrichtigungsübersicht verfügbar. So erreichen Sie diese noch schneller.
+
+Einige Geräte mit einem Fingerabdrucksensor auf der Rückseite bieten eine Einstellungen an, die es erlaubt, die Benachrichtigungsübersicht mit einer Wischgeste auf dem Fingerabdrucksensor zu öffnen. Durch diese entfaltet Quickero erst sein volles Potential!
+Einstellungen -> System -> Gesten und Bewegungen -> Benachrichtigungen durch Wischen über Fingerabdrucksensor öffnen
+(gegebenfalls abweichend auf einigen Geräten)
+
+Vorschläge und Fehlermeldungen:
+https://github.com/mchllngr/Quickero
