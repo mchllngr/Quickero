@@ -6,6 +6,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
+
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.google.gson.Gson;
@@ -15,8 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import androidx.preference.PreferenceManager;
 import de.mchllngr.quickero.R;
 import de.mchllngr.quickero.base.BasePresenter;
 import de.mchllngr.quickero.model.ApplicationModel;
@@ -154,7 +155,8 @@ public class MainPresenter extends BasePresenter<MainView> {
      * Adds up to {@code MAX_DUMMY_ITEMS} dummy items to the saved list if its the first start.
      */
     private void addDummyItemsIfFirstStart() {
-        if (firstStartPref.get()) {
+        boolean hasFirstStartPref = firstStartPref.get();
+        if (hasFirstStartPref) {
             List applicationModels = packageNamesPref.get();
             if (applicationModels == null || applicationModels.isEmpty()) {
                 if (isViewAttached()) getView().showProgressDialog();

@@ -130,10 +130,10 @@ class MainActivity : BaseActivity<MainView, MainPresenter>(), MainView, StartDra
         getDeviceScreenWidthPixels()
         initRecyclerView()
         removeNotLaunchableAppsFromList(this)
-        fab?.setOnClickListener { presenter.openApplicationList() }
+        fab.setOnClickListener { presenter.openApplicationList() }
 
         // consume move actions to only allow clicking
-        enableNotificationSwitch?.setOnTouchListener { _, event: MotionEvent -> event.actionMasked == MotionEvent.ACTION_MOVE }
+        enableNotificationSwitch.setOnTouchListener { _, event: MotionEvent -> event.actionMasked == MotionEvent.ACTION_MOVE }
         presenter.checkIfVersionIsSupportedOnCreate()
     }
 
@@ -155,7 +155,7 @@ class MainActivity : BaseActivity<MainView, MainPresenter>(), MainView, StartDra
      * Initialises the `recyclerView`.
      */
     private fun initRecyclerView() {
-        recyclerView?.also {
+        recyclerView.also {
             it.setHasFixedSize(true)
             it.layoutManager = LinearLayoutManager(this)
             val adapter = MainAdapter(this, ArrayList(), this)
@@ -205,7 +205,7 @@ class MainActivity : BaseActivity<MainView, MainPresenter>(), MainView, StartDra
                     isCurrentlyActive: Boolean
                 ) {
                     if (!reorderMode) {
-                        swipeBackground?.apply {
+                        swipeBackground.apply {
                             y = viewHolder.itemView.top.toFloat()
                             val halfDeviceScreenWidthPixels = deviceScreenWidthPixels / 2f
                             val absDX = abs(dX)
@@ -214,7 +214,7 @@ class MainActivity : BaseActivity<MainView, MainPresenter>(), MainView, StartDra
                             alpha = calculatedDX / halfDeviceScreenWidthPixels
                         }
                     } else {
-                        swipeBackground?.alpha = 0f
+                        swipeBackground.alpha = 0f
                     }
                     super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                 }
@@ -298,11 +298,9 @@ class MainActivity : BaseActivity<MainView, MainPresenter>(), MainView, StartDra
         return if (VERSION.SDK_INT >= VERSION_CODES.O) {
             if (channelId != null) {
                 val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-                if (manager != null) {
-                    if (manager.getNotificationChannel(channelId) == null) CustomNotificationHelper(this).createNotificationChannels(manager)
-                    val channel = manager.getNotificationChannel(channelId)
-                    return channel.importance != NotificationManager.IMPORTANCE_NONE
-                }
+                if (manager.getNotificationChannel(channelId) == null) CustomNotificationHelper(this).createNotificationChannels(manager)
+                val channel = manager.getNotificationChannel(channelId)
+                return channel.importance != NotificationManager.IMPORTANCE_NONE
             }
             false
         } else {
@@ -326,7 +324,7 @@ class MainActivity : BaseActivity<MainView, MainPresenter>(), MainView, StartDra
     }
 
     override fun setEnableState(stateEnabled: Boolean) {
-        if (enableNotificationSwitch != null) enableNotificationSwitch?.isChecked = stateEnabled
+        enableNotificationSwitch.isChecked = stateEnabled
         if (stateEnabled) startNotificationService()
     }
 
@@ -343,7 +341,7 @@ class MainActivity : BaseActivity<MainView, MainPresenter>(), MainView, StartDra
     }
 
     override fun setEmptyListViewVisibility(visible: Boolean) {
-        emptyView?.visibility = if (visible) View.VISIBLE else View.GONE
+        emptyView.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     override fun setReorderMode(enable: Boolean) {
@@ -381,11 +379,11 @@ class MainActivity : BaseActivity<MainView, MainPresenter>(), MainView, StartDra
     }
 
     override fun showAddItemsButton() {
-        fab?.visibility = View.VISIBLE
+        fab.visibility = View.VISIBLE
     }
 
     override fun hideAddItemsButton() {
-        fab?.visibility = View.GONE
+        fab.visibility = View.GONE
     }
 
     override fun showUndoButton() {
@@ -413,7 +411,7 @@ class MainActivity : BaseActivity<MainView, MainPresenter>(), MainView, StartDra
         listener: View.OnClickListener? = null
     ) {
         dismissSnackbar()
-        coordinatorLayout?.apply { snackbar = Snackbar.make(this, textId, Snackbar.LENGTH_LONG) }
+        coordinatorLayout.apply { snackbar = Snackbar.make(this, textId, Snackbar.LENGTH_LONG) }
         if (actionTextId != 0 && listener != null) snackbar?.setAction(actionTextId, listener)
         snackbar?.view?.setBackgroundResource(R.color.snackbar_background_color)
         snackbar?.show()
