@@ -3,6 +3,7 @@
 object BuildScriptDependencies {
     const val BUILD_TOOLS_GRADLE = "com.android.tools.build:gradle:${BuildScriptVersions.BUILD_TOOLS_GRADLE}"
     const val KOTLIN_GRADLE = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.KOTLIN}"
+    const val DAGGER_HILT_GRADLE = "com.google.dagger:hilt-android-gradle-plugin:${Versions.DAGGER_HILT}"
     const val DEXCOUNT_GRADLE = "com.getkeepsafe.dexcount:dexcount-gradle-plugin:${BuildScriptVersions.DEXCOUNT_GRADLE}"
     const val VERSIONS_GRADLE = "com.github.ben-manes:gradle-versions-plugin:${BuildScriptVersions.VERSIONS_GRADLE}"
 }

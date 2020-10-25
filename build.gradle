@@ -6,6 +6,7 @@ buildscript {
     dependencies {
         classpath BuildScriptDependencies.BUILD_TOOLS_GRADLE
         classpath BuildScriptDependencies.KOTLIN_GRADLE
+        classpath BuildScriptDependencies.DAGGER_HILT_GRADLE
         classpath BuildScriptDependencies.DEXCOUNT_GRADLE
         classpath BuildScriptDependencies.VERSIONS_GRADLE // allows checking for new versions with './gradlew dependencyUpdates -Drevision=release'
     }

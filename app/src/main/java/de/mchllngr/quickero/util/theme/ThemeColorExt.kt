@@ -1,6 +1,4 @@
-@file:JvmName("ThemeColorExt")
-
-package de.mchllngr.quickero.util
+package de.mchllngr.quickero.util.theme
 
 import android.content.Context
 import android.util.TypedValue

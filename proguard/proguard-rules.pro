@@ -21,8 +21,3 @@
 
 ##### Allow repackaging #####
 -repackageclasses
-
-##### Keep all models #####
--keepclassmembers class de.mchllngr.quickero.model.** {
-  *;
-}
