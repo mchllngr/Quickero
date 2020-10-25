@@ -137,10 +137,12 @@ class MainActivity : AppCompatActivity() {
                 MaterialDialog(this@MainActivity, BottomSheet())
                     .title(R.string.dialog_application_list_title, null)
                     .apply {
-                        customListAdapter(ApplicationListAdapter(list) {
-                            viewModel.addApplication(it)
-                            dismiss()
-                        })
+                        customListAdapter(
+                            ApplicationListAdapter(list) {
+                                viewModel.addApplication(it)
+                                dismiss()
+                            }
+                        )
                     }
                     .show()
             }
