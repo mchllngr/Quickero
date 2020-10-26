@@ -25,7 +25,7 @@ import de.mchllngr.quickero.repository.application.PackageName
 import de.mchllngr.quickero.util.applicationlist.ApplicationListAdapter
 import de.mchllngr.quickero.util.notification.NotificationHelper
 import de.mchllngr.quickero.util.swipe.SwipeItemTouchCallback
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -126,26 +126,25 @@ class MainActivity : AppCompatActivity() {
             .apply { show() }
 
         lifecycleScope.launch {
-            viewModel.installedApplications.collect { list ->
-                loadingDialog.dismiss()
+            val list = viewModel.getInstalledApplications().firstOrNull() ?: emptyList()
+            loadingDialog.dismiss()
 
-                if (list.isEmpty()) {
-                    Snackbar.make(coordinatorLayout, R.string.snackbar_empty_application_list_error, Snackbar.LENGTH_SHORT).show()
-                    return@collect
-                }
-
-                MaterialDialog(this@MainActivity, BottomSheet())
-                    .title(R.string.dialog_application_list_title, null)
-                    .apply {
-                        customListAdapter(
-                            ApplicationListAdapter(list) {
-                                viewModel.addApplication(it)
-                                dismiss()
-                            }
-                        )
-                    }
-                    .show()
+            if (list.isEmpty()) {
+                Snackbar.make(coordinatorLayout, R.string.snackbar_empty_application_list_error, Snackbar.LENGTH_SHORT).show()
+                return@launch
             }
+
+            MaterialDialog(this@MainActivity, BottomSheet())
+                .title(R.string.dialog_application_list_title, null)
+                .apply {
+                    customListAdapter(
+                        ApplicationListAdapter(list) {
+                            viewModel.addApplication(it)
+                            dismiss()
+                        }
+                    )
+                }
+                .show()
         }
     }
 

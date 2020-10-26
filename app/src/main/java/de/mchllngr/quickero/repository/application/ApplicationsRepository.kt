@@ -8,8 +8,8 @@ import androidx.datastore.preferences.emptyPreferences
 import androidx.datastore.preferences.preferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
@@ -36,14 +36,13 @@ class ApplicationsRepository @Inject constructor(
 
     val applicationsMaxReached = applications.map { it.size < PACKAGE_NAMES_MAX_COUNT }
 
-    val installedApplications = flowOf(getInstalledPackageNames())
+    fun getInstalledApplications() = flowOf(getInstalledPackageNames())
         .combine(applications) { installedPackageNames, savedApplications ->
             installedPackageNames to savedApplications.map { it.packageName }
         }
         .map { (installedPackageNames, savedPackageNames) ->
             installedPackageNames
                 .filterNot { it in savedPackageNames }
-                .filter { it.isLaunchable() }
                 .toApplications()
                 .sortedWith { a, b -> a.name.toString().compareTo(b.name.toString(), true) }
         }
@@ -82,36 +81,32 @@ class ApplicationsRepository @Inject constructor(
     }
 
     suspend fun setDummyPackageNamesOnFirstStart() {
-        dataStore.data
-            .emptyOnIOException()
-            .collect { preferences ->
-                if (!preferences.getFirstStart()) return@collect
+        val preferences = dataStore.data.emptyOnIOException().firstOrNull()
+        if (preferences?.getFirstStart() == false) return
 
-                setFirstStart(false)
+        setFirstStart(false)
 
-                val installedPackageNames = getInstalledPackageNames()
-                val dummyEntries = DUMMY_PACKAGE_NAMES.asSequence()
-                    .filterNot { dummyPackageName -> installedPackageNames.any { dummyPackageName == it } }
-                    .take(DUMMY_ENTRIES_MAX_COUNT)
-                    .toList()
+        val installedPackageNames = getInstalledPackageNames()
+        val dummyEntries = DUMMY_PACKAGE_NAMES.asSequence()
+            .filter { it in installedPackageNames }
+            .take(DUMMY_ENTRIES_MAX_COUNT)
+            .toList()
 
-                setPackageNames(dummyEntries)
-            }
+        setPackageNames(dummyEntries)
     }
 
     // region helper
 
     private suspend fun updatePackageNames(block: suspend MutableList<PackageName>.() -> Unit) {
-        dataStore.data
-            .emptyOnIOException()
-            .collect { preferences ->
-                val packageNames = preferences.getPackageNames().toMutableList()
-                packageNames.block()
-                setPackageNames(packageNames)
-            }
+        val preferences = dataStore.data.emptyOnIOException().firstOrNull() ?: return
+        val packageNames = preferences.getPackageNames().toMutableList()
+        packageNames.block()
+        setPackageNames(packageNames)
     }
 
-    private fun getInstalledPackageNames(): List<PackageName> = packageManager.getInstalledPackages(PackageManager.GET_ACTIVITIES).map { it.applicationInfo.packageName }
+    private fun getInstalledPackageNames(): List<PackageName> = packageManager.getInstalledPackages(PackageManager.GET_ACTIVITIES)
+        .map { it.applicationInfo.packageName }
+        .filter { it.isLaunchable() }
 
     private fun List<PackageName>.toApplications() = mapNotNull {
         try {
@@ -120,6 +115,7 @@ class ApplicationsRepository @Inject constructor(
             val name = packageManager.getApplicationLabel(info)
             Application(it, icon, name)
         } catch (e: PackageManager.NameNotFoundException) {
+            Timber.w(e, "mapping packageName to application failed")
             null
         }
     }

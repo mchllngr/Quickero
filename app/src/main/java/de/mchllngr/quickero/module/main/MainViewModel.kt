@@ -30,9 +30,6 @@ class MainViewModel @ViewModelInject constructor(
     val notificationEnabled = notificationRepository.enabled
         .flowOn(Dispatchers.Default)
 
-    val installedApplications = applicationsRepository.installedApplications
-        .flowOn(Dispatchers.Default)
-
     init {
         viewModelScope.launch {
             applicationsRepository.removeInvalidApplications()
@@ -43,6 +40,9 @@ class MainViewModel @ViewModelInject constructor(
                 .collect { startService -> if (startService) notificationHelper.startNotificationService() }
         }
     }
+
+    fun getInstalledApplications() = applicationsRepository.getInstalledApplications()
+        .flowOn(Dispatchers.Default)
 
     fun setNotificationEnabled(enabled: Boolean) {
         viewModelScope.launch {
