@@ -166,7 +166,7 @@ class ApplicationsRepository @Inject constructor(
         private const val PACKAGE_NAMES_MAX_COUNT = 15
 
         private const val DUMMY_ENTRIES_MAX_COUNT = 5
-        private val DUMMY_PACKAGE_NAMES: List<PackageName> = listOf( // TODO update list
+        private val DUMMY_PACKAGE_NAMES: List<PackageName> = listOf(
             "com.whatsapp",
             "com.facebook.orca",
             "com.google.android.talk",

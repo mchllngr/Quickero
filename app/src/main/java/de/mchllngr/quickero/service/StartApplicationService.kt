@@ -4,7 +4,7 @@ import android.app.IntentService
 import android.content.Intent
 
 /** [IntentService] for starting the clicked application from the notification. */
-class StartApplicationService : IntentService(StartApplicationService::class.java.name) { // TODO issue -> fix IntentService deprecation
+class StartApplicationService : IntentService(StartApplicationService::class.java.name) {
 
     override fun onHandleIntent(intent: Intent?) {
         // get packageName and start selected application
