@@ -12,6 +12,7 @@ import de.mchllngr.quickero.repository.notification.NotificationRepository
 import de.mchllngr.quickero.util.notification.NotificationHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -25,6 +26,8 @@ class NotificationTileService : TileService() {
     private val serviceJob = SupervisorJob()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
 
+    private var listeningJob: Job? = null
+
     @Inject lateinit var notificationRepository: NotificationRepository
     @Inject lateinit var notificationHelper: NotificationHelper
 
@@ -36,7 +39,12 @@ class NotificationTileService : TileService() {
     override fun onStartListening() {
         super.onStartListening()
 
-        serviceScope.launch {
+        listeningJob?.cancel()
+
+        val job = SupervisorJob()
+        listeningJob = job
+
+        serviceScope.launch(job) {
             notificationRepository.enabled.collect {
                 val state = if (it) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
                 updateTileState(state)
@@ -45,7 +53,8 @@ class NotificationTileService : TileService() {
     }
 
     override fun onStopListening() {
-        serviceJob.cancel()
+        listeningJob?.cancel()
+        listeningJob = null
         super.onStopListening()
     }
 
@@ -67,10 +76,12 @@ class NotificationTileService : TileService() {
     override fun onClick() {
         super.onClick()
 
-        serviceScope.launch {
-            val enabled = qsTile.state == Tile.STATE_ACTIVE
-            notificationRepository.setEnabled(enabled)
-            if (enabled) notificationHelper.startNotificationService()
+        val job = listeningJob ?: return
+        serviceScope.launch(job) {
+            val currentState = qsTile.state == Tile.STATE_ACTIVE
+            val nextState = !currentState
+            notificationRepository.setEnabled(nextState)
+            if (nextState) notificationHelper.startNotificationService()
         }
     }
 }
