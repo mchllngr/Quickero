@@ -12,13 +12,4 @@
     <color name="swipe_delete_color">#7b0b0b</color>
     <color name="swipe_delete_color_item">#838383</color>
 
-    <!-- Snackbar background -->
-    <color name="snackbar_background_color">#424242</color>
-
-    <!-- RecyclerView item divider -->
-    <color name="recycler_view_item_divider_color">#424242</color> <!-- Grey 800 -->
-
-    <!-- Reorder icon color -->
-    <color name="reorder_icon_color">#FFF</color>
-
 </resources>

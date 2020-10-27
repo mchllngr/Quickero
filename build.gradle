@@ -6,6 +6,7 @@ buildscript {
     dependencies {
         classpath BuildScriptDependencies.BUILD_TOOLS_GRADLE
         classpath BuildScriptDependencies.KOTLIN_GRADLE
+        classpath BuildScriptDependencies.DAGGER_HILT_GRADLE
         classpath BuildScriptDependencies.DEXCOUNT_GRADLE
         classpath BuildScriptDependencies.VERSIONS_GRADLE // allows checking for new versions with './gradlew dependencyUpdates -Drevision=release'
     }
@@ -28,8 +29,8 @@ task clean(type: Delete) {
 ext {
     // Injected Variables
     MAJOR_VERSION = project.hasProperty("major") ? Integer.parseInt(major) : 1
-    MINOR_VERSION = project.hasProperty("minor") ? Integer.parseInt(minor) : 0
-    HOTFIX_VERSION = project.hasProperty("hotfix") ? Integer.parseInt(hotfix) : 1
+    MINOR_VERSION = project.hasProperty("minor") ? Integer.parseInt(minor) : 1
+    HOTFIX_VERSION = project.hasProperty("hotfix") ? Integer.parseInt(hotfix) : 0
     BUILD_NUMBER = project.hasProperty("build") ? Integer.parseInt(build) % 1000 : 0
 
     if (MAJOR_VERSION < 0 || MAJOR_VERSION > 99) {

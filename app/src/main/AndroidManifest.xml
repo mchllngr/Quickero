@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="de.mchllngr.quickero">
 
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission
@@ -17,7 +16,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Splash"
-        tools:ignore="GoogleAppIndexingWarning"
+        tools:ignore="AllowBackup"
         tools:replace="android:allowBackup">
 
         <activity android:name=".module.main.MainActivity">
@@ -50,13 +49,10 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".receiver.BootCompletedReceiver">
+        <receiver android:name=".receiver.NotificationStarterReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </receiver>
-
-        <receiver android:name=".receiver.MyPackageReplacedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>

@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:contentDescription="@null"
-            app:srcCompat="@drawable/ic_delete_black_24dp"
+            app:srcCompat="@drawable/ic_delete_white_24dp"
             app:tint="@color/swipe_delete_color_item" />
 
         <ImageView
@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:contentDescription="@null"
-            app:srcCompat="@drawable/ic_delete_black_24dp"
+            app:srcCompat="@drawable/ic_delete_white_24dp"
             app:tint="@color/swipe_delete_color_item" />
 
     </FrameLayout>
@@ -40,14 +40,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layoutAnimation="@anim/slide_in_left_layout_anim" />
-
-    <TextView
-        android:id="@+id/empty_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/application_list_empty"
-        android:visibility="gone" />
+        android:layoutAnimation="@anim/slide_in_left_layout_anim"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </RelativeLayout>

@@ -65,8 +65,8 @@ class DebugDrawer(private val app: Application) {
         Beagle.initialize(
             application = app,
             behavior = Behavior(
-                shakeThreshold = null,
-                logger = BeagleLogger
+                shakeDetectionBehavior = Behavior.ShakeDetectionBehavior(threshold = null),
+                logBehavior = Behavior.LogBehavior(loggers = listOf(BeagleLogger))
             )
         )
         Beagle.set(
