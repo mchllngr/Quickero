@@ -11,23 +11,6 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
     compileSdkVersion SdkVersions.COMPILE_SDK
 
-    dexOptions {
-        maxProcessCount 4
-        javaMaxHeapSize "3g"
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs += [
-            "-Xjvm-default=compatibility"
-        ]
-    }
-
     defaultConfig {
         applicationId "de.mchllngr.quickero"
         minSdkVersion SdkVersions.MIN_SDK
@@ -36,6 +19,10 @@ android {
         versionName rootProject.ext.VERSIONNAME
 
         resConfigs "en", "de"
+    }
+
+    buildFeatures {
+        viewBinding true
     }
 
     signingConfigs {
@@ -63,10 +50,6 @@ android {
             signingConfig signingConfigs.release
         }
 
-        buildFeatures {
-            viewBinding true
-        }
-
         debug {
             postprocessing {
                 removeUnusedCode false
@@ -78,6 +61,23 @@ android {
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
         }
+    }
+
+    dexOptions {
+        maxProcessCount 4
+        javaMaxHeapSize "3g"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += [
+            "-Xjvm-default=compatibility"
+        ]
     }
 
     sourceSets {
