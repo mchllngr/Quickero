@@ -13,71 +13,24 @@
     <string name="dialog_notification_disabled_text">Please enable the notifications in the settings for %s to work properly.</string>
     <string name="dialog_notification_disabled_button_ok">OK</string>
     <string name="dialog_notification_disabled_button_settings">Settings</string>
-    <string name="dialog_version_not_supported_title">%s needs an update</string>
-    <string name="dialog_version_not_supported_text">This version of %s is not supported anymore. Please update the application.</string>
-    <string name="dialog_version_not_supported_button_update">Update</string>
-    <string name="dialog_version_not_supported_button_close">Close</string>
 
     <!-- Snackbar -->
     <string name="snackbar_undo_remove">Application removed.</string>
     <string name="snackbar_undo_remove_action">UNDO</string>
-    <string name="snackbar_max_items_error">Max items reached.</string>
-    <string name="snackbar_open_application_list_error">Error while showing application list.</string>
     <string name="snackbar_empty_application_list_error">No addable applications found.</string>
 
     <!-- Menu -->
     <string name="menu_settings">Settings</string>
-    <string name="menu_reorder">Reorder</string>
-    <string name="menu_reorder_accept">Accept reorder</string>
-    <string name="menu_reorder_cancel">Cancel reorder</string>
     <string name="menu_about">About</string>
 
     <!-- Notifications -->
     <string name="notification_service_loading_title">Loading&#8230;</string>
     <string name="notification_service_loading_text">Notification is being initialised&#8230;</string>
-    <string name="notification_service_error">Error while creating notification.</string>
-    <string name="notification_version_not_supported_title">%s needs an update</string>
-    <string name="notification_version_not_supported_text">This version of %s is not supported anymore. Please update the application.</string>
     <string name="notification_channel_default_name">Default</string>
     <string name="notification_channel_error_name">Error</string>
 
-    <!-- Pref first start -->
-    <string name="first_start_default_value" translatable="false">true</string>
-
     <!-- Pref notification enabled -->
     <string name="pref_notification_enabled_title">Show notification</string>
-    <string name="pref_notification_enabled_default_value" translatable="false">true</string>
-
-    <!-- Dummy items package names -->
-    <string-array name="dummy_items_package_names" translatable="false">
-        <item>com.whatsapp</item>
-        <item>com.facebook.orca</item>
-        <item>com.google.android.talk</item>
-        <item>com.twitter.android</item>
-        <item>org.thoughtcrime.securesms</item>
-        <item>com.facebook.katana</item>
-        <item>com.snapchat.android</item>
-        <item>com.instagram.android</item>
-        <item>com.google.android.youtube</item>
-        <item>ch.threema.app</item>
-        <item>com.google.android.apps.photos</item>
-        <item>com.netflix.mediaclient</item>
-        <item>com.spotify.music</item>
-        <item>com.amazon.mShop.android.shopping</item>
-        <item>com.skype.raider</item>
-        <item>com.ebay.mobile</item>
-        <item>com.shazam.android</item>
-        <item>org.telegram.messenger</item>
-        <item>com.google.android.play.games</item>
-        <item>com.google.android.apps.tachyon</item>
-        <item>com.tinder</item>
-        <item>com.paypal.android.p2pmobile</item>
-        <item>com.google.android.music</item>
-        <item>com.google.android.calendar</item>
-        <item>com.dropbox.android</item>
-        <item>com.amazon.kindle</item>
-        <item>com.google.android.apps.books</item>
-    </string-array>
 
     <!-- Content Description -->
     <string name="content_description_add_app">Add application</string>

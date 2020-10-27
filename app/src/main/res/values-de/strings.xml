@@ -13,31 +13,19 @@
     <string name="dialog_notification_disabled_text">Bitte aktivieren Sie die Benachrichtungen in den Einstellungen damit %s ordentlich funktionieren kann.</string>
     <string name="dialog_notification_disabled_button_ok">OK</string>
     <string name="dialog_notification_disabled_button_settings">Einstellungen</string>
-    <string name="dialog_version_not_supported_title">%s muss aktualisiert werden</string>
-    <string name="dialog_version_not_supported_text">Diese Version von %s wird nicht mehr unterstützt. Bitte aktualisieren Sie die Applikation.</string>
-    <string name="dialog_version_not_supported_button_update">Aktualisieren</string>
-    <string name="dialog_version_not_supported_button_close">Schließen</string>
 
     <!-- Snackbar -->
     <string name="snackbar_undo_remove">Applikation gelöscht.</string>
     <string name="snackbar_undo_remove_action">RÜCKGÄNGIG</string>
-    <string name="snackbar_max_items_error">Maximale Anzahl erreicht.</string>
-    <string name="snackbar_open_application_list_error">Fehler beim Anzeigen der Applikationen.</string>
     <string name="snackbar_empty_application_list_error">Keine Applikation zum Hinzufügen gefunden.</string>
 
     <!-- Menu -->
     <string name="menu_settings">Einstellungen</string>
-    <string name="menu_reorder">Sortieren</string>
-    <string name="menu_reorder_accept">Sortierung akzeptieren</string>
-    <string name="menu_reorder_cancel">Sortierung verwerfen</string>
     <string name="menu_about">Über</string>
 
     <!-- Notifications -->
     <string name="notification_service_loading_title">Bitte warten&#8230;</string>
     <string name="notification_service_loading_text">Benachrichtigung wird vorbereitet&#8230;</string>
-    <string name="notification_service_error">Fehler beim Erstellen der Benachrichtigung.</string>
-    <string name="notification_version_not_supported_title">%s muss aktualisiert werden</string>
-    <string name="notification_version_not_supported_text">Diese Version von %s wird nicht mehr unterstützt. Bitte aktualisieren Sie die Applikation.</string>
     <string name="notification_channel_default_name">Standard</string>
     <string name="notification_channel_error_name">Fehler</string>
 

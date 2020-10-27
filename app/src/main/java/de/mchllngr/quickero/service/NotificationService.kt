@@ -5,7 +5,6 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import dagger.hilt.android.AndroidEntryPoint
-import de.mchllngr.quickero.R
 import de.mchllngr.quickero.repository.application.ApplicationsRepository
 import de.mchllngr.quickero.repository.notification.NotificationRepository
 import de.mchllngr.quickero.util.notification.CustomNotificationHelper
@@ -69,11 +68,16 @@ class NotificationService : Service() {
 
     /** Shows a given [Notification] for the Foreground[Service]. */
     private fun showNotification(notification: Notification) {
-        startForeground(resources.getInteger(R.integer.notification_id), notification)
+        startForeground(NOTIFICATION_ID, notification)
     }
 
     /** Hides the notification while removing [Service] from foreground state. */
     private fun hideNotification() {
         stopForeground(true)
+    }
+
+    companion object {
+
+        private const val NOTIFICATION_ID = 12752
     }
 }
