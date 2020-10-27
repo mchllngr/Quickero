@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.customListAdapter
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -110,6 +111,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkNotificationEnabled() {
         if (!notificationHelper.isNotificationEnabled()) {
             MaterialDialog(this)
+                .lifecycleOwner(this)
                 .title(R.string.dialog_notification_disabled_title, null)
                 .message(null, getString(R.string.dialog_notification_disabled_text, getString(R.string.app_name)), null)
                 .cancelable(false)
@@ -122,6 +124,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun ActivityMainBinding.openApplicationSelection() {
         val loadingDialog = MaterialDialog(this@MainActivity)
+            .lifecycleOwner(this@MainActivity)
             .message(R.string.dialog_progress_please_wait, null, null)
             .cancelable(false)
             .cancelOnTouchOutside(false)
@@ -139,6 +142,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             MaterialDialog(this@MainActivity, BottomSheet())
+                .lifecycleOwner(this@MainActivity)
                 .title(R.string.dialog_application_list_title, null)
                 .apply {
                     customListAdapter(

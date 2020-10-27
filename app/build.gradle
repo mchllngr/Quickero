@@ -43,8 +43,6 @@ android {
                 optimizeCode true
                 proguardFiles getDefaultProguardFile('proguard-defaults.txt'),
                     '../proguard/proguard-rules.pro',
-                    '../proguard/proguard-rules-gson.pro',
-                    '../proguard/proguard-rules-rxjava.pro',
                     '../proguard/proguard-rules-timber.pro'
             }
             signingConfig signingConfigs.release
@@ -79,15 +77,6 @@ android {
             "-Xjvm-default=compatibility"
         ]
     }
-
-    sourceSets {
-        main {
-            // for merging res-folders together
-            res.srcDirs = ['src/main/res']
-//            file('src/main/res-modules')
-//                .eachDir { res.srcDirs += it.path }
-        }
-    }
 }
 
 dependencies {
@@ -96,17 +85,11 @@ dependencies {
 
     implementation Dependencies.ANDROIDX_CORE_KTX
     implementation Dependencies.ANDROIDX_FRAGMENT_KTX
-    implementation Dependencies.ANDROIDX_APPCOMPAT
     implementation Dependencies.ANDROIDX_RECYCLERVIEW
     implementation Dependencies.ANDROIDX_MATERIAL
-    implementation Dependencies.ANDROIDX_CONSTRAINTLAYOUT
-    implementation Dependencies.ANDROIDX_PREFERENCE
     implementation Dependencies.ANDROIDX_DATASTORE
 
-    implementation Dependencies.ANDROIDX_LIFECYCLE_EXTENSIONS
-    implementation Dependencies.ANDROIDX_LIFECYCLE_COMMON
     implementation Dependencies.ANDROIDX_LIFECYCLE_LIVEDATA_KTX
-    implementation Dependencies.ANDROIDX_LIFECYCLE_VIEWMODEL_KTX
 
     implementation Dependencies.DAGGER
     kapt Dependencies.DAGGER_COMPILER
@@ -115,22 +98,11 @@ dependencies {
     implementation Dependencies.DAGGER_HILT_VIEWMODEL
     kapt Dependencies.DAGGER_HILT_VIEWMODEL_COMPILER
 
-    implementation Dependencies.MOSBY
-
     implementation Dependencies.TIMBER
-
-    implementation Dependencies.GSON
-
-    implementation Dependencies.RX_JAVA
-    implementation Dependencies.RX_ANDROID
-
-    implementation Dependencies.RX_PREFERENCES
 
     implementation Dependencies.MATERIAL_DIALOGS_CORE
     implementation Dependencies.MATERIAL_DIALOGS_BOTTOMSHEETS
     implementation Dependencies.MATERIAL_DIALOGS_LIFECYCLE
-
-    implementation Dependencies.SIMPLE_ITEM_DECORATION
 
     implementation Dependencies.ATTRIBOUTER
 
