@@ -25,8 +25,10 @@ import de.mchllngr.quickero.repository.application.PackageName
 import de.mchllngr.quickero.util.applicationlist.ApplicationListAdapter
 import de.mchllngr.quickero.util.notification.NotificationHelper
 import de.mchllngr.quickero.util.swipe.SwipeItemTouchCallback
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -126,7 +128,9 @@ class MainActivity : AppCompatActivity() {
             .apply { show() }
 
         lifecycleScope.launch {
-            val list = viewModel.getInstalledApplications().firstOrNull() ?: emptyList()
+            val list = withContext(Dispatchers.Default) {
+                viewModel.getInstalledApplications().firstOrNull() ?: emptyList()
+            }
             loadingDialog.dismiss()
 
             if (list.isEmpty()) {

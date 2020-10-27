@@ -49,7 +49,6 @@ class NotificationService : Service() {
         startId: Int
     ): Int {
         super.onStartCommand(intent, flags, startId)
-        serviceJob.cancel()
         init()
         return START_STICKY
     }

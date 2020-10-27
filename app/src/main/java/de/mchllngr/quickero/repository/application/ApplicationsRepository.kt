@@ -6,6 +6,7 @@ import androidx.datastore.preferences.Preferences
 import androidx.datastore.preferences.edit
 import androidx.datastore.preferences.emptyPreferences
 import androidx.datastore.preferences.preferencesKey
+import androidx.datastore.preferences.preferencesSetKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
@@ -143,7 +144,7 @@ class ApplicationsRepository @Inject constructor(
         }
     }
 
-    private fun Preferences.getPackageNames(): List<PackageName> = get(KEY_PACKAGE_NAMES).orEmpty().split(PACKAGE_NAMES_SEPARATOR)
+    private fun Preferences.getPackageNames(): List<PackageName> = get(KEY_PACKAGE_NAMES).orEmpty().toList()
 
     private suspend fun setPackageNames(packageNames: List<PackageName>) {
         dataStore.edit { preferences ->
@@ -151,7 +152,7 @@ class ApplicationsRepository @Inject constructor(
                 .distinct()
                 .filter { it.isLaunchable() }
                 .take(PACKAGE_NAMES_MAX_COUNT)
-                .joinToString(separator = PACKAGE_NAMES_SEPARATOR)
+                .toSet()
         }
     }
 
@@ -160,10 +161,9 @@ class ApplicationsRepository @Inject constructor(
     companion object {
 
         private val KEY_FIRST_START = preferencesKey<Boolean>("applications_first_start")
-        private val KEY_PACKAGE_NAMES = preferencesKey<PackageName>("applications_package_names") // TODO use preferencesSetKey? (if correctly saves order)
+        private val KEY_PACKAGE_NAMES = preferencesSetKey<PackageName>("applications_package_names")
 
         private const val PACKAGE_NAMES_MAX_COUNT = 15
-        private const val PACKAGE_NAMES_SEPARATOR = ";###;"
 
         private const val DUMMY_ENTRIES_MAX_COUNT = 5
         private val DUMMY_PACKAGE_NAMES: List<PackageName> = listOf( // TODO update list

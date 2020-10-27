@@ -33,7 +33,9 @@ class NotificationHelper @Inject constructor(
     fun createNotificationChannels() {
         if (VERSION.SDK_INT >= VERSION_CODES.O) {
             val channels = listOf(
-                NotificationChannel(CHANNEL_DEFAULT_ID, context.getString(R.string.notification_channel_default_name), NotificationManager.IMPORTANCE_LOW),
+                NotificationChannel(CHANNEL_DEFAULT_ID, context.getString(R.string.notification_channel_default_name), NotificationManager.IMPORTANCE_LOW).apply {
+                    setShowBadge(false)
+                },
                 NotificationChannel(CHANNEL_ERROR_ID, context.getString(R.string.notification_channel_error_name), NotificationManager.IMPORTANCE_HIGH)
             )
             notificationManager.createNotificationChannels(channels)

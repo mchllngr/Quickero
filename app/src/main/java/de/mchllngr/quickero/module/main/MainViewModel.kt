@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainViewModel @ViewModelInject constructor(
     private val applicationsRepository: ApplicationsRepository,
@@ -32,12 +33,14 @@ class MainViewModel @ViewModelInject constructor(
 
     init {
         viewModelScope.launch {
-            applicationsRepository.removeInvalidApplications()
+            withContext(Dispatchers.Default) {
+                applicationsRepository.removeInvalidApplications()
 
-            notificationRepository.enabled
-                .combine(applicationsRepository.applications) { enabled, applications -> enabled to applications }
-                .map { (enabled, applications) -> enabled && applications.isNotEmpty() }
-                .collect { startService -> if (startService) notificationHelper.startNotificationService() }
+                notificationRepository.enabled
+                    .combine(applicationsRepository.applications) { enabled, applications -> enabled to applications }
+                    .map { (enabled, applications) -> enabled && applications.isNotEmpty() }
+                    .collect { startService -> if (startService) notificationHelper.startNotificationService() }
+            }
         }
     }
 
@@ -46,7 +49,9 @@ class MainViewModel @ViewModelInject constructor(
 
     fun setNotificationEnabled(enabled: Boolean) {
         viewModelScope.launch {
-            notificationRepository.setEnabled(enabled)
+            withContext(Dispatchers.Default) {
+                notificationRepository.setEnabled(enabled)
+            }
         }
     }
 
@@ -55,7 +60,9 @@ class MainViewModel @ViewModelInject constructor(
         position: Int = Int.MAX_VALUE
     ) {
         viewModelScope.launch {
-            applicationsRepository.addApplication(packageName, position)
+            withContext(Dispatchers.Default) {
+                applicationsRepository.addApplication(packageName, position)
+            }
         }
     }
 
@@ -64,9 +71,13 @@ class MainViewModel @ViewModelInject constructor(
         toPosition: Int
     ) {
         viewModelScope.launch {
-            applicationsRepository.moveApplication(fromPosition, toPosition)
+            withContext(Dispatchers.Default) {
+                applicationsRepository.moveApplication(fromPosition, toPosition)
+            }
         }
     }
 
-    suspend fun removeApplication(position: Int): PackageName? = applicationsRepository.removeApplication(position)
+    suspend fun removeApplication(position: Int): PackageName? = withContext(Dispatchers.Default) {
+        applicationsRepository.removeApplication(position)
+    }
 }
