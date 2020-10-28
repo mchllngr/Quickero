@@ -7,12 +7,12 @@ import android.content.Intent
 import android.widget.RemoteViews
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import de.mchllngr.quickero.R
 import de.mchllngr.quickero.extension.toBitmap
 import de.mchllngr.quickero.repository.application.Application
 import de.mchllngr.quickero.service.StartApplicationService
-import de.mchllngr.quickero.util.theme.getThemeColor
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -85,7 +85,7 @@ class CustomNotificationHelper @Inject constructor(
         .build()
 
     @ColorInt
-    private fun getColorPrimary() = context.getThemeColor(R.attr.colorPrimary)
+    private fun getColorPrimary() = ContextCompat.getColor(context, R.color.green)
 
     companion object {
 
