@@ -24,8 +24,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toStartOf="@+id/enable"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                tools:title="Toolbar" />
+                android:title="@string/app_name"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/enable"
@@ -39,7 +39,9 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include
+        android:id="@+id/content"
+        layout="@layout/content_main" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

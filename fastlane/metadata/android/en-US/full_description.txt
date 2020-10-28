@@ -1,1 +1,8 @@
-TODO - Long description
+Quickero makes your favorite apps available directly in the notification overview. This way you can reach them even faster.
+
+Some devices with a fingerprint sensor on the back offer a setting that allows you to open the notification overview with a swipe gesture on the fingerprint sensor. This is how Quickero unfolds its full potential!
+Settings -> System -> Gestures -> Swipe fingerprint for notifications
+(may differ on some devices)
+
+Suggestions and error messages:
+https://github.com/mchllngr/Quickero
