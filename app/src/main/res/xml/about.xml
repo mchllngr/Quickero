@@ -34,7 +34,9 @@
         <me.jfenn.attribouter.wedges.LicenseWedge description="androidx.lifecycle:lifecycle-livedata-ktx" />
 
         <me.jfenn.attribouter.wedges.LicenseWedge repo="google/dagger" />
-        <me.jfenn.attribouter.wedges.LicenseWedge repo="google/dagger/tree/master/java/dagger/hilt" />
+        <me.jfenn.attribouter.wedges.LicenseWedge
+            description="Dagger Hilt"
+            repo="google/dagger/tree/master/java/dagger/hilt" />
 
         <me.jfenn.attribouter.wedges.LicenseWedge repo="JakeWharton/timber" />
 
