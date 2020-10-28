@@ -37,7 +37,7 @@ private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MainItem>() {
 class MainAdapter @Inject constructor() : ListAdapter<MainItem, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     override fun getItemViewType(position: Int) = when (getItem(position)) {
-        MainItem.Empty -> VIEW_TYPE_APPLICATION
+        MainItem.Empty -> VIEW_TYPE_EMPTY
         is MainItem.Application -> VIEW_TYPE_APPLICATION
     }
 

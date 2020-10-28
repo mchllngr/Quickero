@@ -1,6 +1,7 @@
 package de.mchllngr.quickero.util.notification
 
 import android.app.Activity
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -11,6 +12,7 @@ import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import de.mchllngr.quickero.R
+import de.mchllngr.quickero.repository.application.Application
 import de.mchllngr.quickero.service.NotificationService
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,7 +20,8 @@ import javax.inject.Singleton
 @Singleton
 class NotificationHelper @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val notificationManager: NotificationManager
+    private val notificationManager: NotificationManager,
+    private val customNotificationHelper: CustomNotificationHelper
 ) {
 
     fun startNotificationService() {
@@ -30,16 +33,14 @@ class NotificationHelper @Inject constructor(
         }
     }
 
-    fun createNotificationChannels() {
-        if (VERSION.SDK_INT >= VERSION_CODES.O) {
-            val channels = listOf(
-                NotificationChannel(CHANNEL_DEFAULT_ID, context.getString(R.string.notification_channel_default_name), NotificationManager.IMPORTANCE_LOW).apply {
-                    setShowBadge(false)
-                },
-                NotificationChannel(CHANNEL_ERROR_ID, context.getString(R.string.notification_channel_error_name), NotificationManager.IMPORTANCE_HIGH)
-            )
-            notificationManager.createNotificationChannels(channels)
-        }
+    fun createApplicationNotification(applications: List<Application>): Notification {
+        createNotificationChannels()
+        return customNotificationHelper.createApplicationNotification(applications)
+    }
+
+    fun createLoadingNotification(): Notification {
+        createNotificationChannels()
+        return customNotificationHelper.createLoadingNotification()
     }
 
     fun isNotificationEnabled() = isNotificationEnabled(CHANNEL_DEFAULT_ID)
@@ -55,6 +56,20 @@ class NotificationHelper @Inject constructor(
             return channel.importance != NotificationManager.IMPORTANCE_NONE
         } else {
             return NotificationManagerCompat.from(context).areNotificationsEnabled()
+        }
+    }
+
+    private fun createNotificationChannels() {
+        if (VERSION.SDK_INT >= VERSION_CODES.O) {
+            val channels = listOf(
+                NotificationChannel(CHANNEL_DEFAULT_ID, context.getString(R.string.notification_channel_default_name), NotificationManager.IMPORTANCE_LOW).apply {
+                    setShowBadge(false)
+                    enableLights(false)
+                    enableVibration(false)
+                },
+                NotificationChannel(CHANNEL_ERROR_ID, context.getString(R.string.notification_channel_error_name), NotificationManager.IMPORTANCE_HIGH)
+            )
+            notificationManager.createNotificationChannels(channels)
         }
     }
 
