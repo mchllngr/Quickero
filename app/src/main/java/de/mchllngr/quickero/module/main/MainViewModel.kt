@@ -22,7 +22,10 @@ class MainViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     val applications = applicationsRepository.applications
-        .map { list -> list.map { it.toItem() } }
+        .map { list ->
+            if (list.isNotEmpty()) list.map { it.toItem() }
+            else listOf(MainItem.Empty)
+        }
         .flowOn(Dispatchers.Default)
 
     val applicationsMaxReached = applicationsRepository.applicationsMaxReached
