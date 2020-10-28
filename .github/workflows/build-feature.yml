@@ -36,11 +36,11 @@ jobs:
           bundle install --jobs 4 --retry 3
 
       - name: Prepare keystore.properties
-        run: ./.github/scripts/prepare-debug-keystore-properties.sh
+        run: ./.github/scripts/prepare-feature-keystore-properties.sh
 
       - name: Build feature
         run: |
-          bundle exec fastlane bundleDebug build:$BUILD --verbose
+          bundle exec fastlane bundleRelease build:$BUILD --verbose
         env:
           BUILD: ${{ github.run_number }}
 
