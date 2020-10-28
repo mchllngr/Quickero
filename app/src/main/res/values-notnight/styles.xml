@@ -9,6 +9,8 @@
         <item name="colorSecondaryVariant">@color/orange_light</item>
         <item name="colorAccent">@color/orange</item>
         <item name="android:navigationBarColor">@color/green</item>
+        <item name="colorSwipeBackground">@color/red_500</item>
+        <item name="colorSwipeIconTint">@color/grey_100</item>
     </style>
 
     <style name="AppTheme.About" parent="AppTheme.About.Base">

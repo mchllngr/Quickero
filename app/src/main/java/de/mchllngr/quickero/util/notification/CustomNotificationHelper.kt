@@ -62,7 +62,7 @@ class CustomNotificationHelper @Inject constructor(
     }
 
     private fun createCustomContentViewNotification(customContentView: RemoteViews): Notification = NotificationCompat.Builder(context, NotificationHelper.CHANNEL_DEFAULT_ID)
-        .setColor(getColorPrimary())
+        .setColor(getNotificationColor())
         .setSmallIcon(NOTIFICATION_ICON_ID)
         .setAutoCancel(false)
         .setOngoing(true)
@@ -73,7 +73,7 @@ class CustomNotificationHelper @Inject constructor(
         .build()
 
     fun createLoadingNotification(): Notification = NotificationCompat.Builder(context, NotificationHelper.CHANNEL_DEFAULT_ID)
-        .setColor(getColorPrimary())
+        .setColor(getNotificationColor())
         .setSmallIcon(NOTIFICATION_ICON_ID)
         .setAutoCancel(false)
         .setOngoing(true)
@@ -85,7 +85,7 @@ class CustomNotificationHelper @Inject constructor(
         .build()
 
     @ColorInt
-    private fun getColorPrimary() = ContextCompat.getColor(context, R.color.green)
+    private fun getNotificationColor() = ContextCompat.getColor(context, R.color.green)
 
     companion object {
 
