@@ -19,8 +19,7 @@ import javax.inject.Singleton
 /** Helper-class for easier handling of the custom notifications. */
 @Singleton
 class CustomNotificationHelper @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val notificationHelper: NotificationHelper
+    @ApplicationContext private val context: Context
 ) {
 
     fun createApplicationNotification(applications: List<Application>): Notification {
@@ -62,34 +61,28 @@ class CustomNotificationHelper @Inject constructor(
         return createCustomContentViewNotification(customContentView)
     }
 
-    private fun createCustomContentViewNotification(customContentView: RemoteViews): Notification {
-        notificationHelper.createNotificationChannels()
-        return NotificationCompat.Builder(context, NotificationHelper.CHANNEL_DEFAULT_ID)
-            .setColor(getColorPrimary())
-            .setSmallIcon(NOTIFICATION_ICON_ID)
-            .setAutoCancel(false)
-            .setOngoing(true)
-            .setShowWhen(false)
-            .setCustomContentView(customContentView)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .build()
-    }
+    private fun createCustomContentViewNotification(customContentView: RemoteViews): Notification = NotificationCompat.Builder(context, NotificationHelper.CHANNEL_DEFAULT_ID)
+        .setColor(getColorPrimary())
+        .setSmallIcon(NOTIFICATION_ICON_ID)
+        .setAutoCancel(false)
+        .setOngoing(true)
+        .setShowWhen(false)
+        .setCustomContentView(customContentView)
+        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .build()
 
-    fun createLoadingNotification(): Notification {
-        notificationHelper.createNotificationChannels()
-        return NotificationCompat.Builder(context, NotificationHelper.CHANNEL_DEFAULT_ID)
-            .setColor(getColorPrimary())
-            .setSmallIcon(NOTIFICATION_ICON_ID)
-            .setAutoCancel(false)
-            .setOngoing(true)
-            .setShowWhen(false)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentTitle(context.getString(R.string.notification_service_loading_title))
-            .setContentText(context.getString(R.string.notification_service_loading_text))
-            .build()
-    }
+    fun createLoadingNotification(): Notification = NotificationCompat.Builder(context, NotificationHelper.CHANNEL_DEFAULT_ID)
+        .setColor(getColorPrimary())
+        .setSmallIcon(NOTIFICATION_ICON_ID)
+        .setAutoCancel(false)
+        .setOngoing(true)
+        .setShowWhen(false)
+        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setContentTitle(context.getString(R.string.notification_service_loading_title))
+        .setContentText(context.getString(R.string.notification_service_loading_text))
+        .build()
 
     @ColorInt
     private fun getColorPrimary() = context.getThemeColor(R.attr.colorPrimary)

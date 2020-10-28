@@ -7,7 +7,7 @@ import android.os.IBinder
 import dagger.hilt.android.AndroidEntryPoint
 import de.mchllngr.quickero.repository.application.ApplicationsRepository
 import de.mchllngr.quickero.repository.notification.NotificationRepository
-import de.mchllngr.quickero.util.notification.CustomNotificationHelper
+import de.mchllngr.quickero.util.notification.NotificationHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -25,13 +25,13 @@ class NotificationService : Service() {
 
     @Inject lateinit var applicationsRepository: ApplicationsRepository
     @Inject lateinit var notificationRepository: NotificationRepository
-    @Inject lateinit var customNotificationHelper: CustomNotificationHelper
+    @Inject lateinit var notificationHelper: NotificationHelper
 
     override fun onCreate() {
         super.onCreate()
 
         // this is needed because sometimes the OS crashes the app when startForeground is not called in onCreate
-        showNotification(customNotificationHelper.createLoadingNotification())
+        showNotification(notificationHelper.createLoadingNotification())
     }
 
     override fun onDestroy() {
@@ -58,7 +58,7 @@ class NotificationService : Service() {
                 .combine(applicationsRepository.applications) { enabled, applications -> enabled to applications }
                 .collect { (enabled, applications) ->
                     if (enabled && applications.isNotEmpty()) {
-                        showNotification(customNotificationHelper.createApplicationNotification(applications))
+                        showNotification(notificationHelper.createApplicationNotification(applications))
                     } else {
                         stopSelf()
                     }
