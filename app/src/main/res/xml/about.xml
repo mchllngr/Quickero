@@ -27,27 +27,16 @@
 
         <me.jfenn.attribouter.wedges.LicenseWedge description="androidx.core:core-ktx" />
         <me.jfenn.attribouter.wedges.LicenseWedge description="androidx.fragment:fragment-ktx" />
-        <me.jfenn.attribouter.wedges.LicenseWedge description="androidx.appcompat:appcompat" />
         <me.jfenn.attribouter.wedges.LicenseWedge description="androidx.recyclerview:recyclerview" />
         <me.jfenn.attribouter.wedges.LicenseWedge description="com.google.android.material:material" />
-        <me.jfenn.attribouter.wedges.LicenseWedge description="androidx.constraintlayout:constraintlayout" />
-        <me.jfenn.attribouter.wedges.LicenseWedge description="androidx.preference:preference" />
+        <me.jfenn.attribouter.wedges.LicenseWedge description="androidx.datastore:datastore-preferences" />
 
-        <me.jfenn.attribouter.wedges.LicenseWedge description="androidx.lifecycle:lifecycle-extensions" />
-        <me.jfenn.attribouter.wedges.LicenseWedge description="androidx.lifecycle:lifecycle-common-java8" />
         <me.jfenn.attribouter.wedges.LicenseWedge description="androidx.lifecycle:lifecycle-livedata-ktx" />
-        <me.jfenn.attribouter.wedges.LicenseWedge description="androidx.lifecycle:lifecycle-viewmodel-ktx" />
 
-        <me.jfenn.attribouter.wedges.LicenseWedge repo="sockeqwe/mosby" />
+        <me.jfenn.attribouter.wedges.LicenseWedge repo="google/dagger" />
+        <me.jfenn.attribouter.wedges.LicenseWedge repo="google/dagger/tree/master/java/dagger/hilt" />
 
         <me.jfenn.attribouter.wedges.LicenseWedge repo="JakeWharton/timber" />
-
-        <me.jfenn.attribouter.wedges.LicenseWedge description="com.google.code.gson:gson" />
-
-        <me.jfenn.attribouter.wedges.LicenseWedge repo="ReactiveX/RxJava" />
-        <me.jfenn.attribouter.wedges.LicenseWedge repo="ReactiveX/RxAndroid" />
-
-        <me.jfenn.attribouter.wedges.LicenseWedge repo="f2prateek/rx-preferences" />
 
         <me.jfenn.attribouter.wedges.LicenseWedge repo="afollestad/material-dialogs" />
 
