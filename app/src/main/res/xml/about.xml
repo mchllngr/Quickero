@@ -5,6 +5,10 @@
         playStoreUrl="https://play.google.com/store/apps/details?id=de.mchllngr.quickero"
         repo="mchllngr/Quickero" />
 
+    <me.jfenn.attribouter.wedges.LinkWedge
+        name="@string/privacy_policy"
+        url="https://datenschutz.michaellanger.me/" />
+
     <me.jfenn.attribouter.wedges.ContributorsWedge showDefaults="false">
 
         <me.jfenn.attribouter.wedges.ContributorWedge
@@ -14,11 +18,6 @@
             websiteUrl="https://michaellanger.me/" />
 
     </me.jfenn.attribouter.wedges.ContributorsWedge>
-
-    <me.jfenn.attribouter.wedges.link.LinkWedge
-        name="@string/privacy_policy"
-        icon="@drawable/ic_launcher_foreground"
-        url="https://datenschutz.michaellanger.me/" />
 
     <me.jfenn.attribouter.wedges.LicensesWedge>
 
