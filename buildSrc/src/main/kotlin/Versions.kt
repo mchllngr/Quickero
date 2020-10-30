@@ -26,7 +26,7 @@ object Versions {
     const val DAGGER_HILT_VIEWMODEL = "1.0.0-alpha02"
     const val TIMBER = "4.7.1"
     const val MATERIAL_DIALOGS = "3.3.0"
-    const val ATTRIBOUTER = "0.1.8"
+    const val ABOUT_LIBRARIES = "8.4.3"
 }
 
 object DebugVersions {

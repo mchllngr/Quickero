@@ -13,8 +13,4 @@
         <item name="colorSwipeIconTint">@color/grey_100</item>
     </style>
 
-    <style name="AppTheme.About" parent="AppTheme.About.Base">
-        <item name="attribouter_textColorAccent">?attr/colorOnSurface</item>
-    </style>
-
 </resources>

@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.commit
 import com.google.android.material.appbar.MaterialToolbar
+import com.mikepenz.aboutlibraries.LibsBuilder
 import de.mchllngr.quickero.R
-import me.jfenn.attribouter.attribouterFragment
 
 class AboutActivity : AppCompatActivity() {
 
@@ -25,10 +25,8 @@ class AboutActivity : AppCompatActivity() {
         supportFragmentManager.commit {
             replace(
                 R.id.fragment_container_view,
-                attribouterFragment {
-                    withFile(R.xml.about)
-                    withTheme(R.style.AppTheme_About)
-                }
+                LibsBuilder()
+                    .supportFragment()
             )
         }
     }

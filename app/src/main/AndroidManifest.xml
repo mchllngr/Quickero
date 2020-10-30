@@ -32,7 +32,7 @@
         <activity android:name=".module.about.AboutActivity">
             <meta-data
                 android:name="theme"
-                android:resource="@style/AppTheme.NoActionBar" />
+                android:resource="@style/AppTheme.About" />
         </activity>
 
         <service android:name=".service.NotificationService" />
