@@ -1,8 +1,9 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'dagger.hilt.android.plugin'
-apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-kapt"
+apply plugin: "dagger.hilt.android.plugin"
+apply plugin: "com.mikepenz.aboutlibraries.plugin"
+apply plugin: "com.getkeepsafe.dexcount"
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
@@ -104,7 +105,7 @@ dependencies {
     implementation Dependencies.MATERIAL_DIALOGS_BOTTOMSHEETS
     implementation Dependencies.MATERIAL_DIALOGS_LIFECYCLE
 
-    implementation Dependencies.ATTRIBOUTER
+    implementation Dependencies.ABOUT_LIBRARIES
 
     // Debug dependencies
     debugImplementation DebugDependencies.BEAGLE

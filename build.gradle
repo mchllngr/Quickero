@@ -2,17 +2,19 @@ buildscript {
     repositories {
         google()
         jcenter()
+        gradlePluginPortal()
     }
     dependencies {
         classpath BuildScriptDependencies.BUILD_TOOLS_GRADLE
         classpath BuildScriptDependencies.KOTLIN_GRADLE
         classpath BuildScriptDependencies.DAGGER_HILT_GRADLE
+        classpath BuildScriptDependencies.ABOUT_LIBRARIES_GRADLE
         classpath BuildScriptDependencies.DEXCOUNT_GRADLE
         classpath BuildScriptDependencies.VERSIONS_GRADLE // allows checking for new versions with './gradlew dependencyUpdates -Drevision=release'
     }
 }
 
-apply plugin: 'com.github.ben-manes.versions'
+apply plugin: "com.github.ben-manes.versions"
 
 allprojects {
     repositories {
