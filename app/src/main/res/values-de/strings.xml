@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="github">GitHub</string>
+    <string name="play_store">Play Store</string>
     <string name="privacy_policy">Datenschutzerklärung</string>
 
     <string name="menu_settings">Einstellungen</string>
