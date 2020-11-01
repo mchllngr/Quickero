@@ -8,12 +8,12 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
   # Updates for Gradle dependencies used in the app
   - package-ecosystem: gradle
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     open-pull-requests-limit: 10
     reviewers:
       - "mchllngr"
