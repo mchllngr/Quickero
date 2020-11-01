@@ -4,17 +4,10 @@
     <style name="AppTheme" parent="AppTheme.Base">
         <item name="colorPrimary">@color/green</item>
         <item name="colorPrimaryDark">@color/green_dark</item>
-        <item name="colorPrimaryVariant">@color/green_dark</item>
         <item name="colorSecondary">@color/orange</item>
         <item name="colorSecondaryVariant">@color/orange_light</item>
-        <item name="colorAccent">@color/orange</item>
-        <item name="android:navigationBarColor">@color/green</item>
         <item name="colorSwipeBackground">@color/red_500</item>
         <item name="colorSwipeIconTint">@color/grey_100</item>
-    </style>
-
-    <style name="AppTheme.About" parent="AppTheme.About.Base">
-        <item name="attribouter_textColorAccent">?attr/colorOnSurface</item>
     </style>
 
 </resources>

@@ -1,20 +1,21 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'dagger.hilt.android.plugin'
-apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-kapt"
+apply plugin: "dagger.hilt.android.plugin"
+apply plugin: "com.mikepenz.aboutlibraries.plugin"
+apply plugin: "com.getkeepsafe.dexcount"
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion SdkVersions.COMPILE_SDK
+    compileSdkVersion rootProject.ext.COMPILE_SDK
 
     defaultConfig {
         applicationId "de.mchllngr.quickero"
-        minSdkVersion SdkVersions.MIN_SDK
-        targetSdkVersion SdkVersions.TARGET_SDK
+        minSdkVersion rootProject.ext.MIN_SDK
+        targetSdkVersion rootProject.ext.TARGET_SDK
         versionCode rootProject.ext.VERSIONCODE
         versionName rootProject.ext.VERSIONNAME
 
@@ -43,6 +44,7 @@ android {
                 optimizeCode true
                 proguardFiles getDefaultProguardFile('proguard-defaults.txt'),
                     '../proguard/proguard-rules.pro',
+                    '../proguard/proguard-rules-aboutlibraries.pro',
                     '../proguard/proguard-rules-timber.pro'
             }
             signingConfig signingConfigs.release
@@ -80,33 +82,33 @@ android {
 }
 
 dependencies {
-    implementation Dependencies.KOTLIN_STDLIB
-    implementation Dependencies.KOTLIN_COROUTINES_ANDROID
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.ext.KOTLIN_VERSION}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${rootProject.ext.KOTLIN_COROUTINES_VERSION}"
 
-    implementation Dependencies.ANDROIDX_CORE_KTX
-    implementation Dependencies.ANDROIDX_FRAGMENT_KTX
-    implementation Dependencies.ANDROIDX_RECYCLERVIEW
-    implementation Dependencies.ANDROIDX_MATERIAL
-    implementation Dependencies.ANDROIDX_DATASTORE
+    implementation "androidx.core:core-ktx:${rootProject.ext.ANDROIDX_CORE_KTX_VERSION}"
+    implementation "androidx.fragment:fragment-ktx:${rootProject.ext.ANDROIDX_FRAGMENT_KTX_VERSION}"
+    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.ANDROIDX_RECYCLERVIEW_VERSION}"
+    implementation "com.google.android.material:material:${rootProject.ext.ANDROIDX_MATERIAL_VERSION}"
+    implementation "androidx.datastore:datastore-preferences:${rootProject.ext.ANDROIDX_DATASTORE_VERSION}"
 
-    implementation Dependencies.ANDROIDX_LIFECYCLE_LIVEDATA_KTX
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${rootProject.ext.ANDROIDX_LIFECYCLE_LIVEDATA_KTX_VERSION}"
 
-    implementation Dependencies.DAGGER
-    kapt Dependencies.DAGGER_COMPILER
-    implementation Dependencies.DAGGER_HILT
-    kapt Dependencies.DAGGER_HILT_COMPILER
-    implementation Dependencies.DAGGER_HILT_VIEWMODEL
-    kapt Dependencies.DAGGER_HILT_VIEWMODEL_COMPILER
+    implementation "com.google.dagger:dagger:${rootProject.ext.DAGGER_VERSION}"
+    kapt "com.google.dagger:dagger-compiler:${rootProject.ext.DAGGER_VERSION}"
+    implementation "com.google.dagger:hilt-android:${rootProject.ext.DAGGER_HILT_VERSION}"
+    kapt "com.google.dagger:hilt-android-compiler:${rootProject.ext.DAGGER_HILT_VERSION}"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:${rootProject.ext.DAGGER_HILT_VIEWMODEL_VERSION}"
+    kapt "androidx.hilt:hilt-compiler:${rootProject.ext.DAGGER_HILT_VIEWMODEL_VERSION}"
 
-    implementation Dependencies.TIMBER
+    implementation "com.jakewharton.timber:timber:${rootProject.ext.TIMBER_VERSION}"
 
-    implementation Dependencies.MATERIAL_DIALOGS_CORE
-    implementation Dependencies.MATERIAL_DIALOGS_BOTTOMSHEETS
-    implementation Dependencies.MATERIAL_DIALOGS_LIFECYCLE
+    implementation "com.afollestad.material-dialogs:core:${rootProject.ext.MATERIAL_DIALOGS_VERSION}"
+    implementation "com.afollestad.material-dialogs:bottomsheets:${rootProject.ext.MATERIAL_DIALOGS_VERSION}"
+    implementation "com.afollestad.material-dialogs:lifecycle:${rootProject.ext.MATERIAL_DIALOGS_VERSION}"
 
-    implementation Dependencies.ATTRIBOUTER
+    implementation "com.mikepenz:aboutlibraries:${rootProject.ext.ABOUT_LIBRARIES_VERSION}"
 
     // Debug dependencies
-    debugImplementation DebugDependencies.BEAGLE
-    debugImplementation DebugDependencies.BEAGLE_LOG
+    debugImplementation "com.github.pandulapeter.beagle:ui-drawer:${rootProject.ext.BEAGLE_VERSION}"
+    debugImplementation "com.github.pandulapeter.beagle:log:${rootProject.ext.BEAGLE_VERSION}"
 }
