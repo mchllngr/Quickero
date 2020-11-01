@@ -44,6 +44,7 @@ android {
                 optimizeCode true
                 proguardFiles getDefaultProguardFile('proguard-defaults.txt'),
                     '../proguard/proguard-rules.pro',
+                    '../proguard/proguard-rules-aboutlibraries.pro',
                     '../proguard/proguard-rules-timber.pro'
             }
             signingConfig signingConfigs.release

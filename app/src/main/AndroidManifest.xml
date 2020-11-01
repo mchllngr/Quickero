@@ -16,8 +16,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Splash"
-        tools:ignore="AllowBackup"
-        tools:replace="android:allowBackup">
+        tools:ignore="AllowBackup">
 
         <activity android:name=".module.main.MainActivity">
             <intent-filter>
