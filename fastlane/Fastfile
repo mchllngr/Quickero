@@ -3,53 +3,36 @@ opt_out_usage
 # This file contains the fastlane.tools configuration
 # You can find the documentation at https://docs.fastlane.tools
 #
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
+# For a list of all available actions, check out https://docs.fastlane.tools/actions
+# For a list of all available plugins, check out https://docs.fastlane.tools/plugins/available-plugins
 
 default_platform(:android)
 
 platform :android do
 
-  ################## BUILD ##################
-  desc "Assemble a new debug aab version"
-  lane :bundleDebug do |options|
-    # check if gradle build-flags are necessary
-    flags = "--refresh-dependencies"
-
-    # for version
-    if options[:major]
-      flags += " -Pmajor=" + options[:major]
-    end
-    if options[:minor]
-      flags += " -Pminor=" + options[:minor]
-    end
-    if options[:hotfix]
-      flags += " -Photfix=" + options[:hotfix]
-    end
-    if options[:build]
-      flags += " -Pbuild=" + options[:build]
-    end
-
-    # always clean before building
-    task = "clean bundleDebug"
-
-    gradle(
-      task: task,
-      flags: flags
-    )
+  desc "Build a new feature version"
+  lane :build_feature do |options|
+    bundleRelease(options)
   end
 
-  desc "Assemble a new release aab version"
-  lane :bundleRelease do |options|
+  desc "Deploy a new candidate version to Google Play"
+  lane :deploy_candidate do |options|
+    bundleRelease(options)
+
+    options[:track] = "internal"
+    upload_aab_to_play_store(options)
+  end
+
+  desc "Deploy a new release version to Google Play"
+  lane :deploy_release do |options|
+    bundleRelease(options)
+
+    options[:track] = "beta"
+    upload_aab_to_play_store(options)
+  end
+
+  ################## BUILD ##################
+  private_lane :bundleRelease do |options|
     # check if gradle build-flags are necessary
     flags = "--refresh-dependencies"
 
@@ -76,52 +59,7 @@ platform :android do
     )
   end
 
-  ################## DEPLOY #################
-  desc "Deploy a new internal aab version to the Google Play"
-  lane :deploy_aab_internal do |options|
-    bundleRelease(options)
-    upload_aab_to_play_store_internal_track(options)
-  end
-
-  desc "Deploy a new alpha aab version to the Google Play"
-  lane :deploy_aab_alpha do |options|
-    bundleRelease(options)
-    upload_aab_to_play_store_alpha_track(options)
-  end
-
-  desc "Deploy a new beta aab version to the Google Play"
-  lane :deploy_aab_beta do |options|
-    bundleRelease(options)
-    upload_aab_to_play_store_beta_track(options)
-  end
-
-  desc "Deploy a new production aab version to the Google Play"
-  lane :deploy_aab_production do |options|
-    bundleRelease(options)
-    upload_aab_to_play_store_production_track(options)
-  end
-
   ################## UPLOAD #################
-  private_lane :upload_aab_to_play_store_internal_track do |options|
-    options[:track] = "internal"
-    upload_aab_to_play_store(options)
-  end
-
-  private_lane :upload_aab_to_play_store_alpha_track do |options|
-    options[:track] = "alpha"
-    upload_aab_to_play_store(options)
-  end
-
-  private_lane :upload_aab_to_play_store_beta_track do |options|
-    options[:track] = "beta"
-    upload_aab_to_play_store(options)
-  end
-
-  private_lane :upload_aab_to_play_store_production_track do |options|
-    options[:track] = "production"
-    upload_aab_to_play_store(options)
-  end
-
   private_lane :upload_aab_to_play_store do |options|
     uploadOptions = {
       :track => options[:track],
@@ -136,6 +74,3 @@ platform :android do
   end
 
 end
-
-# More information about multiple platforms in fastlane: https://docs.fastlane.tools/advanced/#control-configuration-by-lane-and-by-platform
-# All available actions: https://docs.fastlane.tools/actions

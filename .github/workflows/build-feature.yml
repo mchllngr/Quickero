@@ -2,9 +2,8 @@ name: Build feature
 
 on:
   push:
-    branches-ignore:
+    branches:
       - main
-      - develop
   pull_request: ~
 
 jobs:
@@ -40,7 +39,7 @@ jobs:
 
       - name: Build feature
         run: |
-          bundle exec fastlane bundleRelease build:$BUILD --verbose
+          bundle exec fastlane build_feature build:$BUILD --verbose
         env:
           BUILD: ${{ github.run_number }}
 
