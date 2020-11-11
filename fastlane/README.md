@@ -16,36 +16,21 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## Android
-### android bundleDebug
+### android build_feature
 ```
-fastlane android bundleDebug
+fastlane android build_feature
 ```
-Assemble a new debug aab version
-### android bundleRelease
+Build a new feature version
+### android deploy_candidate
 ```
-fastlane android bundleRelease
+fastlane android deploy_candidate
 ```
-Assemble a new release aab version
-### android deploy_aab_internal
+Deploy a new candidate version to Google Play
+### android deploy_release
 ```
-fastlane android deploy_aab_internal
+fastlane android deploy_release
 ```
-Deploy a new internal aab version to the Google Play
-### android deploy_aab_alpha
-```
-fastlane android deploy_aab_alpha
-```
-Deploy a new alpha aab version to the Google Play
-### android deploy_aab_beta
-```
-fastlane android deploy_aab_beta
-```
-Deploy a new beta aab version to the Google Play
-### android deploy_aab_production
-```
-fastlane android deploy_aab_production
-```
-Deploy a new production aab version to the Google Play
+Deploy a new release version to Google Play
 
 ----
 

@@ -3,8 +3,8 @@ name: Deploy
 on:
   push:
     branches:
-      - main
-      - develop
+      - release
+      - candidate
 
 jobs:
   deploy:
@@ -46,10 +46,10 @@ jobs:
 
       - name: Deploy
         run: |
-          if [ "$BRANCH" == "refs/heads/main" ]; then
-            bundle exec fastlane deploy_aab_beta build:$BUILD --verbose
-          elif [ "$BRANCH" == "refs/heads/develop" ]; then
-            bundle exec fastlane deploy_aab_internal build:$BUILD --verbose
+          if [ "$BRANCH" == "refs/heads/release" ]; then
+            bundle exec fastlane deploy_release build:$BUILD --verbose
+          elif [ "$BRANCH" == "refs/heads/candidate" ]; then
+            bundle exec fastlane deploy_candidate build:$BUILD --verbose
           else
             echo "Unknown branch '$BRANCH'. Aborting..."
             exit 1
