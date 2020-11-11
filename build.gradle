@@ -64,7 +64,7 @@ ext {
     // Injected Variables
     MAJOR_VERSION = project.hasProperty("major") ? Integer.parseInt(major) : 1
     MINOR_VERSION = project.hasProperty("minor") ? Integer.parseInt(minor) : 2
-    HOTFIX_VERSION = project.hasProperty("hotfix") ? Integer.parseInt(hotfix) : 0
+    HOTFIX_VERSION = project.hasProperty("hotfix") ? Integer.parseInt(hotfix) : 1
     BUILD_NUMBER = project.hasProperty("build") ? Integer.parseInt(build) % 1000 : 0
 
     if (MAJOR_VERSION < 0 || MAJOR_VERSION > 99) {
