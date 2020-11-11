@@ -82,33 +82,33 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.ext.KOTLIN_VERSION}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${rootProject.ext.KOTLIN_COROUTINES_VERSION}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$KOTLIN_VERSION"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$KOTLIN_COROUTINES_VERSION"
 
-    implementation "androidx.core:core-ktx:${rootProject.ext.ANDROIDX_CORE_KTX_VERSION}"
-    implementation "androidx.fragment:fragment-ktx:${rootProject.ext.ANDROIDX_FRAGMENT_KTX_VERSION}"
-    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.ANDROIDX_RECYCLERVIEW_VERSION}"
-    implementation "com.google.android.material:material:${rootProject.ext.ANDROIDX_MATERIAL_VERSION}"
-    implementation "androidx.datastore:datastore-preferences:${rootProject.ext.ANDROIDX_DATASTORE_VERSION}"
+    implementation "androidx.core:core-ktx:$ANDROIDX_CORE_KTX_VERSION"
+    implementation "androidx.fragment:fragment-ktx:$ANDROIDX_FRAGMENT_KTX_VERSION"
+    implementation "androidx.recyclerview:recyclerview:$ANDROIDX_RECYCLERVIEW_VERSION"
+    implementation "com.google.android.material:material:$ANDROIDX_MATERIAL_VERSION"
+    implementation "androidx.datastore:datastore-preferences:$ANDROIDX_DATASTORE_VERSION"
 
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${rootProject.ext.ANDROIDX_LIFECYCLE_LIVEDATA_KTX_VERSION}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$ANDROIDX_LIFECYCLE_LIVEDATA_KTX_VERSION"
 
-    implementation "com.google.dagger:dagger:${rootProject.ext.DAGGER_VERSION}"
-    kapt "com.google.dagger:dagger-compiler:${rootProject.ext.DAGGER_VERSION}"
-    implementation "com.google.dagger:hilt-android:${rootProject.ext.DAGGER_HILT_VERSION}"
-    kapt "com.google.dagger:hilt-android-compiler:${rootProject.ext.DAGGER_HILT_VERSION}"
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:${rootProject.ext.DAGGER_HILT_VIEWMODEL_VERSION}"
-    kapt "androidx.hilt:hilt-compiler:${rootProject.ext.DAGGER_HILT_VIEWMODEL_VERSION}"
+    implementation "com.google.dagger:dagger:$DAGGER_VERSION"
+    kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
+    implementation "com.google.dagger:hilt-android:$DAGGER_HILT_VERSION"
+    kapt "com.google.dagger:hilt-android-compiler:$DAGGER_HILT_VERSION"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$DAGGER_HILT_VIEWMODEL_VERSION"
+    kapt "androidx.hilt:hilt-compiler:$DAGGER_HILT_VIEWMODEL_VERSION"
 
-    implementation "com.jakewharton.timber:timber:${rootProject.ext.TIMBER_VERSION}"
+    implementation "com.jakewharton.timber:timber:$TIMBER_VERSION"
 
-    implementation "com.afollestad.material-dialogs:core:${rootProject.ext.MATERIAL_DIALOGS_VERSION}"
-    implementation "com.afollestad.material-dialogs:bottomsheets:${rootProject.ext.MATERIAL_DIALOGS_VERSION}"
-    implementation "com.afollestad.material-dialogs:lifecycle:${rootProject.ext.MATERIAL_DIALOGS_VERSION}"
+    implementation "com.afollestad.material-dialogs:core:$MATERIAL_DIALOGS_VERSION"
+    implementation "com.afollestad.material-dialogs:bottomsheets:$MATERIAL_DIALOGS_VERSION"
+    implementation "com.afollestad.material-dialogs:lifecycle:$MATERIAL_DIALOGS_VERSION"
 
-    implementation "com.mikepenz:aboutlibraries:${rootProject.ext.ABOUT_LIBRARIES_VERSION}"
+    implementation "com.mikepenz:aboutlibraries:$ABOUT_LIBRARIES_VERSION"
 
     // Debug dependencies
-    debugImplementation "com.github.pandulapeter.beagle:ui-drawer:${rootProject.ext.BEAGLE_VERSION}"
-    debugImplementation "com.github.pandulapeter.beagle:log:${rootProject.ext.BEAGLE_VERSION}"
+    debugImplementation "com.github.pandulapeter.beagle:ui-drawer:$BEAGLE_VERSION"
+    debugImplementation "com.github.pandulapeter.beagle:log:$BEAGLE_VERSION"
 }
