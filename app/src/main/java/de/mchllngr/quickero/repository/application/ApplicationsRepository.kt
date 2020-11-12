@@ -88,10 +88,19 @@ class ApplicationsRepository @Inject constructor(
         setFirstStart(false)
 
         val installedPackageNames = getInstalledPackageNames()
+
         val dummyEntries = DUMMY_PACKAGE_NAMES.asSequence()
+            .shuffled()
             .filter { it in installedPackageNames }
             .take(DUMMY_ENTRIES_MAX_COUNT)
-            .toList()
+            .toMutableList()
+
+        if (dummyEntries.size < DUMMY_ENTRIES_MAX_COUNT) {
+            dummyEntries += (installedPackageNames - dummyEntries)
+                .shuffled()
+                .take(DUMMY_ENTRIES_MAX_COUNT - dummyEntries.size)
+            dummyEntries.shuffle()
+        }
 
         setPackageNames(dummyEntries)
     }
