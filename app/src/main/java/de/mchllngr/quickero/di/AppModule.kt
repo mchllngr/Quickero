@@ -3,8 +3,8 @@ package de.mchllngr.quickero.di
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.DataStore
+import androidx.datastore.preferences.Preferences
 import androidx.datastore.preferences.createDataStore
 import dagger.Module
 import dagger.Provides
