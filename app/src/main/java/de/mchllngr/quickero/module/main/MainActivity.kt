@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -141,7 +142,7 @@ class MainActivity : AppCompatActivity() {
                 return@launch
             }
 
-            MaterialDialog(this@MainActivity, BottomSheet())
+            MaterialDialog(ContextThemeWrapper(this@MainActivity, R.style.AppTheme_ApplicationList), BottomSheet())
                 .lifecycleOwner(this@MainActivity)
                 .title(R.string.dialog_application_list_title, null)
                 .apply {
