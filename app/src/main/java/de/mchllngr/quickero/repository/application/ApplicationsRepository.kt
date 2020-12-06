@@ -1,12 +1,12 @@
 package de.mchllngr.quickero.repository.application
 
 import android.content.pm.PackageManager
-import androidx.datastore.DataStore
-import androidx.datastore.preferences.Preferences
-import androidx.datastore.preferences.edit
-import androidx.datastore.preferences.emptyPreferences
-import androidx.datastore.preferences.preferencesKey
-import androidx.datastore.preferences.preferencesSetKey
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.preferencesKey
+import androidx.datastore.preferences.core.preferencesSetKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
@@ -88,10 +88,19 @@ class ApplicationsRepository @Inject constructor(
         setFirstStart(false)
 
         val installedPackageNames = getInstalledPackageNames()
+
         val dummyEntries = DUMMY_PACKAGE_NAMES.asSequence()
+            .shuffled()
             .filter { it in installedPackageNames }
             .take(DUMMY_ENTRIES_MAX_COUNT)
-            .toList()
+            .toMutableList()
+
+        if (dummyEntries.size < DUMMY_ENTRIES_MAX_COUNT) {
+            dummyEntries += (installedPackageNames - dummyEntries)
+                .shuffled()
+                .take(DUMMY_ENTRIES_MAX_COUNT - dummyEntries.size)
+            dummyEntries.shuffle()
+        }
 
         setPackageNames(dummyEntries)
     }
