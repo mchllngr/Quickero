@@ -51,7 +51,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'https://jitpack.io' } // for debugdrawer
+        maven { url "https://jitpack.io" } // for debugdrawer
     }
 }
 
@@ -67,16 +67,16 @@ ext {
     BUILD_NUMBER = project.hasProperty("build") ? Integer.parseInt(build) % 1000 : 0
 
     if (MAJOR_VERSION < 0 || MAJOR_VERSION > 99) {
-        throw new IllegalArgumentException('major must be 0-99')
+        throw new IllegalArgumentException("major must be 0-99")
     }
     if (MINOR_VERSION < 0 || MINOR_VERSION > 99) {
-        throw new IllegalArgumentException('minor must be 0-99')
+        throw new IllegalArgumentException("minor must be 0-99")
     }
     if (HOTFIX_VERSION < 0 || HOTFIX_VERSION > 99) {
-        throw new IllegalArgumentException('hotfix must be 0-99')
+        throw new IllegalArgumentException("hotfix must be 0-99")
     }
     if (BUILD_NUMBER < 0) {
-        throw new IllegalArgumentException('build must be 0 or bigger')
+        throw new IllegalArgumentException("build must be 0 or bigger")
     }
 
     VERSIONCODE = MAJOR_VERSION * 10000000 + MINOR_VERSION * 100000 + HOTFIX_VERSION * 1000 + BUILD_NUMBER

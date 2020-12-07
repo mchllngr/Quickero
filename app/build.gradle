@@ -28,10 +28,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(keystoreProperties['storeFile'] ?: "UNKNOWN")
-            storePassword keystoreProperties['storePassword'] ?: "UNKNOWN"
-            keyAlias keystoreProperties['keyAlias'] ?: "UNKNOWN"
-            keyPassword keystoreProperties['keyPassword'] ?: "UNKNOWN"
+            storeFile file(keystoreProperties["storeFile"])
+            storePassword keystoreProperties["storePassword"]
+            keyAlias keystoreProperties["keyAlias"]
+            keyPassword keystoreProperties["keyPassword"]
         }
     }
 
@@ -42,10 +42,10 @@ android {
                 removeUnusedResources true
                 obfuscate true
                 optimizeCode true
-                proguardFiles getDefaultProguardFile('proguard-defaults.txt'),
-                    '../proguard/proguard-rules.pro',
-                    '../proguard/proguard-rules-aboutlibraries.pro',
-                    '../proguard/proguard-rules-timber.pro'
+                proguardFiles getDefaultProguardFile("proguard-defaults.txt"),
+                    "../proguard/proguard-rules.pro",
+                    "../proguard/proguard-rules-aboutlibraries.pro",
+                    "../proguard/proguard-rules-timber.pro"
             }
             signingConfig signingConfigs.release
         }
