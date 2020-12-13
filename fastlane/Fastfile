@@ -12,27 +12,27 @@ platform :android do
 
   desc "Build a new feature version"
   lane :build_feature do |options|
-    bundleRelease(options)
+    bundle_release(options)
   end
 
   desc "Deploy a new candidate version to Google Play"
   lane :deploy_candidate do |options|
-    bundleRelease(options)
+    bundle_release(options)
 
     options[:track] = "internal"
-    upload_aab_to_play_store(options)
+    upload_bundle_to_play_store(options)
   end
 
   desc "Deploy a new release version to Google Play"
   lane :deploy_release do |options|
-    bundleRelease(options)
+    bundle_release(options)
 
     options[:track] = "beta"
-    upload_aab_to_play_store(options)
+    upload_bundle_to_play_store(options)
   end
 
   ################## BUILD ##################
-  private_lane :bundleRelease do |options|
+  private_lane :bundle_release do |options|
     # check if gradle build-flags are necessary
     flags = "--refresh-dependencies"
 
@@ -60,7 +60,7 @@ platform :android do
   end
 
   ################## UPLOAD #################
-  private_lane :upload_aab_to_play_store do |options|
+  private_lane :upload_bundle_to_play_store do |options|
     uploadOptions = {
       :track => options[:track],
       :skip_upload_apk => true,
