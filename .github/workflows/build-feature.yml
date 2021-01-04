@@ -48,3 +48,4 @@ jobs:
         with:
           name: outputs
           path: app/build/outputs/
+          retention-days: 7
