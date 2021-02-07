@@ -15,6 +15,9 @@ jobs:
       - name: Lint Code Base
         uses: docker://github/super-linter:v3
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: main
+          VALIDATE_ALL_CODEBASE: false
           VALIDATE_KOTLIN: true
           VALIDATE_YAML: true
           VALIDATE_XML: true
@@ -48,4 +51,4 @@ jobs:
         with:
           name: outputs
           path: app/build/outputs/
-          retention-days: 7
+          retention-days: 3
