@@ -20,6 +20,9 @@ keyAlias=KEY_ALIAS
 keyPassword=KEY_PASSWORD
 ```
 
+## Branching strategy
+This repository uses Three-Flow as described [here](https://blog.danlew.net/2020/11/11/trello-androids-git-branching-strategy/).
+
 ## License
 
 ```

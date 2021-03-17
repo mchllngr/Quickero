@@ -5,13 +5,15 @@ KEYSTORE_STORE_PASSPHRASE="quickero-feature"
 KEYSTORE_ALIAS="quickero-feature"
 KEYSTORE_ALIAS_PASSPHRASE="quickero-feature"
 
-[ -d $HOME/secrets ] || mkdir $HOME/secrets
+[ -d "$HOME"/secrets ] || mkdir "$HOME"/secrets
 
-# Create the debug keystore
-echo $KEYSTORE | base64 -di > $HOME/secrets/keystore.jks
+# Create the feature keystore
+echo $KEYSTORE | base64 -di > "$HOME"/secrets/keystore.jks
 
 # Create keystore.properties
-echo "storeFile=$(realpath $HOME/secrets/keystore.jks)" >> keystore.properties
-echo "storePassword=$KEYSTORE_STORE_PASSPHRASE" >> keystore.properties
-echo "keyAlias=$KEYSTORE_ALIAS" >> keystore.properties
-echo "keyPassword=$KEYSTORE_ALIAS_PASSPHRASE" >> keystore.properties
+{
+    echo "storeFile=$(realpath "$HOME"/secrets/keystore.jks)"
+    echo "storePassword=$KEYSTORE_STORE_PASSPHRASE"
+    echo "keyAlias=$KEYSTORE_ALIAS"
+    echo "keyPassword=$KEYSTORE_ALIAS_PASSPHRASE"
+} >> keystore.properties

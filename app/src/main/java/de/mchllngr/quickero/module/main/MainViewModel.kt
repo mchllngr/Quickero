@@ -1,8 +1,8 @@
 package de.mchllngr.quickero.module.main
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import de.mchllngr.quickero.repository.application.ApplicationsRepository
 import de.mchllngr.quickero.repository.application.PackageName
 import de.mchllngr.quickero.repository.notification.NotificationRepository
@@ -14,8 +14,10 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class MainViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val applicationsRepository: ApplicationsRepository,
     private val notificationRepository: NotificationRepository,
     private val notificationHelper: NotificationHelper

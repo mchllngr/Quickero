@@ -8,6 +8,7 @@ on:
 
 jobs:
   deploy:
+    if: github.repository == 'mchllngr/Quickero'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -15,6 +16,9 @@ jobs:
       - name: Lint Code Base
         uses: docker://github/super-linter:v3
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: main
+          VALIDATE_ALL_CODEBASE: false
           VALIDATE_KOTLIN: true
           VALIDATE_YAML: true
           VALIDATE_XML: true

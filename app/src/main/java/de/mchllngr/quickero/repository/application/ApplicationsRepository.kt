@@ -3,10 +3,10 @@ package de.mchllngr.quickero.repository.application
 import android.content.pm.PackageManager
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.preferencesKey
-import androidx.datastore.preferences.core.preferencesSetKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
@@ -169,8 +169,8 @@ class ApplicationsRepository @Inject constructor(
 
     companion object {
 
-        private val KEY_FIRST_START = preferencesKey<Boolean>("applications_first_start")
-        private val KEY_PACKAGE_NAMES = preferencesSetKey<PackageName>("applications_package_names")
+        private val KEY_FIRST_START = booleanPreferencesKey("applications_first_start")
+        private val KEY_PACKAGE_NAMES = stringSetPreferencesKey("applications_package_names")
 
         private const val PACKAGE_NAMES_MAX_COUNT = 15
 
