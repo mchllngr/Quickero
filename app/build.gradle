@@ -97,8 +97,6 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
     implementation "com.google.dagger:hilt-android:$DAGGER_HILT_VERSION"
     kapt "com.google.dagger:hilt-android-compiler:$DAGGER_HILT_VERSION"
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$DAGGER_HILT_VIEWMODEL_VERSION"
-    kapt "androidx.hilt:hilt-compiler:$DAGGER_HILT_VIEWMODEL_VERSION"
 
     implementation "com.jakewharton.timber:timber:$TIMBER_VERSION"
 
