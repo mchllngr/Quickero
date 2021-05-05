@@ -11,18 +11,18 @@ buildscript {
 
         // app
         KOTLIN_VERSION = "1.4.32"
-        KOTLIN_COROUTINES_VERSION = "1.4.2"
+        KOTLIN_COROUTINES_VERSION = "1.4.3"
         ANDROIDX_CORE_KTX_VERSION = "1.3.2"
-        ANDROIDX_FRAGMENT_KTX_VERSION = "1.3.2"
+        ANDROIDX_FRAGMENT_KTX_VERSION = "1.3.3"
         ANDROIDX_RECYCLERVIEW_VERSION = "1.2.0"
         ANDROIDX_MATERIAL_VERSION = "1.3.0"
-        ANDROIDX_DATASTORE_VERSION = "1.0.0-alpha08"
+        ANDROIDX_DATASTORE_VERSION = "1.0.0-beta01"
         ANDROIDX_LIFECYCLE_LIVEDATA_KTX_VERSION = "2.3.1"
-        DAGGER_VERSION = "2.34.1"
-        DAGGER_HILT_VERSION = "2.34.1-beta"
+        DAGGER_VERSION = "2.35.1"
+        DAGGER_HILT_VERSION = "2.35.1"
         TIMBER_VERSION = "4.7.1"
         MATERIAL_DIALOGS_VERSION = "3.3.0"
-        ABOUT_LIBRARIES_VERSION = "8.8.4"
+        ABOUT_LIBRARIES_VERSION = "8.8.5"
 
         // app debug
         BEAGLE_VERSION = "2.6.0"
@@ -30,7 +30,6 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
         gradlePluginPortal()
     }
 
@@ -49,8 +48,8 @@ apply plugin: "com.github.ben-manes.versions"
 allprojects {
     repositories {
         google()
-        jcenter()
-        maven { url "https://jitpack.io" } // for debugdrawer
+        mavenCentral()
+        maven { url "https://jitpack.io" } // for beagle
     }
 }
 
