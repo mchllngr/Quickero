@@ -110,3 +110,13 @@ dependencies {
     debugImplementation "com.github.pandulapeter.beagle:ui-drawer:$BEAGLE_VERSION"
     debugImplementation "com.github.pandulapeter.beagle:log:$BEAGLE_VERSION"
 }
+
+kapt {
+    javacOptions {
+        // These options are normally set automatically via the Hilt Gradle plugin, but we
+        // set them manually to workaround a bug in the Kotlin 1.5.20
+        // https://stackoverflow.com/a/68233842/4567591
+        option("-Adagger.fastInit=ENABLED")
+        option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
+    }
+}
