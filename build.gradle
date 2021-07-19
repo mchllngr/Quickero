@@ -22,7 +22,7 @@ buildscript {
         DAGGER_HILT_VERSION = "2.37"
         TIMBER_VERSION = "4.7.1"
         MATERIAL_DIALOGS_VERSION = "3.3.0"
-        ABOUT_LIBRARIES_VERSION = "8.9.0"
+        ABOUT_LIBRARIES_VERSION = "8.9.1"
 
         // app debug
         BEAGLE_VERSION = "2.6.2"
