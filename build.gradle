@@ -5,7 +5,7 @@ buildscript {
         MIN_SDK = 21
 
         // buildscript
-        BUILD_TOOLS_VERSION = "7.0.0"
+        BUILD_TOOLS_VERSION = "7.0.1"
         DEXCOUNT_VERSION = "3.0.0"
         VERSIONS_VERSION = "0.39.0"
 
@@ -20,12 +20,12 @@ buildscript {
         ANDROIDX_LIFECYCLE_LIVEDATA_KTX_VERSION = "2.3.1"
         DAGGER_VERSION = "2.38.1"
         DAGGER_HILT_VERSION = "2.38.1"
-        TIMBER_VERSION = "4.7.1"
+        TIMBER_VERSION = "5.0.1"
         MATERIAL_DIALOGS_VERSION = "3.3.0"
         ABOUT_LIBRARIES_VERSION = "8.9.1"
 
         // app debug
-        BEAGLE_VERSION = "2.6.2"
+        BEAGLE_VERSION = "2.6.3"
     }
 
     repositories {
