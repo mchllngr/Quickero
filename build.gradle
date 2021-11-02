@@ -1,7 +1,7 @@
 buildscript {
     ext {
-        COMPILE_SDK = 30
-        TARGET_SDK = 30
+        COMPILE_SDK = 31
+        TARGET_SDK = 31
         MIN_SDK = 21
 
         // buildscript
@@ -12,17 +12,17 @@ buildscript {
         // app
         KOTLIN_VERSION = "1.5.31"
         KOTLIN_COROUTINES_VERSION = "1.5.2"
-        ANDROIDX_CORE_KTX_VERSION = "1.6.0"
+        ANDROIDX_CORE_KTX_VERSION = "1.7.0"
         ANDROIDX_FRAGMENT_KTX_VERSION = "1.3.6"
         ANDROIDX_RECYCLERVIEW_VERSION = "1.2.1"
         ANDROIDX_MATERIAL_VERSION = "1.4.0"
         ANDROIDX_DATASTORE_VERSION = "1.0.0"
-        ANDROIDX_LIFECYCLE_LIVEDATA_KTX_VERSION = "2.3.1"
-        DAGGER_VERSION = "2.39.1"
-        DAGGER_HILT_VERSION = "2.39.1"
+        ANDROIDX_LIFECYCLE_LIVEDATA_KTX_VERSION = "2.4.0"
+        DAGGER_VERSION = "2.40"
+        DAGGER_HILT_VERSION = "2.40"
         TIMBER_VERSION = "5.0.1"
         MATERIAL_DIALOGS_VERSION = "3.3.0"
-        ABOUT_LIBRARIES_VERSION = "8.9.3"
+        ABOUT_LIBRARIES_VERSION = "8.9.4"
 
         // app debug
         BEAGLE_VERSION = "2.6.4"
