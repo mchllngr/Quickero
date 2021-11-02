@@ -1,7 +1,7 @@
 buildscript {
     ext {
-        COMPILE_SDK = 30
-        TARGET_SDK = 30
+        COMPILE_SDK = 31
+        TARGET_SDK = 31
         MIN_SDK = 21
 
         // buildscript
