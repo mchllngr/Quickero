@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme.Splash"
         tools:ignore="AllowBackup">
 
-        <activity 
+        <activity
             android:name=".module.main.MainActivity"
             android:exported="true">
             <intent-filter>
@@ -51,7 +51,9 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".receiver.NotificationStarterReceiver">
+        <receiver
+            android:name=".receiver.NotificationStarterReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -60,7 +62,9 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".receiver.PackageFullyRemovedReceiver">
+        <receiver
+            android:name=".receiver.PackageFullyRemovedReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
                 <data android:scheme="package" />
