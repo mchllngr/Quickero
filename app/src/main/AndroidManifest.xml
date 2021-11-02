@@ -18,7 +18,9 @@
         android:theme="@style/AppTheme.Splash"
         tools:ignore="AllowBackup">
 
-        <activity android:name=".module.main.MainActivity">
+        <activity 
+            android:name=".module.main.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
