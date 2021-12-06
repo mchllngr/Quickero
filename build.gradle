@@ -18,8 +18,7 @@ buildscript {
         ANDROIDX_MATERIAL_VERSION = "1.4.0"
         ANDROIDX_DATASTORE_VERSION = "1.0.0"
         ANDROIDX_LIFECYCLE_LIVEDATA_KTX_VERSION = "2.4.0"
-        DAGGER_VERSION = "2.40.3"
-        DAGGER_HILT_VERSION = "2.40.3"
+        DAGGER_VERSION = "2.40.4"
         TIMBER_VERSION = "5.0.1"
         MATERIAL_DIALOGS_VERSION = "3.3.0"
         ABOUT_LIBRARIES_VERSION = "8.9.4"
@@ -36,7 +35,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$BUILD_TOOLS_VERSION"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$DAGGER_HILT_VERSION"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$DAGGER_VERSION"
         classpath "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:$ABOUT_LIBRARIES_VERSION"
         classpath "com.getkeepsafe.dexcount:dexcount-gradle-plugin:$DEXCOUNT_VERSION"
         classpath "com.github.ben-manes:gradle-versions-plugin:$VERSIONS_VERSION" // allows checking for new versions with './gradlew dependencyUpdates -Drevision=release'
