@@ -7,7 +7,7 @@ buildscript {
         // buildscript
         BUILD_TOOLS_VERSION = "7.0.3"
         DEXCOUNT_VERSION = "3.0.1"
-        VERSIONS_VERSION = "0.39.0"
+        VERSIONS_VERSION = "0.40.0"
 
         // app
         KOTLIN_VERSION = "1.5.31"
