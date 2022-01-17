@@ -17,7 +17,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Lint Code Base
-        uses: docker://github/super-linter:v3
+        uses: docker://github/super-linter:v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_KOTLIN: true
