@@ -6,7 +6,7 @@ buildscript {
 
         // buildscript
         BUILD_TOOLS_VERSION = "7.1.2"
-        DEXCOUNT_VERSION = "3.0.1"
+        DEXCOUNT_VERSION = "3.1.0"
         VERSIONS_VERSION = "0.42.0"
 
         // app
