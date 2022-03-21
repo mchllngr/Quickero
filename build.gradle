@@ -24,7 +24,7 @@ buildscript {
         ABOUT_LIBRARIES_VERSION = "8.9.4"
 
         // app debug
-        BEAGLE_VERSION = "2.6.5"
+        BEAGLE_VERSION = "2.6.6"
     }
 
     repositories {
