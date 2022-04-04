@@ -10,7 +10,7 @@ buildscript {
         VERSIONS_VERSION = "0.42.0"
 
         // app
-        KOTLIN_VERSION = "1.6.10"
+        KOTLIN_VERSION = "1.6.20"
         KOTLIN_COROUTINES_VERSION = "1.6.0"
         ANDROIDX_CORE_KTX_VERSION = "1.7.0"
         ANDROIDX_FRAGMENT_KTX_VERSION = "1.4.1"
