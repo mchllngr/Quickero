@@ -1,7 +1,9 @@
 package de.mchllngr.quickero.service
 
+import android.annotation.SuppressLint
 import android.app.IntentService
 import android.content.Intent
+import android.os.Build
 
 /** [IntentService] for starting the clicked application from the notification. */
 class StartApplicationService : IntentService(StartApplicationService::class.java.name) {
@@ -14,9 +16,12 @@ class StartApplicationService : IntentService(StartApplicationService::class.jav
             startApplication(packageName)
         }
 
-        // close navigation bar
-        val i = Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
-        sendBroadcast(i)
+        @SuppressLint("MissingPermission")
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            // close navigation bar
+            val i = Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
+            sendBroadcast(i)
+        }
     }
 
     private fun startApplication(packageName: String?) {

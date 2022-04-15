@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.widget.RemoteViews
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationCompat
@@ -39,26 +40,38 @@ class CustomNotificationHelper @Inject constructor(
             )
 
             // set PendingIntent
-            val resultIntent = Intent(context, StartApplicationService::class.java)
-            resultIntent.putExtra(
-                StartApplicationService.KEY_PACKAGE_NAME,
-                application.packageName
-            )
-
-            // needed to make the PendingIntent 'unique' so multiple PendingIntents can be active at the same time
-            val uniqueId = Long.MAX_VALUE - currentTimeMillis - i * 1000
-            resultIntent.action = uniqueId.toString()
-
-            val pendingIntent = PendingIntent.getService(
-                context,
-                0,
-                resultIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
+            val pendingIntent = getPendingIntent(application, currentTimeMillis, i)
             customContentView.setOnClickPendingIntent(ICON_IDS_CUSTOM_CONTENT[i], pendingIntent)
         }
 
         return createCustomContentViewNotification(customContentView)
+    }
+
+    private fun getPendingIntent(
+        application: Application,
+        currentTimeMillis: Long,
+        index: Int
+    ): PendingIntent {
+        val resultIntent = Intent(context, StartApplicationService::class.java)
+        resultIntent.putExtra(
+            StartApplicationService.KEY_PACKAGE_NAME,
+            application.packageName
+        )
+
+        // needed to make the PendingIntent 'unique' so multiple PendingIntents can be active at the same time
+        val uniqueId = Long.MAX_VALUE - currentTimeMillis - index * 1000
+        resultIntent.action = uniqueId.toString()
+
+        val flags =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            else PendingIntent.FLAG_UPDATE_CURRENT
+
+        return PendingIntent.getService(
+            context,
+            0,
+            resultIntent,
+            flags
+        )
     }
 
     private fun createCustomContentViewNotification(customContentView: RemoteViews): Notification = NotificationCompat.Builder(context, NotificationHelper.CHANNEL_DEFAULT_ID)
