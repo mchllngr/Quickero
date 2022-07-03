@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.widget.RemoteViews
 import androidx.annotation.ColorInt
 import androidx.core.app.NotificationCompat
@@ -49,11 +50,16 @@ class CustomNotificationHelper @Inject constructor(
             val uniqueId = Long.MAX_VALUE - currentTimeMillis - i * 1000
             resultIntent.action = uniqueId.toString()
 
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            else
+                PendingIntent.FLAG_UPDATE_CURRENT
+
             val pendingIntent = PendingIntent.getService(
                 context,
                 0,
                 resultIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                flags
             )
             customContentView.setOnClickPendingIntent(ICON_IDS_CUSTOM_CONTENT[i], pendingIntent)
         }
