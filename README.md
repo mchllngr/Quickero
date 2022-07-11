@@ -8,6 +8,13 @@ An android app to quickly open your favorite apps through a notification.
 
 ## Building
 
+> **IMPORTANT**  
+> **Because of new retrictions introduced in Android 12 this app can't function correctly anymore,** because it depends heavily on starting other activities from a notification started by a foreground service and that is forbidden as of now. Maybe I'll try to find a way around those new restrictions if I have the time, but **because of this I'm currently not working on this app anymore.**
+>
+> See:
+> * https://developer.android.com/about/versions/12/behavior-changes-12#foreground-service-launch-restrictions
+> * https://developer.android.com/about/versions/12/behavior-changes-12#notification-trampolines
+
 ### Debug
 To build the debug variant you need to create an empty `keystore.properties` file in the root project directory.
 
