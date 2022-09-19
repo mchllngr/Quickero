@@ -5,7 +5,7 @@ buildscript {
         MIN_SDK = 21
 
         // buildscript
-        BUILD_TOOLS_VERSION = "7.2.2"
+        BUILD_TOOLS_VERSION = "7.3.0"
         DEXCOUNT_VERSION = "3.1.0"
         VERSIONS_VERSION = "0.42.0"
 
